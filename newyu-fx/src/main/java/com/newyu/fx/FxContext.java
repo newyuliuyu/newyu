@@ -11,4 +11,5 @@ package com.newyu.fx;
  * @since JDK 1.7+
  */
 public interface FxContext {
+
 }
