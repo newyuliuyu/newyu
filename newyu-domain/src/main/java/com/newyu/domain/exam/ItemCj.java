@@ -1,5 +1,7 @@
 package com.newyu.domain.exam;
 
+import lombok.*;
+
 /**
  * ClassName: ItemCj <br/>
  * Function:  ADD FUNCTION. <br/>
@@ -10,5 +12,15 @@ package com.newyu.domain.exam;
  * @version v1.0
  * @since JDK 1.7+
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(of = {"itemName", "score", "options"})
+@Builder
 public class ItemCj {
+    private int id;
+    private String itemName;
+    private double score;
+    private String options;
 }

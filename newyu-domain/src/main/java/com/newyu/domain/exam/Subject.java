@@ -1,5 +1,7 @@
 package com.newyu.domain.exam;
 
+import lombok.*;
+
 /**
  * ClassName: Subject <br/>
  * Function:  ADD FUNCTION. <br/>
@@ -10,5 +12,14 @@ package com.newyu.domain.exam;
  * @version v1.0
  * @since JDK 1.7+
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"id"})
+@ToString(of = {"id", "name"})
+@Builder
 public class Subject {
+    private Long id;
+    private String name;
 }

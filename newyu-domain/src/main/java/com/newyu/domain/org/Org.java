@@ -1,5 +1,7 @@
 package com.newyu.domain.org;
 
+import lombok.*;
+
 /**
  * ClassName: Org <br/>
  * Function:  ADD FUNCTION. <br/>
@@ -10,5 +12,14 @@ package com.newyu.domain.org;
  * @version v1.0
  * @since JDK 1.7+
  */
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(of = {"code"})
+@ToString(of = {"code", "name"})
+@Builder(builderMethodName = "orgBuilder")
 public class Org {
+    private String code;
+    private String name;
 }
