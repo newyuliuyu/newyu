@@ -18,12 +18,6 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class FxData {
-    /**
-     * 名称
-     */
     private String name;
-    /**
-     * 值
-     */
     private Object value;
 }
