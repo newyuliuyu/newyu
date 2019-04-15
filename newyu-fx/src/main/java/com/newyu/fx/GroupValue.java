@@ -1,5 +1,11 @@
 package com.newyu.fx;
 
+import com.google.common.collect.Maps;
+import lombok.Getter;
+import lombok.Setter;
+
+import java.util.Map;
+
 /**
  * ClassName: GroupValue <br/>
  * Function:  ADD FUNCTION. <br/>
@@ -10,5 +16,23 @@ package com.newyu.fx;
  * @version v1.0
  * @since JDK 1.7+
  */
+@Setter
+@Getter
 public class GroupValue {
+    private GroupInfo groupInfo;
+    private Map<String, Object> valueMap = Maps.newHashMap();
+
+    public GroupValue addValue(String name, Object value) {
+        valueMap.put(toLowerCaseName(name), value);
+        return this;
+    }
+
+    public <T> T addValue(String name) {
+        Object value = valueMap.get(toLowerCaseName(name));
+        return (T) value;
+    }
+
+    private String toLowerCaseName(String name) {
+        return name.toLowerCase();
+    }
 }
