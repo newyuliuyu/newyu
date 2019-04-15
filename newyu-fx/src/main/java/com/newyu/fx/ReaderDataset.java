@@ -11,4 +11,10 @@ package com.newyu.fx;
  * @since JDK 1.7+
  */
 public interface ReaderDataset {
+    /**
+     * 读取数据集
+     * @param context
+     * @return
+     */
+    Dataset read(FxContext context);
 }

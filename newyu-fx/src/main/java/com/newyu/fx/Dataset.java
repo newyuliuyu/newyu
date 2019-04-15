@@ -11,4 +11,11 @@ package com.newyu.fx;
  * @since JDK 1.7+
  */
 public interface Dataset {
+
+    /**
+     * 根据分析信息对数据集进行分组
+     * @param groupInfo
+     * @return
+     */
+    GroupDataset group(GroupInfo groupInfo);
 }
