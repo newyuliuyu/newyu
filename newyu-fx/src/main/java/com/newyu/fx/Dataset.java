@@ -1,5 +1,7 @@
 package com.newyu.fx;
 
+import com.newyu.domain.fx.GroupInfo;
+
 /**
  * ClassName: Dataset <br/>
  * Function:  ADD FUNCTION. <br/>
@@ -18,4 +20,5 @@ public interface Dataset {
      * @return
      */
     GroupDataset group(GroupInfo groupInfo);
+
 }

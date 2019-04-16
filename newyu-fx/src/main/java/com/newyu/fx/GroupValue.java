@@ -1,6 +1,7 @@
 package com.newyu.fx;
 
 import com.google.common.collect.Maps;
+import com.newyu.domain.fx.GroupInfo;
 import lombok.Getter;
 import lombok.Setter;
 
