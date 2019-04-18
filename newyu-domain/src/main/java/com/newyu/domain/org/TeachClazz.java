@@ -22,7 +22,7 @@ public class TeachClazz extends Clazz {
 
     @Builder(builderMethodName = "teachClazzBuilder")
     private TeachClazz(String schoolCode, String schoolName, String code, String name, String subjectName) {
-        super(schoolCode, schoolName, code, name);
+        super(schoolCode, schoolName, code, name, 0);
         this.subjectName = subjectName;
     }
 }

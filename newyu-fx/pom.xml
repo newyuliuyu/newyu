@@ -22,6 +22,11 @@
             <artifactId>newyu-domain</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>newyu</groupId>
+            <artifactId>newyu-utils</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
 </project>

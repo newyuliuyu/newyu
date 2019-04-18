@@ -19,10 +19,12 @@ import lombok.*;
 @ToString(of = {"school"}, callSuper = true)
 public class Clazz extends Org {
     private School school;
+    private int wl;
 
     @Builder
-    protected Clazz(String schoolCode, String schoolName, String code, String name) {
+    protected Clazz(String schoolCode, String schoolName, String code, String name, int wl) {
         super(code, name);
         this.school = School.builder().code(schoolCode).name(schoolName).build();
+        this.wl = wl;
     }
 }
