@@ -12,8 +12,8 @@
     <artifactId>newyu-fx</artifactId>
 
     <name>newyu-fx</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+
+    <url></url>
 
 
     <dependencies>

@@ -15,8 +15,8 @@ import java.util.regex.Pattern;
 
 /**
  * ClassName: SubjectHelper <br/>
- * Function: TODO ADD FUNCTION. <br/>
- * Reason: TODO ADD REASON(可选). <br/>
+ * Function:  <br/>
+ * Reason:  <br/>
  * date: 17-11-21 下午5:59 <br/>
  *
  * @author liuyu
