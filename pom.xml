@@ -12,6 +12,7 @@
         <module>newyu-fx</module>
         <module>newyu-domain</module>
         <module>newyu-utils</module>
+        <module>newyu-service-api</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

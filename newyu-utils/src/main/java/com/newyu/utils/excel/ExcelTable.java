@@ -101,25 +101,7 @@ public class ExcelTable {
     }
 
     public CellStyle newStyle() {
-        CellStyle cs = wb.createCellStyle();
-        cs.setAlignment(HorizontalAlignment.CENTER);
-        cs.setVerticalAlignment(VerticalAlignment.CENTER);
-
-        Font font = wb.createFont();
-        font.setFontName("宋体");
-        font.setItalic(false);
-        font.setBold(false);
-        font.setColor(Font.COLOR_NORMAL);
-        font.setFontHeightInPoints((short) 9);
-        font.setStrikeout(false);
-        cs.setFont(font);
-
-        cs.setBorderTop(BorderStyle.THIN);
-        cs.setBorderRight(BorderStyle.THIN);
-        cs.setBorderBottom(BorderStyle.THIN);
-        cs.setBorderLeft(BorderStyle.THIN);
-
-        return cs;
+        return getDesStyle();
     }
 
     public CellStyle getDesStyle() {
