@@ -22,4 +22,5 @@ import lombok.*;
 public class Exam {
     private Long id;
     private String name;
+    private ExamState state;
 }
