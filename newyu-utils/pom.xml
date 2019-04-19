@@ -12,8 +12,7 @@
     <artifactId>newyu-utils</artifactId>
 
     <name>newyu-utils</name>
-    <!-- FIXME change it to the project's website -->
-    <url>http://www.example.com</url>
+    <url></url>
 
     <properties>
         <shiro.version>1.2.3</shiro.version>

@@ -9,8 +9,8 @@ import java.io.Serializable;
 
 /**
  * ClassName: ShiroRedisSessionDao <br/>
- * Function: TODO ADD FUNCTION. <br/>
- * Reason: TODO ADD REASON(可选). <br/>
+ * Function:  <br/>
+ * Reason:  <br/>
  * date: 17-11-6 下午1:41 <br/>
  *
  * @author liuyu
