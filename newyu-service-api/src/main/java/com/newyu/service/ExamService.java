@@ -23,7 +23,7 @@ public interface ExamService {
      * @param exam
      * @return
      */
-    boolean create(Exam exam);
+    void createExam(Exam exam);
 
     /**
      * 修改考试状态
@@ -32,7 +32,7 @@ public interface ExamService {
      * @param examState
      * @return
      */
-    int update(long examId, ExamState examState);
+    int updateExam(long examId, ExamState examState);
 
     /**
      * 删除一次考试
@@ -40,7 +40,7 @@ public interface ExamService {
      * @param exam
      * @return
      */
-    int delete(Exam exam);
+    int deleteExam(Exam exam);
 
     /**
      * 获取一次考试信息
@@ -48,10 +48,11 @@ public interface ExamService {
      * @param examId
      * @return
      */
-    Exam get(long examId);
+    Exam getExam(long examId);
 
     /**
      * 获取当前考试的历次考试
+     *
      * @param exam
      * @return
      */
