@@ -13,6 +13,7 @@
         <module>newyu-domain</module>
         <module>newyu-utils</module>
         <module>newyu-service-api</module>
+        <module>newyu-service-realize</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
