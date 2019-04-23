@@ -1,11 +1,12 @@
 package com.newyu.service;
 
 import com.github.pagehelper.PageInterceptor;
-import com.newyu.domain.exam.ExamState;
+import com.newyu.domain.exam.*;
 import com.newyu.utils.db.DatasourceProperties;
 import com.newyu.utils.db.InitDataSource;
 import com.newyu.utils.id.IdGenerator;
 import com.newyu.utils.mybatis.CodeEnumCodeHandler;
+import com.newyu.utils.mybatis.NameEnumCodeHandler;
 import com.newyu.utils.spring.SpringContextUtil;
 import org.apache.ibatis.plugin.Interceptor;
 import org.apache.ibatis.type.TypeHandler;
@@ -88,7 +89,11 @@ public class AppConfig {
 
 
         TypeHandler[] typeHandlers = new TypeHandler[]{
-                new CodeEnumCodeHandler(ExamState.class)
+                new CodeEnumCodeHandler(ExamState.class),
+                new CodeEnumCodeHandler(ExamLevel.class),
+                new NameEnumCodeHandler(GradeName.class),
+                new CodeEnumCodeHandler(LearningSegment.class),
+                new CodeEnumCodeHandler(Semester.class),
         };
         bean.setTypeHandlers(typeHandlers);
 

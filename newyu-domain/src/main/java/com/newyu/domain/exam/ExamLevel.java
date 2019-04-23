@@ -3,41 +3,41 @@ package com.newyu.domain.exam;
 import com.newyu.utils.mybatis.GenericEnum;
 
 /**
- * ClassName: ExamState <br/>
+ * ClassName: ExamType <br/>
  * Function:  ADD FUNCTION. <br/>
  * Reason:  ADD REASON(可选). <br/>
- * date: 19-4-19 上午10:48 <br/>
+ * date: 19-4-23 上午10:51 <br/>
  *
  * @author liuyu
  * @version v1.0
  * @since JDK 1.7+
  */
-public enum ExamState implements GenericEnum {
+public enum ExamLevel implements GenericEnum {
     /**
-     * 新建考试
+     *
      */
-    create("新建考试", 0),
+    Provice_Exam("省级", 1),
     /**
-     * 正在分析
+     *
      */
-    analyzing("正在分析", 2),
+    City_Exam("地市级考试", 2),
     /**
-     * 分析成功
+     *
      */
-    analyzeSucess("分析成功", 1),
+    County_Exam("区县级考试", 3),
     /**
-     * 分析失败
+     *
      */
-    analyzeFail("分析失败", 3),
+    School_Exam("学校级考试", 4),
     /**
-     * 分析等待
+     *
      */
-    analyzeWait("分析等待", 4);
+    Union_Exam("联考", 5);
 
     private String name;
     private int code;
 
-    private ExamState(String name, int code) {
+    private ExamLevel(String name, int code) {
         this.name = name;
         this.code = code;
     }
@@ -50,11 +50,6 @@ public enum ExamState implements GenericEnum {
 
     @Override
     public String getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
         return name;
     }
 }

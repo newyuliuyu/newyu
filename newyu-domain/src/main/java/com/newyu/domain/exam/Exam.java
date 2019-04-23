@@ -23,4 +23,14 @@ public class Exam {
     private Long id;
     private String name;
     private ExamState state;
+
+    private GradeName gradeName;
+    private int entranceSchoolYear;
+    private Semester semester;
+    private LearningSegment learningSegment;
+    private ExamLevel examLevel;
+
+    private long beginTiem;
+    private long endTime;
+    private long createTime;
 }

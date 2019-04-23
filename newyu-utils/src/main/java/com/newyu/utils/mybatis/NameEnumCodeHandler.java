@@ -28,7 +28,7 @@ import java.sql.SQLException;
 public class NameEnumCodeHandler extends BaseTypeHandler<GenericEnum> {
     private final GenericEnum[] enums;
 
-    public NameEnumCodeHandler(Class<GenericEnum> type) {
+    public NameEnumCodeHandler(Class<? extends GenericEnum> type) {
         if (type == null) {
             throw new IllegalArgumentException("Type argument cannot be null");
         }

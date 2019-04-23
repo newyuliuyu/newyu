@@ -106,9 +106,9 @@ public class GradeNameOrderHelper {
         }
 
         if (gradeInfo.getStudySetion() == 1) {
-            gradeInfo.setGraduationYear(gradeInfo.getEntranceYear() + 5);
+            gradeInfo.setGraduationYear(gradeInfo.getEntranceYear() + 6);
         } else {
-            gradeInfo.setGraduationYear(gradeInfo.getEntranceYear() + 2);
+            gradeInfo.setGraduationYear(gradeInfo.getEntranceYear() + 3);
         }
         return gradeInfo;
     }

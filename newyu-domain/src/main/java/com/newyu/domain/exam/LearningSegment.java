@@ -3,41 +3,38 @@ package com.newyu.domain.exam;
 import com.newyu.utils.mybatis.GenericEnum;
 
 /**
- * ClassName: ExamState <br/>
+ * ClassName: LearningSegment <br/>
  * Function:  ADD FUNCTION. <br/>
  * Reason:  ADD REASON(可选). <br/>
- * date: 19-4-19 上午10:48 <br/>
+ * date: 19-4-23 上午10:49 <br/>
  *
  * @author liuyu
  * @version v1.0
  * @since JDK 1.7+
  */
-public enum ExamState implements GenericEnum {
+public enum LearningSegment implements GenericEnum {
     /**
-     * 新建考试
+     *
      */
-    create("新建考试", 0),
+    Primary_School("小学", 1),
     /**
-     * 正在分析
+     *
      */
-    analyzing("正在分析", 2),
+    Junior_High_School("初中", 2),
     /**
-     * 分析成功
+     *
      */
-    analyzeSucess("分析成功", 1),
+    High_School("高中", 3),
     /**
-     * 分析失败
+     *
      */
-    analyzeFail("分析失败", 3),
-    /**
-     * 分析等待
-     */
-    analyzeWait("分析等待", 4);
+    Other("其他", 4),
+    ;
 
     private String name;
     private int code;
 
-    private ExamState(String name, int code) {
+    private LearningSegment(String name, int code) {
         this.name = name;
         this.code = code;
     }
@@ -50,11 +47,6 @@ public enum ExamState implements GenericEnum {
 
     @Override
     public String getName() {
-        return name;
-    }
-
-    @Override
-    public String toString() {
         return name;
     }
 }
