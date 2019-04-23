@@ -29,7 +29,7 @@ import java.sql.SQLException;
 public class CodeEnumCodeHandler extends BaseTypeHandler<GenericEnum> {
 	private final GenericEnum[] enums;
 
-	public CodeEnumCodeHandler(Class<GenericEnum> type) {
+	public CodeEnumCodeHandler(Class<? extends GenericEnum> type) {
 		if (type == null){
 			throw new IllegalArgumentException("Type argument cannot be null");
 		}

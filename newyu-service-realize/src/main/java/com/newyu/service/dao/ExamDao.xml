@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newyu.service.dao.ExamDao">
+
+    <insert id="createExam">
+      insert into data_exam(id,name,examState)
+      values(#{exam.id},#{exam.name},#{exam.state})
+    </insert>
+
+    <update id="updateExamState">
+        update data_exam
+        set examState=#{exam.state}
+        where id=#{examId}
+    </update>
+
+    <delete id="deleteExam">
+        delete from data_exam where id=#{examId}
+    </delete>
+
+    <select id="getExam" resultType="com.newyu.domain.exam.Exam">
+        select id,name,examState as state from data_exam a where a.id=#{examId}
+    </select>
+</mapper>
