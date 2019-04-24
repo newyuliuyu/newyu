@@ -2,6 +2,9 @@ package com.newyu.domain.exam;
 
 import lombok.*;
 
+import java.util.Calendar;
+import java.util.Date;
+
 /**
  * ClassName: Exam <br/>
  * Function:  ADD FUNCTION. <br/>
@@ -29,8 +32,44 @@ public class Exam {
     private Semester semester;
     private LearningSegment learningSegment;
     private ExamLevel examLevel;
+    private String examType;
 
-    private long beginTiem;
-    private long endTime;
-    private long createTime;
+    private Date beginDate;
+    private Date endDate;
+    private Date createDate;
+
+
+    public long getBeginTiemstamp() {
+        if (beginDate == null) {
+            beginDate = new Date();
+        }
+        return beginDate.getTime();
+    }
+
+    public void setBeginTiemstamp(long beginTiemstamp) {
+        this.beginDate = new Date(beginTiemstamp);
+    }
+
+    public long getEndTimestamp() {
+        if (endDate == null) {
+            endDate = new Date();
+            Calendar calendar = Calendar.getInstance();
+        }
+        return endDate.getTime();
+    }
+
+    public void setEndTimestamp(long endTimestamp) {
+        this.endDate = new Date(endTimestamp);
+    }
+
+    public long getCreateTimestamp() {
+        if (createDate == null) {
+            createDate = new Date();
+        }
+        return createDate.getTime();
+    }
+
+    public void setCreateTimestamp(long createTimestamp) {
+        this.createDate = new Date(createTimestamp);
+    }
 }

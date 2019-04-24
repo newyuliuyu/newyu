@@ -28,18 +28,17 @@ public class Item {
     private double score;
 
     private String knowledge = "";
-    private String knowledgeIds = "";
     private String ability = "";
     private String titleType = "";
 
-    private String bigTitleName;
-    private String smallTitleName;
+    private String bigTitleName = "";
+    private String smallTitleName = "";
 
     /**
      * 1 单项选择题 2 多项选择题 0非选择题
      */
 
-    private int itemType = 0;
+    private ItemType itemType = ItemType.Not_Select;
     /**
      * 正确选项
      */
@@ -52,10 +51,6 @@ public class Item {
      * 综合科目，如文理综
      */
     private String otherSubject = "";
-    /**
-     * 科目满分
-     */
-    private Double fullScore = 0d;
     /**
      * 是否是选做题的一道选题
      */

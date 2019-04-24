@@ -40,11 +40,14 @@ public class Subject {
     private double fullScore;
     private double kgFullScore;
     private double zgFullScore;
+
     private String childSubjectNames = "";
     private List<Subject> childSubjects;
-    private boolean examSubjects = true;
+
+    private boolean examSubject = true;
     private boolean multiSubject = false;
     private boolean fullSubject = false;
+
     private List<Item> items;
     private Map<String, Item> itemMap;
 
@@ -71,7 +74,7 @@ public class Subject {
             List<Item> newItems = Lists.newArrayList(itemMultimap.get(subjectName));
             Subject newSubject = Subject.builder().name(subjectName)
                     .examId(examId)
-                    .examSubjects(false)
+                    .examSubject(false)
                     .wl(wl)
                     .items(newItems).build();
             newChildSubjects.add(newSubject);
@@ -96,7 +99,7 @@ public class Subject {
             if (item.isChoice()) {
                 continue;
             }
-            if (0 == item.getItemType()) {
+            if (item.getItemType().equals(ItemType.Not_Select)) {
                 zgScore += item.getScore();
             } else {
                 kgScore += item.getScore();
