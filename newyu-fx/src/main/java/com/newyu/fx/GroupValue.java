@@ -2,6 +2,7 @@ package com.newyu.fx;
 
 import com.google.common.collect.Maps;
 import com.newyu.domain.fx.GroupInfo;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,7 @@ import java.util.Map;
  */
 @Setter
 @Getter
+@EqualsAndHashCode(of = {"valueMap"})
 public class GroupValue {
     private GroupInfo groupInfo;
     private Map<String, Object> valueMap = Maps.newHashMap();
@@ -28,7 +30,7 @@ public class GroupValue {
         return this;
     }
 
-    public <T> T addValue(String name) {
+    public <T> T getValue(String name) {
         Object value = valueMap.get(toLowerCaseName(name));
         return (T) value;
     }

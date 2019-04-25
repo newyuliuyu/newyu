@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * ClassName: RowData <br/>
@@ -26,7 +27,7 @@ import java.util.Map;
 public class Rowdata {
     private int rowNum;
     private HeaderMetadata headerMetadata;
-    private Map<Integer, Object> rowdata = Maps.newHashMap();
+    private Map<Integer, String> rowdata = Maps.newHashMap();
 
     public int getRowNum() {
         return rowNum;
@@ -45,12 +46,12 @@ public class Rowdata {
     }
 
 
-    public Rowdata addData(Object value, int idx) {
-        rowdata.put(idx, value);
+    public Rowdata addData(String value, int idx) {
+        rowdata.put(idx, value.trim());
         return this;
     }
 
-    public Rowdata addData(String headerName, Object value) {
+    public Rowdata addData(String headerName, String value) {
         int idx = headerMetadata.getHeaderNameIndx(headerName);
         if (idx != -1) {
             addData(value, idx);
@@ -58,12 +59,19 @@ public class Rowdata {
         return this;
     }
 
-    public <T> T getData(String headerName) {
-        int idx = headerMetadata.getHeaderNameIndx(headerName);
-        if (idx == -1) {
-            return null;
+    public String getData(String... headerNames) {
+        int idx = -1;
+        for (String headerName : headerNames) {
+            idx = headerMetadata.getHeaderNameIndx(headerName);
+            if (idx != -1) {
+                break;
+            }
         }
-        return (T) rowdata.get(idx);
+        Optional<String> value = Optional.empty();
+        if (idx != -1) {
+            value = Optional.ofNullable(rowdata.get(idx));
+        }
+        return value.orElse("");
     }
 
     @Override

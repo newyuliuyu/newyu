@@ -1,0 +1,121 @@
+package com.newyu.fx.spi;
+
+import com.google.common.base.Preconditions;
+import com.newyu.domain.exam.Exam;
+import com.newyu.domain.exam.StudentCj;
+import com.newyu.domain.exam.Subject;
+import com.newyu.fx.FxContext;
+import com.newyu.fx.SubjectCjConversion;
+import com.newyu.service.ExamService;
+import com.newyu.service.ExamXSubjectXItemService;
+import com.newyu.service.FxParamService;
+
+import java.util.List;
+import java.util.function.Predicate;
+
+/**
+ * ClassName: FxContextImpl <br/>
+ * Function:  ADD FUNCTION. <br/>
+ * Reason:  ADD REASON(可选). <br/>
+ * date: 19-4-24 下午1:36 <br/>
+ *
+ * @author liuyu
+ * @version v1.0
+ * @since JDK 1.7+
+ */
+public class DefaultFxContext implements FxContext {
+
+    private ExamService examService;
+    private ExamXSubjectXItemService examXSubjectXItemService;
+    private FxParamService fxParamService;
+
+    private long examId = -1;
+
+    private Exam exam;
+    private List<Subject> subjects;
+
+    public static DefaultFxContextBuilder builder() {
+        return new DefaultFxContextBuilder();
+    }
+
+    public static class DefaultFxContextBuilder {
+        DefaultFxContext context = new DefaultFxContext();
+
+        public DefaultFxContextBuilder examId(long examId) {
+            context.examId = examId;
+            return this;
+        }
+
+        public DefaultFxContextBuilder examXSubjectXItemService(ExamXSubjectXItemService examXSubjectXItemService) {
+            context.examXSubjectXItemService = examXSubjectXItemService;
+            return this;
+        }
+
+        public DefaultFxContextBuilder examService(ExamService examService) {
+            context.examService = examService;
+            return this;
+        }
+
+        public DefaultFxContextBuilder fxParamService(FxParamService fxParamService) {
+            context.fxParamService = fxParamService;
+            return this;
+        }
+
+        public DefaultFxContext build() {
+            context.init();
+            return context;
+        }
+    }
+
+    public DefaultFxContext init() {
+        prepareCheck();
+        exec();
+        return this;
+    }
+
+    private void prepareCheck() {
+        Preconditions.checkNotNull(examService, "考试服务类不能为null");
+        Preconditions.checkNotNull(examXSubjectXItemService, "考试科目题目服务类不能为null");
+        Preconditions.checkNotNull(fxParamService, "分析参数务类不能为null");
+        Preconditions.checkArgument(examId > -1, "考试ID必须大于0");
+    }
+
+    private void exec() {
+        setExam();
+        setSubjects();
+    }
+
+    private void setExam() {
+        exam = examService.getExam(examId);
+    }
+
+    private void setSubjects() {
+        subjects = examXSubjectXItemService.querySubjectOfExamHasItem(examId);
+    }
+
+
+    @Override
+    public Exam getExam() {
+        return exam;
+    }
+
+    @Override
+    public List<Subject> getSubject() {
+        return subjects;
+    }
+
+    @Override
+    public SubjectCjConversion getSubjectCjConversions(Subject subject) {
+        return null;
+    }
+
+    @Override
+    public Predicate<StudentCj> getPredicateOfStudent() {
+        return null;
+    }
+
+    @Override
+    public Predicate<StudentCj> getPredicateOfSubjectCj(Subject subject) {
+        return null;
+    }
+}

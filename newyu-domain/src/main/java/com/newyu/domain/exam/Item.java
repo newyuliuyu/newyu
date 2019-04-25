@@ -23,7 +23,6 @@ public class Item {
     private int id;
     private Long examId;
     private Long subjectId;
-    private int num;
     private String name;
     private double score;
 

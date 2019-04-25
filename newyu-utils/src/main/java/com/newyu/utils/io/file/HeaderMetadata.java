@@ -27,7 +27,6 @@ import java.util.Map;
 public class HeaderMetadata {
     private int totalRow;
     private List<String> headerNames = Lists.newArrayList();
-    //    private List<String> headerNames2 = Lists.newArrayList();
     private Map<String, Integer> headerNamesIndexMap = Maps.newHashMap();
 
     public int getTotalRow() {
@@ -51,7 +50,7 @@ public class HeaderMetadata {
     }
 
     public int getHeaderNameIndx(String headerName) {
-        String lowerHeaderName = headerName.toLowerCase();
+        String lowerHeaderName = headerName.trim().toLowerCase();
         Integer idx = headerNamesIndexMap.get(lowerHeaderName);
         idx = idx == null ? -1 : idx;
         return idx;

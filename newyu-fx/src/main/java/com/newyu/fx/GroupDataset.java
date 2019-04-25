@@ -1,7 +1,5 @@
 package com.newyu.fx;
 
-import java.util.List;
-
 /**
  * ClassName: Dataset <br/>
  * Function:  ADD FUNCTION. <br/>
@@ -15,9 +13,9 @@ import java.util.List;
 public interface GroupDataset extends Dataset {
 
     /**
-     * 获取分组中的只
+     * 获取分组中的值
      *
      * @return
      */
-    List<GroupValue> getGroupValue();
+    GroupValue getGroupValue();
 }

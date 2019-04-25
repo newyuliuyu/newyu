@@ -3,7 +3,10 @@ package com.newyu.fx;
 import com.google.common.collect.Lists;
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * ClassName: ListAPITest <br/>
@@ -18,9 +21,21 @@ import java.util.List;
 public class ListAPITest {
 
     @Test
-    public void testFilter() throws Exception{
+    public void testFilter() throws Exception {
 
         List<String> list = Lists.newArrayList();
+
+    }
+
+    @Test
+    public void groupBy() throws Exception {
+
+        List<String> items = Arrays.asList("apple", "apple", "banana",
+                "apple", "orange", "banana", "papaya");
+
+        Map<String, List<String>> dataset = items.stream().collect(Collectors.groupingBy(x -> x));
+
+        System.out.println();
 
     }
 }

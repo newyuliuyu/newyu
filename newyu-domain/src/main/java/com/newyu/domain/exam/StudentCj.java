@@ -1,7 +1,7 @@
 package com.newyu.domain.exam;
 
-import com.newyu.domain.org.Clazz;
-import com.newyu.domain.org.School;
+import com.google.common.collect.Lists;
+import com.newyu.domain.org.*;
 import lombok.*;
 
 import java.util.List;
@@ -20,14 +20,28 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(of = {"name", "zkzh", "ownId", "subjectCjs", "school", "clazz"})
+@ToString(of = {"name", "wl", "zkzh", "ownId", "subjectCjs", "school", "clazz"})
 @Builder
 public class StudentCj {
     private String name;
     private String zkzh;
     private String code;
     private String ownId;
+    private WLType wl;
     private School school;
     private Clazz clazz;
+    private County county;
+    private City city;
+    private Province province;
     private List<SubjectCj> subjectCjs;
+
+    public void addSubjectCj(SubjectCj subjectCj) {
+        if (subjectCj == null) {
+            return;
+        }
+        if (subjectCjs == null) {
+            subjectCjs = Lists.newArrayList();
+        }
+        subjectCjs.add(subjectCj);
+    }
 }

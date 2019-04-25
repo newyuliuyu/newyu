@@ -1,11 +1,14 @@
 package com.newyu.domain.exam;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
 import lombok.*;
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +37,7 @@ public class Subject {
     private Long id;
     private String name;
 
-    private int wl;
+    private WLType wl;
     private int displayOrder = 0;
 
     private double fullScore;
@@ -51,6 +54,40 @@ public class Subject {
     private List<Item> items;
     private Map<String, Item> itemMap;
 
+
+    public List<Item> getItems() {
+        if (items == null) {
+            return Lists.newArrayList();
+        }
+        return items;
+    }
+
+    public List<ItemGroup> getItemGroups(String itemProperty) {
+        Multimap<String, Item> typeMap = ArrayListMultimap.create();
+        try {
+            for (Item item : getItems()) {
+                if (item.isChoice()) {
+                    continue;
+                }
+                String value = BeanUtils.getProperty(item, itemProperty);
+                typeMap.put(value, item);
+            }
+        } catch (Exception e) {
+            String msg = MessageFormat.format("用字段[{0}]对题目进行分组的时候报告", itemProperty);
+            throw new RuntimeException("", e);
+        }
+        List<ItemGroup> itemGroups = Lists.newArrayList();
+        for (String key : typeMap.keySet()) {
+            ItemGroup itemGroup = ItemGroup.builder()
+                    .subject(this)
+                    .propertyName(itemProperty)
+                    .name(key)
+                    .items(Lists.newArrayList(typeMap.get(key)))
+                    .build();
+            itemGroups.add(itemGroup);
+        }
+        return itemGroups;
+    }
 
     public List<ChoiceItemGroup> queryChoiceItemGroups() {
         List<ChoiceItemGroup> choiceItemGroups = new ArrayList<>();

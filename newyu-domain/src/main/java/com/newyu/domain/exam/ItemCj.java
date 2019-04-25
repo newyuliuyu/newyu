@@ -16,11 +16,11 @@ import lombok.*;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(of = {"itemId", "itemName", "score", "options"})
+@ToString(of = {"itemId", "itemName", "score", "selected"})
 @Builder
 public class ItemCj {
     private int itemId;
     private String itemName;
     private double score;
-    private String options;
+    private String selected;
 }
