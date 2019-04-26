@@ -10,7 +10,7 @@ package com.newyu.fx;
  * @version v1.0
  * @since JDK 1.7+
  */
-public interface GroupDataset extends Dataset {
+public interface GroupDataset<T> extends Dataset<T> {
 
     /**
      * 获取分组中的值

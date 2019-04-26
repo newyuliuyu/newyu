@@ -60,11 +60,11 @@ public class FromFileReaderDataset implements ReaderDataset {
     }
 
     private void readBmk() {
-        Map<String, School> schoolMap = new HashMap<>();
-        Map<String, Clazz> clazzMap = new HashMap<>();
-        Map<String, City> cityMap = new HashMap<>();
-        Map<String, County> countyMap = new HashMap<>();
-        Map<String, Province> provinceMap = new HashMap<>();
+        Map<String, School> schoolMap = new HashMap<>(16);
+        Map<String, Clazz> clazzMap = new HashMap<>(16);
+        Map<String, City> cityMap = new HashMap<>(16);
+        Map<String, County> countyMap = new HashMap<>(16);
+        Map<String, Province> provinceMap = new HashMap<>(32);
         FileProcess fileProcess = FileProcessUtil.getFileProcess(fileDirPath.resolve("bmk.csv"));
         try {
             while (fileProcess.next()) {

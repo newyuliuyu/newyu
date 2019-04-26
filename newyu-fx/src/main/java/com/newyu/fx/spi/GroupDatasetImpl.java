@@ -6,6 +6,7 @@ import com.newyu.fx.GroupValue;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ClassName: DatasetImpl <br/>
@@ -18,7 +19,7 @@ import java.util.List;
  * @since JDK 1.7+
  */
 @Slf4j
-public class GroupDatasetImpl extends DatasetImpl implements GroupDataset {
+public class GroupDatasetImpl extends DatasetImpl implements GroupDataset<StudentCj> {
 
     private GroupValue groupValue;
 
@@ -27,9 +28,7 @@ public class GroupDatasetImpl extends DatasetImpl implements GroupDataset {
     }
 
     public void setStudentCjs(List<StudentCj> studentCjs) {
-        for (StudentCj studentCj : studentCjs) {
-            this.add(studentCj);
-        }
+        studentCjMap = studentCjs.stream().collect(Collectors.toMap(x -> x.getZkzh(), x -> x));
     }
 
     @Override

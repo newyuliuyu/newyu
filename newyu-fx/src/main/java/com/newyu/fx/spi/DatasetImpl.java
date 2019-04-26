@@ -1,7 +1,9 @@
 package com.newyu.fx.spi;
 
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+import com.google.common.collect.Multimap;
 import com.newyu.domain.exam.StudentCj;
 import com.newyu.domain.fx.GroupInfo;
 import com.newyu.fx.Dataset;
@@ -26,12 +28,10 @@ import java.util.stream.Collectors;
  * @since JDK 1.7+
  */
 @Slf4j
-public class DatasetImpl implements Dataset {
+public class DatasetImpl implements Dataset<StudentCj> {
 
     protected Map<String, StudentCj> studentCjMap = new HashMap<>();
-    private List<StudentCj> filterStudentCjs = null;
-    private GroupInfo groupInfo = null;
-    private Predicate<StudentCj> predicate = null;
+
 
     public DatasetImpl add(StudentCj studentCj) {
         studentCjMap.put(studentCj.getZkzh(), studentCj);
@@ -44,19 +44,130 @@ public class DatasetImpl implements Dataset {
     }
 
     @Override
-    public Dataset filter(Predicate predicate) {
-        filterStudentCjs = null;
-        this.predicate = predicate;
-        return this;
+    public Dataset<StudentCj> filter(Predicate predicate) {
+        OpStage stage = new OpStage<StudentCj>(this) {
+            @Override
+            public Sink opWrapSink(Sink downSink) {
+                return new ChainSink<StudentCj>(downSink) {
+                    @Override
+                    public void accept(StudentCj value) {
+                        if (predicate.test(value)) {
+                            downSink.accept(value);
+                        }
+                    }
+                };
+            }
+        };
+        return stage;
+    }
+
+
+    @Override
+    public Dataset<StudentCj> sort(Comparator<StudentCj> comparator) {
+        OpStage stage = new OpStage<StudentCj>(this) {
+            @Override
+            public Sink opWrapSink(Sink downSink) {
+                return new ChainSink<StudentCj>(downSink) {
+                    List<StudentCj> list;
+
+                    @Override
+                    public void begin(int size) {
+                        list = Lists.newArrayList();
+                        super.begin(size);
+                    }
+
+                    @Override
+                    public void end() {
+                        list.sort(comparator);
+                        downSink.begin(list.size());
+                        list.forEach(downSink::accept);
+                        downSink.end();
+                        list = null;
+                    }
+
+                    @Override
+                    public void accept(StudentCj value) {
+                        list.add(value);
+                    }
+                };
+            }
+        };
+        return stage;
     }
 
     @Override
-    public Dataset group(GroupInfo groupInfo) {
-        this.groupInfo = groupInfo;
-        return this;
+    public List<StudentCj> getList() {
+        List<StudentCj> result = Lists.newArrayList();
+        Sink<StudentCj> sink = new Sink<StudentCj>() {
+            @Override
+            public void accept(StudentCj value) {
+                result.add(value);
+            }
+        };
+        exec(sink);
+        return result;
     }
 
-    private Map<GroupValue, List<StudentCj>> groupStudentCjs() {
+    private void exec(Sink<StudentCj> sink) {
+        Sink<StudentCj> finlaSink = getBeginSink(sink);
+        List<StudentCj> studentCjs = getStudentCj();
+        finlaSink.begin(studentCjs.size());
+        studentCjs.forEach(x -> finlaSink.accept(x));
+        finlaSink.end();
+    }
+
+    private List<StudentCj> getStudentCj() {
+        Dataset<StudentCj> tmp = this;
+        while (tmp instanceof OpStage) {
+            OpStage tmp2 = (OpStage) tmp;
+            tmp = tmp2.getPreviousDataset();
+        }
+        DatasetImpl tmp3 = (DatasetImpl) tmp;
+        return Lists.newArrayList(tmp3.studentCjMap.values());
+    }
+
+    private Sink<StudentCj> getBeginSink(Sink<StudentCj> sink) {
+        Dataset<StudentCj> tmp = this;
+        while (tmp instanceof OpStage) {
+            OpStage tmp2 = (OpStage) tmp;
+            sink = tmp2.opWrapSink(sink);
+            tmp = tmp2.getPreviousDataset();
+        }
+        sink = createBeginSink(sink);
+        return sink;
+    }
+
+    private Sink<StudentCj> createBeginSink(Sink<StudentCj> sink) {
+        ChainSink<StudentCj> beginSink = new ChainSink<StudentCj>(sink) {
+            @Override
+            public void accept(StudentCj value) {
+                downSink.accept(value);
+            }
+        };
+        return beginSink;
+    }
+
+    private List<StudentCj> getStudentCjs2() {
+        return Lists.newArrayList(studentCjMap.values());
+    }
+
+    @Override
+    public List<GroupDataset<StudentCj>> getGroupDataset(GroupInfo groupInfo) {
+
+
+        Multimap<GroupValue, StudentCj> groupStudentCjsMap = ArrayListMultimap.create();
+        Sink<StudentCj> sink = new Sink<StudentCj>() {
+            @Override
+            public void accept(StudentCj value) {
+                GroupValue groupValue = getGroupValue(groupInfo, value);
+                groupStudentCjsMap.put(groupValue, value);
+            }
+        };
+        exec(sink);
+        return createGroupDataset(groupStudentCjsMap);
+    }
+
+    private Map<GroupValue, List<StudentCj>> groupStudentCjs(GroupInfo groupInfo) {
         if (groupInfo == null) {
             Map<GroupValue, List<StudentCj>> groupStudentCjsMap = Maps.newHashMap();
             GroupValue groupValue = new GroupValue();
@@ -90,25 +201,14 @@ public class DatasetImpl implements Dataset {
         return groupValue;
     }
 
-    @Override
-    public List<StudentCj> getStudentCjs() {
-        return Collections.unmodifiableList(getStudentCjs2());
-    }
-
-    private List<StudentCj> getStudentCjs2() {
-
-        if (predicate == null || filterStudentCjs == null) {
-            filterStudentCjs = Lists.newArrayList(studentCjMap.values());
-        } else if (predicate != null && filterStudentCjs == null) {
-            filterStudentCjs = studentCjMap.values().stream().filter(predicate).collect(Collectors.toList());
+    private List<GroupDataset<StudentCj>> createGroupDataset(Multimap<GroupValue, StudentCj> groupStudentCjsMap) {
+        List<GroupDataset<StudentCj>> groupDatasets = new ArrayList<>();
+        for (GroupValue groupValue : groupStudentCjsMap.keySet()) {
+            GroupDatasetImpl groupDataset = new GroupDatasetImpl();
+            groupDataset.setGroupValue(groupValue);
+            groupDataset.setStudentCjs(Lists.newArrayList(groupStudentCjsMap.get(groupValue)));
+            groupDatasets.add(groupDataset);
         }
-        return filterStudentCjs;
-    }
-
-    @Override
-    public List<GroupDataset> getGroupDataset() {
-
-        Map<GroupValue, List<StudentCj>> groupStudentCjsMap = groupStudentCjs();
-        return createGroupDataset(groupStudentCjsMap);
+        return groupDatasets;
     }
 }
