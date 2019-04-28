@@ -1,6 +1,7 @@
 package com.newyu.service;
 
 import com.newyu.domain.exam.Subject;
+import com.newyu.domain.fx.SubjectDataVersion;
 
 import java.util.List;
 
@@ -32,5 +33,11 @@ public interface ExamXSubjectXItemService {
      */
     List<Subject> querySubjectOfExamHasItem(long examId);
 
-
+    /**
+     * 获取考试科目的数据版本
+     *
+     * @param examId
+     * @return
+     */
+    List<SubjectDataVersion> querySubjectDataVersion(long examId);
 }

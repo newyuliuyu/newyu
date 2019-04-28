@@ -1,14 +1,16 @@
 package com.newyu.fx.spi;
 
 import com.google.common.base.Preconditions;
-import com.newyu.domain.exam.Exam;
 import com.newyu.domain.exam.StudentCj;
 import com.newyu.domain.exam.Subject;
+import com.newyu.domain.fx.SubjectDataVersion;
+import com.newyu.fx.ExamBaseInfoMgr;
 import com.newyu.fx.FxContext;
 import com.newyu.fx.SubjectCjConversion;
 import com.newyu.service.ExamService;
 import com.newyu.service.ExamXSubjectXItemService;
 import com.newyu.service.FxParamService;
+import com.newyu.service.SubjectService;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -31,8 +33,8 @@ public class DefaultFxContext implements FxContext {
 
     private long examId = -1;
 
-    private Exam exam;
-    private List<Subject> subjects;
+    private ExamBaseInfoMgr examBaseInfoMgr = new ExamBaseInfoMgr();
+
 
     public static DefaultFxContextBuilder builder() {
         return new DefaultFxContextBuilder();
@@ -83,25 +85,28 @@ public class DefaultFxContext implements FxContext {
     private void exec() {
         setExam();
         setSubjects();
+        setSubjectDataVersions();
     }
 
     private void setExam() {
-        exam = examService.getExam(examId);
+        examBaseInfoMgr.setExam(examService.getExam(examId));
     }
 
     private void setSubjects() {
-        subjects = examXSubjectXItemService.querySubjectOfExamHasItem(examId);
+        List<Subject> subjects = examXSubjectXItemService.querySubjectOfExamHasItem(examId);
+        SubjectService.setChildSubject(subjects);
+        examBaseInfoMgr.setSubjects(subjects);
+    }
+
+    private void setSubjectDataVersions() {
+        List<SubjectDataVersion> subjectDataVersions = examXSubjectXItemService.querySubjectDataVersion(examId);
+        examBaseInfoMgr.setSubjectDataVersions(subjectDataVersions);
     }
 
 
     @Override
-    public Exam getExam() {
-        return exam;
-    }
-
-    @Override
-    public List<Subject> getSubject() {
-        return subjects;
+    public ExamBaseInfoMgr getExamBaseInfoMgr() {
+        return examBaseInfoMgr;
     }
 
     @Override
@@ -118,4 +123,6 @@ public class DefaultFxContext implements FxContext {
     public Predicate<StudentCj> getPredicateOfSubjectCj(Subject subject) {
         return null;
     }
+
+
 }

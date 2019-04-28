@@ -1,9 +1,12 @@
 package com.newyu.domain.exam;
 
+import com.google.common.collect.Maps;
 import com.newyu.domain.org.TeachClazz;
 import lombok.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * ClassName: SubjectCj <br/>
@@ -22,11 +25,28 @@ import java.util.List;
 @ToString(of = {"subject", "qk", "score", "teachClazz"})
 @Builder
 public class SubjectCj {
-    private Subject subject;
+    private String subject;
     private TeachClazz teachClazz;
     private boolean qk;
+    private boolean miss = false;
     private double score;
     private double kgScore;
     private double zgScore;
-    private List<ItemCj> itemCjs;
+    private Map<String, ItemCj> itemCjMap = Maps.newHashMap();
+
+    private int qkNum;
+    private int missNum;
+
+    public void setItemCjs(List<ItemCj> itemCjs) {
+        itemCjMap = itemCjs.stream().collect(Collectors.toMap(x -> x.getItemName(), x -> x));
+    }
+
+    public void addItemCj(ItemCj itemCj) {
+        itemCjMap.put(itemCj.getItemName(), itemCj);
+    }
+
+    public ItemCj queryItemCj(String itemName) {
+        return itemCjMap.get(itemName);
+    }
+
 }

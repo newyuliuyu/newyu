@@ -2,7 +2,6 @@ package com.newyu.fx.spi;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
-import com.google.common.collect.Maps;
 import com.google.common.collect.Multimap;
 import com.newyu.domain.exam.StudentCj;
 import com.newyu.domain.fx.GroupInfo;
@@ -15,7 +14,6 @@ import org.apache.commons.beanutils.PropertyUtils;
 import java.text.MessageFormat;
 import java.util.*;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 
 /**
  * ClassName: DatasetImpl <br/>
@@ -109,24 +107,29 @@ public class DatasetImpl implements Dataset<StudentCj> {
     }
 
     private void exec(Sink<StudentCj> sink) {
-        Sink<StudentCj> finlaSink = getBeginSink(sink);
-        List<StudentCj> studentCjs = getStudentCj();
+        Sink<StudentCj> finlaSink = getRootSink(sink);
+        List<StudentCj> studentCjs = getRootDatasetStudentCjs();
         finlaSink.begin(studentCjs.size());
         studentCjs.forEach(x -> finlaSink.accept(x));
         finlaSink.end();
     }
 
-    private List<StudentCj> getStudentCj() {
+    private Dataset<StudentCj> getRootDataset() {
         Dataset<StudentCj> tmp = this;
         while (tmp instanceof OpStage) {
             OpStage tmp2 = (OpStage) tmp;
             tmp = tmp2.getPreviousDataset();
         }
-        DatasetImpl tmp3 = (DatasetImpl) tmp;
+        return tmp;
+    }
+
+    private List<StudentCj> getRootDatasetStudentCjs() {
+        Dataset<StudentCj> root = getRootDataset();
+        DatasetImpl tmp3 = (DatasetImpl) root;
         return Lists.newArrayList(tmp3.studentCjMap.values());
     }
 
-    private Sink<StudentCj> getBeginSink(Sink<StudentCj> sink) {
+    private Sink<StudentCj> getRootSink(Sink<StudentCj> sink) {
         Dataset<StudentCj> tmp = this;
         while (tmp instanceof OpStage) {
             OpStage tmp2 = (OpStage) tmp;
@@ -154,7 +157,6 @@ public class DatasetImpl implements Dataset<StudentCj> {
     @Override
     public List<GroupDataset<StudentCj>> getGroupDataset(GroupInfo groupInfo) {
 
-
         Multimap<GroupValue, StudentCj> groupStudentCjsMap = ArrayListMultimap.create();
         Sink<StudentCj> sink = new Sink<StudentCj>() {
             @Override
@@ -170,19 +172,6 @@ public class DatasetImpl implements Dataset<StudentCj> {
         return createGroupDataset(groupStudentCjsMap);
     }
 
-    private Map<GroupValue, List<StudentCj>> groupStudentCjs(GroupInfo groupInfo) {
-        if (groupInfo == null) {
-            Map<GroupValue, List<StudentCj>> groupStudentCjsMap = Maps.newHashMap();
-            GroupValue groupValue = new GroupValue();
-            groupStudentCjsMap.put(groupValue, getStudentCjs2());
-            return groupStudentCjsMap;
-        }
-        Map<GroupValue, List<StudentCj>> groupStudentCjsMap = getStudentCjs2().stream().collect(Collectors.groupingBy(studentCj -> {
-            GroupValue groupValue = getGroupValue(groupInfo, studentCj);
-            return groupValue;
-        }));
-        return groupStudentCjsMap;
-    }
 
     private GroupValue getGroupValue(GroupInfo groupInfo, StudentCj studentCj) {
         GroupValue groupValue = new GroupValue();
@@ -205,8 +194,16 @@ public class DatasetImpl implements Dataset<StudentCj> {
     }
 
     private List<GroupDataset<StudentCj>> createGroupDataset(Multimap<GroupValue, StudentCj> groupStudentCjsMap) {
+
+        Dataset<StudentCj> root = getRootDataset();
+        GroupValue parent = null;
+        if (root instanceof GroupDataset) {
+            parent = ((GroupDataset) root).getGroupValue();
+        }
+
         List<GroupDataset<StudentCj>> groupDatasets = new ArrayList<>();
         for (GroupValue groupValue : groupStudentCjsMap.keySet()) {
+            groupValue.setParent(parent);
             GroupDatasetImpl groupDataset = new GroupDatasetImpl();
             groupDataset.setGroupValue(groupValue);
             groupDataset.setStudentCjs(Lists.newArrayList(groupStudentCjsMap.get(groupValue)));

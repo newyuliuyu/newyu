@@ -1,10 +1,8 @@
 package com.newyu.fx;
 
-import com.newyu.domain.exam.Exam;
 import com.newyu.domain.exam.StudentCj;
 import com.newyu.domain.exam.Subject;
 
-import java.util.List;
 import java.util.function.Predicate;
 
 /**
@@ -20,18 +18,13 @@ import java.util.function.Predicate;
 public interface FxContext {
 
     /**
-     * 获取考试
+     * 考试基础数据信息
      *
      * @return
      */
-    Exam getExam();
+    ExamBaseInfoMgr getExamBaseInfoMgr();
 
-    /**
-     * 获取考试的科目
-     *
-     * @return
-     */
-    List<Subject> getSubject();
+
 
     /**
      * 获取科目成绩换算规则

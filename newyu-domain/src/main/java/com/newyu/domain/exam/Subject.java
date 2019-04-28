@@ -46,6 +46,11 @@ public class Subject {
 
     private String childSubjectNames = "";
     private List<Subject> childSubjects;
+    /**
+     * 如果该科目是从综合科目拆分出来的化需要设置它父级科目为综合科目,其他科目不用设置
+     */
+    private String parentSubject = "";
+    private boolean childSubject = false;
 
     private boolean examSubject = true;
     private boolean multiSubject = false;
@@ -54,6 +59,10 @@ public class Subject {
     private List<Item> items;
     private Map<String, Item> itemMap;
 
+
+    public boolean isSimilarFullSubject() {
+        return isMultiSubject() && !isExamSubject();
+    }
 
     public List<Item> getItems() {
         if (items == null) {

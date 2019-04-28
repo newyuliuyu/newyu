@@ -20,8 +20,9 @@ import java.util.Map;
  */
 @Setter
 @Getter
-@EqualsAndHashCode(of = {"valueMap"})
+@EqualsAndHashCode(of = {"valueMap","parent"})
 public class GroupValue {
+    private GroupValue parent;
     private GroupInfo groupInfo;
     private Map<String, Object> valueMap = Maps.newHashMap();
 

@@ -202,7 +202,7 @@ public class FromFileReaderDataset implements ReaderDataset {
 
 
     private void readCj() {
-        List<Subject> subjects = context.getSubject();
+        List<Subject> subjects = context.getExamBaseInfoMgr().getSubjects();
         for (Subject subject : subjects) {
             if (subject.isExamSubject()) {
                 loadSubjectCj(subject);
@@ -271,7 +271,7 @@ public class FromFileReaderDataset implements ReaderDataset {
         Double kgscore = Double.parseDouble(rowdata.getData("kgscore"));
         Double zgscore = Double.parseDouble(rowdata.getData("zgscore"));
         return SubjectCj.builder()
-                .subject(subject)
+                .subject(subject.getName())
                 .qk(qk)
                 .score(score)
                 .kgScore(kgscore)

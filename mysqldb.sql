@@ -29,6 +29,8 @@ CREATE TABLE data_exam_subject(
   examSubject boolean default 1 comment'是否为考试科目',
   multiSubject boolean default 0 comment'是否为多科目',
   fullSubject boolean default 0 comment'是否为全科',
+  childSubject boolean default 0 comment'是否子科目，子科目定义为从综合科目拆分出来的科目',
+  parentSubject varchar(20) default '' comment'如果为子科目需要设置该科目的父级科目，这总情况只有综合科目拆分子科目才会出现一般为空',
 	PRIMARY KEY (id)
 );
 
