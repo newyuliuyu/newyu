@@ -21,8 +21,8 @@ public class TeachClazz extends Clazz {
     private String subjectName;
 
     @Builder(builderMethodName = "teachClazzBuilder")
-    private TeachClazz(String schoolCode, String schoolName, String code, String name, String subjectName) {
-        super(schoolCode, schoolName, code, name, 0);
+    private TeachClazz(String schoolCode, String schoolName, String code, String name, String subjectName, String group) {
+        super(schoolCode, schoolName, code, name, 0, group);
         this.subjectName = subjectName;
     }
 }

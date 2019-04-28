@@ -159,7 +159,10 @@ public class DatasetImpl implements Dataset<StudentCj> {
         Sink<StudentCj> sink = new Sink<StudentCj>() {
             @Override
             public void accept(StudentCj value) {
-                GroupValue groupValue = getGroupValue(groupInfo, value);
+                GroupValue groupValue = new GroupValue();
+                if (groupInfo != null) {
+                    groupValue = getGroupValue(groupInfo, value);
+                }
                 groupStudentCjsMap.put(groupValue, value);
             }
         };

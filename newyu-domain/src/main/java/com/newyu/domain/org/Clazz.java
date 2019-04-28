@@ -20,11 +20,13 @@ import lombok.*;
 public class Clazz extends Org {
     private School school;
     private int wl;
+    private String group;
 
     @Builder
-    protected Clazz(String schoolCode, String schoolName, String code, String name, int wl) {
+    protected Clazz(String schoolCode, String schoolName, String code, String name, int wl, String group) {
         super(code, name);
         this.school = School.builder().code(schoolCode).name(schoolName).build();
         this.wl = wl;
+        this.group = group;
     }
 }
