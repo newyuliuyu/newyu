@@ -24,17 +24,22 @@ public class Calculators {
 
     private FxContext context;
     private Dataset<StudentCj> dataset;
-    private List<FxData> groupFxData;
+    private List<FxData> groupValueFxData;
 
     private List<List<FxData>> zfFxDatas = Lists.newArrayList();
     private List<List<FxData>> segmentFxDatas = Lists.newArrayList();
     private List<List<FxData>> itemFxDatas = Lists.newArrayList();
     private List<List<FxData>> itemGroupFxDatas = Lists.newArrayList();
-
+    private Subject subject;
 
     public Calculators(FxContext context, Dataset<StudentCj> dataset) {
+        this(context, dataset, null);
+    }
+
+    public Calculators(FxContext context, Dataset<StudentCj> dataset, Subject subject) {
         this.context = context;
         this.dataset = dataset;
+        this.subject = subject;
     }
 
     public void calculator() {
@@ -43,6 +48,9 @@ public class Calculators {
         int bkrs = studentCjs.size();
         studentCjs = studentCjs.stream().filter(context.getPredicateOfStudent()).collect(Collectors.toList());
         List<Subject> subjects = context.getExamBaseInfoMgr().getSubjects();
+        if (subject != null) {
+            subjects = Lists.newArrayList(subject);
+        }
         for (Subject subject : subjects) {
             SubjectDataVersion dataVersion = dataversion(subject);
             if (dataVersion.isCalculate()) {
@@ -65,9 +73,9 @@ public class Calculators {
     }
 
     private void baseInfo() {
-        groupFxData = Lists.newArrayList();
-        groupFxData.add(FxData.builder().name("examId").value(context.getExamBaseInfoMgr().getExam().getId()).build());
-        groupFxData.addAll(getGroupValue());
+        groupValueFxData = Lists.newArrayList();
+        groupValueFxData.add(FxData.builder().name("examId").value(context.getExamBaseInfoMgr().getExam().getId()).build());
+        groupValueFxData.addAll(getGroupValue());
     }
 
     private List<FxData> getGroupValue() {
@@ -125,7 +133,7 @@ public class Calculators {
         for (ScoreInfo scoreInfo : fxStat.getScoreInfo()) {
             List<FxData> fxDatas = Lists.newArrayList();
             segmentFxDatas.add(fxDatas);
-            fxDatas.addAll(groupFxData);
+            fxDatas.addAll(groupValueFxData);
             fxDatas.add(FxData.builder().name("subjectId").value(subject.getId()).build());
             fxDatas.add(FxData.builder().name("subjectName").value(subject.getName()).build());
             fxDatas.add(FxData.builder().name("dataVersion").value(dataVersion.getCurVesrion()).build());
@@ -204,4 +212,19 @@ public class Calculators {
 
     }
 
+    public List<List<FxData>> getZfFxDatas() {
+        return zfFxDatas;
+    }
+
+    public List<List<FxData>> getSegmentFxDatas() {
+        return segmentFxDatas;
+    }
+
+    public List<List<FxData>> getItemFxDatas() {
+        return itemFxDatas;
+    }
+
+    public List<List<FxData>> getItemGroupFxDatas() {
+        return itemGroupFxDatas;
+    }
 }
