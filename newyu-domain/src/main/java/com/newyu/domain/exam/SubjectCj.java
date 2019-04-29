@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -46,7 +47,16 @@ public class SubjectCj {
     }
 
     public ItemCj queryItemCj(String itemName) {
-        return itemCjMap.get(itemName);
+        Optional<ItemCj> itemCj = Optional.ofNullable(itemCjMap.get(itemName));
+        return itemCj.orElse(ItemCj.builder().itemName(itemName).score(0d).selected("").build());
     }
 
+    public double getItemGroupScore(ItemGroup itemGroup) {
+        List<Item> items = itemGroup.getItems();
+        double sumScore = 0d;
+        for (Item item : items) {
+            sumScore += queryItemCj(item.getName()).getScore();
+        }
+        return sumScore;
+    }
 }

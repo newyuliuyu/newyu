@@ -3,6 +3,7 @@ package com.newyu.fx;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
+import com.newyu.domain.exam.Subject;
 import com.newyu.domain.fx.ScoreInfo;
 import org.junit.Test;
 
@@ -10,6 +11,7 @@ import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -30,6 +32,22 @@ public class ListAPITest {
         List<String> list = Lists.newArrayList();
 
 
+    }
+
+    @Test
+    public void findFirst() throws Exception{
+        List<Subject> subjects = Lists.newArrayList();
+        subjects.add(Subject.builder().name("name1").build());
+        subjects.add(Subject.builder().name("name2").build());
+        subjects.add(Subject.builder().name("name3").build());
+
+
+        Optional<Subject> subjectOptional = subjects.stream().filter(x->{
+            System.out.println("****************************");
+            return x.getName().equals("name1");
+        }).findFirst();
+
+        System.out.println();
     }
 
     @Test

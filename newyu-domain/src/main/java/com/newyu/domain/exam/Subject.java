@@ -1,6 +1,5 @@
 package com.newyu.domain.exam;
 
-import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Multimap;
 import com.google.common.collect.Multimaps;
@@ -71,27 +70,29 @@ public class Subject {
         return items;
     }
 
-    public List<ItemGroup> getItemGroups(String itemProperty) {
-        Multimap<String, Item> typeMap = ArrayListMultimap.create();
+    private String getPropertyValue(String itemProperty, Item item) {
         try {
-            for (Item item : getItems()) {
-                if (item.isChoice()) {
-                    continue;
-                }
-                String value = BeanUtils.getProperty(item, itemProperty);
-                typeMap.put(value, item);
-            }
+            return BeanUtils.getProperty(item, itemProperty);
         } catch (Exception e) {
             String msg = MessageFormat.format("用字段[{0}]对题目进行分组的时候报告", itemProperty);
             throw new RuntimeException("", e);
         }
+    }
+
+    public List<ItemGroup> getItemGroups(String itemProperty) {
+
+        Map<String, List<Item>> typeMap = items.stream().filter(x -> {
+            return StringUtils.isNotBlank(getPropertyValue(itemProperty, x)) && !x.isChoice();
+        }).collect(Collectors.groupingBy(x -> {
+            return getPropertyValue(itemProperty, x);
+        }));
         List<ItemGroup> itemGroups = Lists.newArrayList();
         for (String key : typeMap.keySet()) {
             ItemGroup itemGroup = ItemGroup.builder()
                     .subject(this)
                     .propertyName(itemProperty)
                     .name(key)
-                    .items(Lists.newArrayList(typeMap.get(key)))
+                    .items(typeMap.get(key))
                     .build();
             itemGroups.add(itemGroup);
         }

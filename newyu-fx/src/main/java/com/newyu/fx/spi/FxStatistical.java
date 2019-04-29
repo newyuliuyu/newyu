@@ -7,6 +7,7 @@ import com.newyu.domain.exam.StudentCj;
 import com.newyu.domain.exam.Subject;
 import com.newyu.domain.exam.SubjectCj;
 import com.newyu.domain.fx.ScoreInfo;
+import com.newyu.utils.json.Json2;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
@@ -48,6 +49,11 @@ public class FxStatistical {
                 .map(x -> mapper.apply(x.getSubjectCj(subject)))
                 .collect(Collectors.groupingBy(x -> x, Collectors.reducing(0, x -> 1, Integer::sum)));
         scoreInfos = createScoreInfo(scoreNumMap);
+    }
+
+
+    public List<ScoreInfo> getScoreInfo(){
+        return scoreInfos;
     }
 
     private List<ScoreInfo> createScoreInfo(Map<Double, Integer> scoreNumMap) {
@@ -309,6 +315,26 @@ public class FxStatistical {
     public double getDiscrimination(Function<SubjectCj, Double> getScore, double fullScore) {
         DiscriminationCalclutor dc = new DiscriminationCalclutor(getScore, fullScore);
         return dc.calcluate();
+    }
+
+    /**
+     * 获取选择题的选项的统计
+     *
+     * @param itemName
+     * @return
+     */
+    public String getItemSelectStat(String itemName) {
+        Map<String, Integer> selectNumMap = Maps.newHashMap();
+
+        for (StudentCj studentCj : studentCjs) {
+            SubjectCj subjectCj = studentCj.getSubjectCj(subject);
+            String select = subjectCj.queryItemCj(itemName).getSelected();
+            Integer num = selectNumMap.get(select);
+            num = num == null ? 0 : num;
+            selectNumMap.put(select, num + 1);
+        }
+
+        return Json2.toJson(selectNumMap);
     }
 
 

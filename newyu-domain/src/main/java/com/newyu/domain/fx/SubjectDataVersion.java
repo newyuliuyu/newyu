@@ -21,5 +21,9 @@ public class SubjectDataVersion {
     private Long subjectId;
     private Long examId;
     private int curVesrion;
-    private int nextVesrion;
+    private int previousVesrion;
+
+    public boolean isCalculate() {
+        return curVesrion > previousVesrion;
+    }
 }

@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import lombok.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * ClassName: ItemGroup <br/>
@@ -36,9 +37,11 @@ public class ItemGroup {
     }
 
     private void clacluateFullScore() {
-        fullScore = 0d;
-        for (Item item : items) {
-            fullScore += item.getScore();
-        }
+        fullScore = items.stream().reduce(0d, (x, y) -> x + y.getScore(), Double::sum);
+    }
+
+    public String getItemNames() {
+        List<String> itemNames = items.stream().map(Item::getName).collect(Collectors.toList());
+        return String.join(",", itemNames);
     }
 }

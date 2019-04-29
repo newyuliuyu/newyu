@@ -1,5 +1,6 @@
 package com.newyu.domain.org;
 
+import com.newyu.domain.fx.FxFiled;
 import lombok.*;
 
 /**
@@ -17,6 +18,7 @@ import lombok.*;
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
+@FxFiled(of = {"code", "name"})
 public class School extends Org {
     @Builder
     private School(String code, String name) {

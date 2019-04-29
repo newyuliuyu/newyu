@@ -22,5 +22,12 @@ public class ItemCj {
     private int itemId;
     private String itemName;
     private double score;
-    private String selected;
+    private String selected = "";
+
+    public String getSelected() {
+        if (selected == null) {
+            selected = "";
+        }
+        return selected.trim();
+    }
 }
