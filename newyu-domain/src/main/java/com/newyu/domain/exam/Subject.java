@@ -106,7 +106,7 @@ public class Subject {
         }
         Set<String> choiceInfos = items.stream().filter(x -> StringUtils.isNotBlank(x.getChoiceInfo()))
                 .map(x -> x.getChoiceInfo()).collect(Collectors.toSet());
-        choiceInfos.forEach(x -> choiceInfos.add(x));
+        choiceInfos.forEach(x -> choiceItemGroups.add(new ChoiceItemGroup(this, x)));
         return choiceItemGroups;
     }
 

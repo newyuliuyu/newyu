@@ -20,6 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * ClassName: FromFileReaderDataset <br/>
@@ -231,6 +232,7 @@ public class FromFileReaderDataset implements ReaderDataset {
                     try {
                         List<ItemCj> itemCjs = getItemCj(subject, rowdata);
                         subjectCj.setItemCjs(itemCjs);
+                        setItemCjChoiced(subject, subjectCj);
                     } catch (Exception e) {
                         String msg = MessageFormat.format("学生[{0}]获取小题成绩出错", studentCj.get());
                         throw new RuntimeException("", e);
@@ -240,6 +242,19 @@ public class FromFileReaderDataset implements ReaderDataset {
         } finally {
             fileProcess.close();
         }
+    }
+
+    private void setItemCjChoiced(Subject subject, SubjectCj subjectCj) {
+        List<ChoiceItemGroup> choiceItemGroups = subject.queryChoiceItemGroups();
+        choiceItemGroups.forEach(x -> {
+            List<Item> items = x.getItems();
+            List<ItemCj> itemCjs = items.stream().map(x1 -> subjectCj.queryItemCj(x1.getName())).collect(Collectors.toList());
+            itemCjs.sort((v1, v2) -> Double.compare(v1.getScore(), v2.getScore()));
+            int num = itemCjs.size() - x.getChoiceNum();
+            for (int i = 0; i < num; i++) {
+                itemCjs.get(i).setChoiced(false);
+            }
+        });
     }
 
     private List<ItemCj> getItemCj(Subject subject, Rowdata rowdata) {

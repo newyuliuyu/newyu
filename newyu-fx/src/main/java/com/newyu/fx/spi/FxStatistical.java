@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 /**
@@ -31,12 +32,19 @@ public class FxStatistical {
 
     private Subject subject;
     private List<StudentCj> studentCjs;
+    private List<StudentCj> studentCjs2;
     private List<ScoreInfo> scoreInfos;
     private int totalNum = 0;
 
+    public static FxStatistical newInstance(Subject subject, List<StudentCj> studentCjs) {
+        FxStatistical fxStatistical = new FxStatistical();
+        fxStatistical.subject = subject;
+        fxStatistical.studentCjs = studentCjs;
+        fxStatistical.init();
+        return fxStatistical;
+    }
 
     private void init() {
-        totalNum = studentCjs.size();
         studentCjs.sort((v1, v2) -> {
             double score1 = v1.getSubjectCj(subject).getScore();
             double score2 = v2.getSubjectCj(subject).getScore();
@@ -45,14 +53,23 @@ public class FxStatistical {
     }
 
     public void createScoreInfo(Function<SubjectCj, Double> mapper) {
-        Map<Double, Integer> scoreNumMap = studentCjs.stream()
+        createScoreInfo(mapper, null);
+    }
+
+    public void createScoreInfo(Function<SubjectCj, Double> mapper, Predicate<SubjectCj> filter) {
+        studentCjs2 = studentCjs;
+        if (filter != null) {
+            studentCjs2 = studentCjs.stream().filter(x -> filter.test(x.getSubjectCj(subject))).collect(Collectors.toList());
+        }
+        totalNum = studentCjs2.size();
+        Map<Double, Integer> scoreNumMap = studentCjs2.stream()
                 .map(x -> mapper.apply(x.getSubjectCj(subject)))
                 .collect(Collectors.groupingBy(x -> x, Collectors.reducing(0, x -> 1, Integer::sum)));
         scoreInfos = createScoreInfo(scoreNumMap);
     }
 
 
-    public List<ScoreInfo> getScoreInfo(){
+    public List<ScoreInfo> getScoreInfo() {
         return scoreInfos;
     }
 
@@ -83,14 +100,6 @@ public class FxStatistical {
         return scoreInfos;
     }
 
-
-    public static FxStatistical newInstance(Subject subject, List<StudentCj> studentCjs) {
-        FxStatistical fxStatistical = new FxStatistical();
-        fxStatistical.subject = subject;
-        fxStatistical.studentCjs = studentCjs;
-        fxStatistical.init();
-        return fxStatistical;
-    }
 
     public int getCount() {
         return totalNum;
@@ -271,7 +280,7 @@ public class FxStatistical {
         Map<Item, Double> itemSumScoreMap = Maps.newHashMap();
 
         List<Item> items = subject.getItems();
-        for (StudentCj studentCj : studentCjs) {
+        for (StudentCj studentCj : studentCjs2) {
             SubjectCj subjectCj = studentCj.getSubjectCj(subject);
             for (Item item : items) {
                 double score = subjectCj.queryItemCj(item.getName()).getScore();
@@ -326,7 +335,7 @@ public class FxStatistical {
     public String getItemSelectStat(String itemName) {
         Map<String, Integer> selectNumMap = Maps.newHashMap();
 
-        for (StudentCj studentCj : studentCjs) {
+        for (StudentCj studentCj : studentCjs2) {
             SubjectCj subjectCj = studentCj.getSubjectCj(subject);
             String select = subjectCj.queryItemCj(itemName).getSelected();
             Integer num = selectNumMap.get(select);
@@ -361,7 +370,7 @@ public class FxStatistical {
             double sumScore = 0;
             int count = 0;
             double preScore = 0d;
-            for (StudentCj studentCj : studentCjs) {
+            for (StudentCj studentCj : studentCjs2) {
                 SubjectCj subjectCj = studentCj.getSubjectCj(subject);
                 double score = getScore.apply(subjectCj);
                 count++;
@@ -383,7 +392,7 @@ public class FxStatistical {
             double sumScore = 0;
             int count = 0;
             double preScore = 0d;
-            ListIterator<StudentCj> listIterator = studentCjs.listIterator(studentCjs.size());
+            ListIterator<StudentCj> listIterator = studentCjs2.listIterator(studentCjs2.size());
             while (listIterator.hasPrevious()) {
                 StudentCj studentCj = listIterator.previous();
                 SubjectCj subjectCj = studentCj.getSubjectCj(subject);

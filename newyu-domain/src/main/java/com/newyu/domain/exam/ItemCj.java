@@ -23,6 +23,8 @@ public class ItemCj {
     private String itemName;
     private double score;
     private String selected = "";
+    @Builder.Default
+    private boolean choiced = true;
 
     public String getSelected() {
         if (selected == null) {

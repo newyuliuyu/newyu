@@ -28,7 +28,9 @@ import java.util.stream.Collectors;
 public class SubjectCj {
     private String subject;
     private TeachClazz teachClazz;
-    private boolean qk;
+    @Builder.Default
+    private boolean qk = false;
+    @Builder.Default
     private boolean miss = false;
     private double score;
     private double kgScore;

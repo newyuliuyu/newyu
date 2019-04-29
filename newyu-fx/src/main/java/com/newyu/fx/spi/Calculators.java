@@ -26,6 +26,12 @@ public class Calculators {
     private Dataset<StudentCj> dataset;
     private List<FxData> groupFxData;
 
+    private List<List<FxData>> zfFxDatas = Lists.newArrayList();
+    private List<List<FxData>> segmentFxDatas = Lists.newArrayList();
+    private List<List<FxData>> itemFxDatas = Lists.newArrayList();
+    private List<List<FxData>> itemGroupFxDatas = Lists.newArrayList();
+
+
     public Calculators(FxContext context, Dataset<StudentCj> dataset) {
         this.context = context;
         this.dataset = dataset;
@@ -41,20 +47,19 @@ public class Calculators {
             SubjectDataVersion dataVersion = dataversion(subject);
             if (dataVersion.isCalculate()) {
                 List<StudentCj> subjectStudentCjs = studentCjs.stream().filter(context.getPredicateOfSubjectCj(subject)).collect(Collectors.toList());
-                if(!subjectStudentCjs.isEmpty()){
+                if (!subjectStudentCjs.isEmpty()) {
                     FxStatistical fxStat = FxStatistical.newInstance(subject, subjectStudentCjs);
-                    calcluateZF(subject,dataVersion,fxStat,bkrs);
-                    calcluateSegment(subject,dataVersion,fxStat,bkrs);
-                    calcluateKgZF(subject,dataVersion,fxStat,bkrs);
-                    calcluateZgZF(subject,dataVersion,fxStat,bkrs);
-                    calcluateItem(subject,dataVersion,fxStat,bkrs);
-                    calcluateItemGroup(subject,dataVersion,"knowledge",fxStat,bkrs);
-                    calcluateItemGroup(subject,dataVersion,"ability",fxStat,bkrs);
-                    calcluateItemGroup(subject,dataVersion,"titleType",fxStat,bkrs);
-                    calcluateItemGroup(subject,dataVersion,"bigTitleName",fxStat,bkrs);
-                    calcluateItemGroup(subject,dataVersion,"smallTitleName",fxStat,bkrs);
+                    calcluateZF(subject, dataVersion, fxStat, bkrs);
+                    calcluateSegment(subject, dataVersion, fxStat, bkrs);
+                    calcluateKgZF(subject, dataVersion, fxStat, bkrs);
+                    calcluateZgZF(subject, dataVersion, fxStat, bkrs);
+                    calcluateItem(subject, dataVersion, fxStat, bkrs);
+                    calcluateItemGroup(subject, dataVersion, "knowledge", fxStat, bkrs);
+                    calcluateItemGroup(subject, dataVersion, "ability", fxStat, bkrs);
+                    calcluateItemGroup(subject, dataVersion, "titleType", fxStat, bkrs);
+                    calcluateItemGroup(subject, dataVersion, "bigTitleName", fxStat, bkrs);
+                    calcluateItemGroup(subject, dataVersion, "smallTitleName", fxStat, bkrs);
                 }
-
             }
         }
     }
@@ -112,13 +117,14 @@ public class Calculators {
         fxDatas.add(FxData.builder().name("discrimination").value(fxStat.getDiscrimination(x -> x.getScore(), subject.getFullScore())).build());
         fxDatas.add(FxData.builder().name("reliability").value(fxStat.getReliability()).build());
         fxDatas.add(FxData.builder().name("scoreType").value(1).build());
+
+        zfFxDatas.add(fxDatas);
     }
 
     private void calcluateSegment(Subject subject, SubjectDataVersion dataVersion, FxStatistical fxStat, int bkrs) {
-        List<List<FxData>> result = Lists.newArrayList();
         for (ScoreInfo scoreInfo : fxStat.getScoreInfo()) {
             List<FxData> fxDatas = Lists.newArrayList();
-            result.add(fxDatas);
+            segmentFxDatas.add(fxDatas);
             fxDatas.addAll(groupFxData);
             fxDatas.add(FxData.builder().name("subjectId").value(subject.getId()).build());
             fxDatas.add(FxData.builder().name("subjectName").value(subject.getName()).build());
@@ -128,6 +134,7 @@ public class Calculators {
             fxDatas.add(FxData.builder().name("rank").value(scoreInfo.getRank()).build());
             fxDatas.add(FxData.builder().name("backRank").value(scoreInfo.getBackRank()).build());
         }
+
     }
 
 
@@ -140,6 +147,8 @@ public class Calculators {
         fxDatas.add(FxData.builder().name("discrimination").value(fxStat.getDiscrimination(x -> x.getKgScore(), subject.getKgFullScore())).build());
         fxDatas.add(FxData.builder().name("reliability").value(0).build());
         fxDatas.add(FxData.builder().name("scoreType").value(2).build());
+
+        zfFxDatas.add(fxDatas);
     }
 
     private void calcluateZgZF(Subject subject, SubjectDataVersion dataVersion, FxStatistical fxStat, int bkrs) {
@@ -152,16 +161,19 @@ public class Calculators {
         fxDatas.add(FxData.builder().name("discrimination").value(fxStat.getDiscrimination(x -> x.getZgScore(), subject.getZgFullScore())).build());
         fxDatas.add(FxData.builder().name("reliability").value(0).build());
         fxDatas.add(FxData.builder().name("scoreType").value(3).build());
-
+        zfFxDatas.add(fxDatas);
     }
 
     private void calcluateItem(Subject subject, SubjectDataVersion dataVersion, FxStatistical fxStat, int bkrs) {
         List<Item> items = subject.getItems();
-        List<List<FxData>> result = Lists.newArrayList();
         for (Item item : items) {
             List<FxData> fxDatas = Lists.newArrayList();
-            result.add(fxDatas);
-            fxStat.createScoreInfo(x -> x.queryItemCj(item.getName()).getScore());
+            itemFxDatas.add(fxDatas);
+            if (item.isChoice()) {
+                fxStat.createScoreInfo(x -> x.queryItemCj(item.getName()).getScore(), x -> x.queryItemCj(item.getName()).isChoiced());
+            } else {
+                fxStat.createScoreInfo(x -> x.queryItemCj(item.getName()).getScore());
+            }
             baseFxData(subject, dataVersion, fxDatas, fxStat, item.getScore(), bkrs);
             fxDatas.add(FxData.builder().name("discrimination").value(fxStat.getDiscrimination(x -> x.queryItemCj(item.getName()).getScore(), item.getScore())).build());
             String selectStat = "";
@@ -178,11 +190,10 @@ public class Calculators {
     }
 
     private void calcluateItemGroup(Subject subject, SubjectDataVersion dataVersion, String itemProperty, FxStatistical fxStat, int bkrs) {
-        List<List<FxData>> result = Lists.newArrayList();
         List<ItemGroup> itemGroups = subject.getItemGroups(itemProperty);
         for (ItemGroup itemGroup : itemGroups) {
             List<FxData> fxDatas = Lists.newArrayList();
-            result.add(fxDatas);
+            itemGroupFxDatas.add(fxDatas);
             fxStat.createScoreInfo(x -> x.getItemGroupScore(itemGroup));
             baseFxData(subject, dataVersion, fxDatas, fxStat, itemGroup.getFullScore(), bkrs);
             fxDatas.add(FxData.builder().name("discrimination").value(fxStat.getDiscrimination(x -> x.getItemGroupScore(itemGroup), itemGroup.getFullScore())).build());
