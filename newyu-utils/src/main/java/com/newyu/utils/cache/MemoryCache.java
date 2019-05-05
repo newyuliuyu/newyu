@@ -17,7 +17,7 @@ public class MemoryCache {
     private static MemoryCache cache = new MemoryCache();
     private ConcurrentHashMap<String, Object> cacheData = new ConcurrentHashMap<>();
 
-    public static MemoryCache newInstance() {
+    public static MemoryCache instance() {
         return cache;
     }
 

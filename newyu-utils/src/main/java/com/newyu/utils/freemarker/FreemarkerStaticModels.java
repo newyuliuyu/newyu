@@ -1,10 +1,9 @@
-/** 
- * Project Name:easydata.commons 
- * File Name:FreemarkerStaticModels.java 
- * Package Name:com.ez.data.commons.freemarker 
- * Date:2017年4月10日下午5:31:16 
- * Copyright (c) 2017, easytnt All Rights Reserved. 
- * 
+/**
+ * Project Name:easydata.commons
+ * File Name:FreemarkerStaticModels.java
+ * Package Name:com.ez.data.commons.freemarker
+ * Date:2017年4月10日下午5:31:16
+ * Copyright (c) 2017, easytnt All Rights Reserved.
  */
 package com.newyu.utils.freemarker;
 
@@ -25,30 +24,30 @@ import java.util.Map;
  * Function:  <br/>
  * Reason:  <br/>
  * date: 2017年4月10日 下午5:31:16 <br/>
- * 
+ *
  * @author 刘海林
  * @version v1.0
  * @since JDK 1.7+
  */
-public class FreemarkerStaticModels extends HashMap<Object, Object> {
-	private static Logger logger = LoggerFactory.getLogger(FreemarkerStaticModels.class);
+public class FreemarkerStaticModels extends HashMap<String, Object> {
+    private static Logger logger = LoggerFactory.getLogger(FreemarkerStaticModels.class);
 
-	public FreemarkerStaticModels(Map<String, String> classMap) {
-		for (String key : classMap.keySet()) {
-			put(key, getModel(classMap.get(key)));
-		}
-	}
+    public FreemarkerStaticModels(Map<String, String> classMap) {
+        for (String key : classMap.keySet()) {
+            put(key, getModel(classMap.get(key)));
+        }
+    }
 
-	private TemplateHashModel getModel(String packageName) {
-		BeansWrapper wrapper = new BeansWrapperBuilder(new Version("2.3.23")).build();
-		TemplateHashModel staticModels = wrapper.getStaticModels();
-		TemplateHashModel fileStatics;
-		try {
-			fileStatics = (TemplateHashModel) staticModels.get(packageName);
-			return fileStatics;
-		} catch (TemplateModelException e) {
-			logger.error(ExceptionToString.cleanExceptionString(e));
-		}
-		return null;
-	}
+    private TemplateHashModel getModel(String packageName) {
+        BeansWrapper wrapper = new BeansWrapperBuilder(new Version("2.3.23")).build();
+        TemplateHashModel staticModels = wrapper.getStaticModels();
+        TemplateHashModel fileStatics;
+        try {
+            fileStatics = (TemplateHashModel) staticModels.get(packageName);
+            return fileStatics;
+        } catch (TemplateModelException e) {
+            logger.error(ExceptionToString.cleanExceptionString(e));
+        }
+        return null;
+    }
 }

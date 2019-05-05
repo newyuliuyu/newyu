@@ -29,7 +29,7 @@ public class WebLogManager implements LogManager {
     public WebLogManager(String key, int totalNum) {
         this.key = key;
         progresses = new Progresses(true);
-        MemoryCache.newInstance().put(key, progresses);
+        MemoryCache.instance().put(key, progresses);
     }
 
     private void increase() {
