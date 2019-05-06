@@ -1,11 +1,13 @@
 package com.newyu.service.impl;
 
 import com.newyu.domain.exam.Exam;
+import com.newyu.domain.exam.ExamLevel;
 import com.newyu.domain.exam.ExamState;
 import com.newyu.service.ExamService;
 import com.newyu.service.dao.ExamDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -26,19 +28,30 @@ public class ExamServiceImpl implements ExamService {
     private ExamDao examDao;
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public void createExam(Exam exam) {
         examDao.createExam(exam);
-        System.out.println("this is exam service impl class");
+    }
+
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateExamState(long examId, ExamState examState) {
+        Exam exam = Exam.builder().id(examId).state(examState).build();
+        return examDao.updateExamState(exam);
     }
 
     @Override
-    public int updateExam(long examId, ExamState examState) {
-        return 0;
+    @Transactional(rollbackFor = Exception.class)
+    public int updateExamLevel(long examId, ExamLevel examLevel) {
+        Exam exam = Exam.builder().id(examId).examLevel(examLevel).build();
+        return examDao.updateExamLevel(exam);
     }
 
     @Override
+    @Transactional(rollbackFor = Exception.class)
     public int deleteExam(Exam exam) {
-        return 0;
+        return examDao.deleteExam(exam.getId());
     }
 
     @Override
@@ -48,6 +61,11 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public List<Exam> queryHistoryExam(long exam) {
+        return null;
+    }
+
+    @Override
+    public Exam getExamFromSourceId(String sourceId) {
         return null;
     }
 }

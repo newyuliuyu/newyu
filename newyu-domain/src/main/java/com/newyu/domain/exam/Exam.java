@@ -26,7 +26,7 @@ public class Exam {
     private Long id;
     private String name;
     private ExamState state;
-
+    private String sourceId;
     private GradeName gradeName;
     private int entranceSchoolYear;
     private Semester semester;

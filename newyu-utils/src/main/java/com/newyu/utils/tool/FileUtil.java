@@ -1,6 +1,7 @@
 package com.newyu.utils.tool;
 
 import java.io.File;
+import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -41,4 +42,16 @@ public class FileUtil {
         }
         return path;
     }
+
+    public static void save(final InputStream source, final String destination) {
+        FileOp fileOp = null;
+        if (FileOp.isSSHFile(destination)) {
+            fileOp = new SshFileOp();
+        } else {
+            fileOp = new LocalFileOp();
+        }
+        fileOp.save(source, destination);
+    }
+
+
 }

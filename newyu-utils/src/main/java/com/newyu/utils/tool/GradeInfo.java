@@ -13,7 +13,7 @@ package com.newyu.utils.tool;
 public class GradeInfo {
     private int year;//计算的当前年份
     private int month;//用于计算的月份
-    private int semester;//学段
+    private int semester;//学期
     private String gradeName;//年级名称
     private int studySetion;//学段
     private int entranceYear;//入学年份

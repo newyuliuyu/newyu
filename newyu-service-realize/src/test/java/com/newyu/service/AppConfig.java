@@ -82,7 +82,7 @@ public class AppConfig {
     @Bean(name = "sqlSessionFactoryBean")
     public SqlSessionFactoryBean sqlSessionFactoryBean(DataSource ds) throws Exception {
         ResourcePatternResolver resourceResolver = new PathMatchingResourcePatternResolver();
-        Resource[] resources = resourceResolver.getResources("classpath*:com/newyu/**/dao/*.xml");
+        Resource[] resources = resourceResolver.getResources("classpath*:com/newyu/**/dao/**/*.xml");
         SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
         bean.setDataSource(ds);
         bean.setMapperLocations(resources);
@@ -109,7 +109,7 @@ public class AppConfig {
     @Bean
     public MapperScannerConfigurer mapperScannerConfigurer() {
         MapperScannerConfigurer mapperScannerConfigurer = new MapperScannerConfigurer();
-        mapperScannerConfigurer.setBasePackage("com.newyu.**.dao");
+        mapperScannerConfigurer.setBasePackage("com.newyu.**.dao.**");
         mapperScannerConfigurer.setSqlSessionFactoryBeanName("sqlSessionFactoryBean");
         return mapperScannerConfigurer;
     }

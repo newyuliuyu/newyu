@@ -2,6 +2,9 @@ package com.newyu.controller.commons;
 
 import com.newyu.controller.BaseMVCTest;
 import com.newyu.controller.NewyuResulfulApiApplication;
+import com.newyu.domain.commons.SysConfig;
+import com.newyu.service.SysConfigCode;
+import com.newyu.service.impl.SysConfigMgr;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,10 +31,17 @@ import java.io.FileInputStream;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = NewyuResulfulApiApplication.class)
 @Slf4j
-public class UploadFileControllerTest  extends BaseMVCTest {
+public class UploadFileControllerTest extends BaseMVCTest {
 
     @Test
     public void upload() throws Exception {
+
+        SysConfig sysConfig = SysConfig.builder()
+                .code(SysConfigCode.uploadDir)
+                .value("/home/liuyu/tmp")
+                .build();
+        SysConfigMgr.newInstance().addConfig(sysConfig);
+
         String file = "/home/liuyu/tmp/excle/a.xls";
 
         MockMultipartFile mockMultipartFile1 = new MockMultipartFile("files", "a.xls", "application/vnd_ms-excel", new FileInputStream(new File(file)));

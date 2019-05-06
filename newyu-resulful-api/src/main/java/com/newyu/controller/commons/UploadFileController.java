@@ -2,12 +2,13 @@ package com.newyu.controller.commons;
 
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-import com.newyu.service.SysConfigServer;
+import com.newyu.domain.commons.SysConfig;
+import com.newyu.service.SysConfigCode;
+import com.newyu.service.impl.SysConfigMgr;
 import com.newyu.utils.id.IdGenerator;
 import com.newyu.utils.spring.ModelAndViewFactory;
 import com.newyu.utils.tool.FileUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -39,17 +40,16 @@ import java.util.Map;
 @RestController
 public class UploadFileController {
 
-    @Autowired
-    private SysConfigServer sysConfigServer;
+
     @Autowired
     private IdGenerator idGenerator;
 
     @RequestMapping(value = "/upload", method = RequestMethod.POST)
     public ModelAndView upload(HttpServletRequest request, HttpServletResponse responese) throws Exception {
         log.debug("file upload");
+        SysConfig sysConfig = SysConfigMgr.newInstance().get(SysConfigCode.uploadDir);
 
-
-        Path dirPath = checkAndCreateUploadFileDir(sysConfigServer.getSysConfig().getUploadDir());
+        Path dirPath = checkAndCreateUploadFileDir(sysConfig.getValue());
 
         List<Map<String, String>> filesMap = Lists.newArrayList();
         MultipartHttpServletRequest mRequest = (MultipartHttpServletRequest) request;
@@ -61,8 +61,7 @@ public class UploadFileController {
                 String originalFilename = oldFile.getOriginalFilename();
                 String suffix = FileUtil.fileSuffix(originalFilename);
                 String newFileName = idGenerator.nextId() + suffix;
-                File newFile = dirPath.resolve(newFileName).toFile();
-                FileUtils.copyInputStreamToFile(oldFile.getInputStream(), newFile);
+                FileUtil.save(oldFile.getInputStream(), dirPath.resolve(newFileName).toString());
                 Map<String, String> fileMap = Maps.newHashMap();
                 fileMap.put("old", originalFilename);
                 fileMap.put("new", newFileName);

@@ -13,6 +13,8 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.hssf.util.HSSFColor;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.ss.util.CellRangeAddressList;
+import org.apache.poi.xssf.usermodel.XSSFDataValidation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -128,6 +130,8 @@ public class ExcelTable {
 
     public CellStyle getHeaderStyle() {
         CellStyle cs = wb.createCellStyle();
+        //自动换行
+        cs.setWrapText(true);
         cs.setAlignment(HorizontalAlignment.CENTER);
         cs.setVerticalAlignment(VerticalAlignment.CENTER);
 
@@ -333,6 +337,22 @@ public class ExcelTable {
 
     public ExcelTable mergeCells(int firstRowIdx, int lastRowIdx, int firstColIdx, int lastColIdx) {
         sheet.addMergedRegion(new CellRangeAddress(firstRowIdx, lastRowIdx, firstColIdx, lastColIdx));
+        return this;
+    }
+
+    public ExcelTable createDropDownMenu(int firstRowIdx, int lastRowIdx, int firstColIdx, int lastColIdx, String[] data) {
+        DataValidationHelper helper = this.sheet.getDataValidationHelper();
+        DataValidationConstraint constraint = helper.createExplicitListConstraint(data);
+        CellRangeAddressList addressList = new CellRangeAddressList(firstRowIdx, lastRowIdx, firstColIdx, lastColIdx);
+        DataValidation dataValidation = helper.createValidation(constraint, addressList);
+        if (dataValidation instanceof XSSFDataValidation) {
+            dataValidation.setSuppressDropDownArrow(true);
+            dataValidation.setShowErrorBox(true);
+        } else {
+            dataValidation.setSuppressDropDownArrow(false);
+        }
+
+        this.sheet.addValidationData(dataValidation);
         return this;
     }
 

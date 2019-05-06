@@ -6,8 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.StringUtils;
 
-import java.io.File;
-import java.io.FileInputStream;
+import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Iterator;
@@ -69,6 +68,14 @@ public class JschUtil {
         }
         return true;
     }
+    public boolean uploadFile(InputStream in,String desc) {
+        try {
+            sftp.put(in, desc);
+        } catch (Exception e) {
+            throw new JschException("上传本地流文件到服务" + desc + "失败", e);
+        }
+        return true;
+    }
 
     public boolean dowloadFile(String src, String desc) {
         try {
@@ -77,6 +84,16 @@ public class JschUtil {
             throw new JschException("下载文件" + src + "到本地" + desc + "失败", e);
         }
         return true;
+    }
+
+    public ByteArrayOutputStream dowloadFile(String src) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            sftp.get(src, out);
+        } catch (Exception e) {
+            throw new JschException("下载文件" + src + "到本流中出错失败", e);
+        }
+        return out;
     }
 
     public boolean openDir(String directory) {
@@ -149,6 +166,8 @@ public class JschUtil {
         private String password;
 
         public ParseUrl(String url) {
+            //url格式:root@192.168.1.252:22:easyt&tnewa
+
             parse(url);
         }
 

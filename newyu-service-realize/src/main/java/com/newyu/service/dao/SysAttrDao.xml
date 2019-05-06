@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newyu.service.dao.SysConfigDao">
+
+    <insert id="create">
+      insert into data_sys_config(code,name,value)
+      values(#{sysConfig.code},#{sysConfig.name},#{sysConfig.value})
+    </insert>
+
+    <update id="update">
+        update data_sys_config
+        set name=#{sysConfig.name},value=#{sysConfig.value}
+        where code=#{sysConfig.code}
+    </update>
+
+    <select id="querySysAttrs" resultType="com.newyu.domain.commons.SysConfig">
+        select code,name,value from data_sys_config
+    </select>
+
+</mapper>

@@ -20,7 +20,11 @@ public interface ExamDao {
 
     int updateExamState(@Param("exam") Exam exam);
 
+    int updateExamLevel(@Param("exam") Exam exam);
+
     int deleteExam(@Param("examId") long examId);
 
     Exam getExam(@Param("examId") long examId);
+
+    Exam getExamFromSourceId(@Param("sourceId") String sourceId);
 }

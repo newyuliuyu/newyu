@@ -12,6 +12,7 @@ CREATE TABLE data_exam(
 	beginTiemstamp bigint default 0 comment'考试开始时间',
 	endTiemstamp bigint default 0 comment'考试开始时间',
 	createTiemstamp bigint default 0 comment'考试开始时间',
+	sourceId varchar(32) default '' comment'考试数据来源唯一ID',
 	PRIMARY KEY (id)
 );
 
@@ -41,19 +42,27 @@ CREATE TABLE data_exam_subject_item(
 	subjectId bigint not null comment'科目ID',
 	name varchar(50) not null comment'名字同一场考试同一个科目名字必须唯一',
 	score double default 0 comment'题目满分',
-	knowledge varchar(255) default '' commit '知识点',
-	ability varchar(255) default '' commit '能力结构',
-	titleType varchar(50) default '' commit '题型',
-	bigTitleName varchar(50) default '' commit '大题',
-	smallTitleName varchar(50) default '' commit '小题',
-  itemType tinyint default '' commit '1单项选择题 2 多项选择题 0非选择题',
-  answer varchar(15) default '' commit '正确选项',
-  fullOptional varchar(15) default 'ABCD' commit '题目选项列表,默认为ABCD',
-  otherSubject varchar(20) default '' commit '综合科目包含的科目，如理综包含物理化学生物',
+	knowledge varchar(255) default '' comment '知识点',
+	ability varchar(255) default '' comment '能力结构',
+	titleType varchar(50) default '' comment '题型',
+	bigTitleName varchar(50) default '' comment '大题',
+	smallTitleName varchar(50) default '' comment '小题',
+  itemType tinyint default 0 comment '1单项选择题 2 多项选择题 0非选择题',
+  answer varchar(15) default '' comment '正确选项',
+  fullOptional varchar(15) default 'ABCD' comment '题目选项列表,默认为ABCD',
+  otherSubject varchar(20) default '' comment '综合科目包含的科目，如理综包含物理化学生物',
   choice boolean default 0 commit '是否是选做题',
-  choiceInfo varchar(255) default '' commit '选做题规则："从12,13中选1题每题10分"',
-  fieldName varchar(20) default '' commit '非选择题对应的成绩数据表中的字段索引，需要根据它查找对应的项',
+  choiceInfo varchar(255) default '' comment '选做题规则："从12,13中选1题每题10分"',
+  fieldName varchar(20) default '' comment '非选择题对应的成绩数据表中的字段索引，需要根据它查找对应的项',
   displayOrder int default 0 commit '顺序号',
-  titleBlock varchar(50) default '' commit '题块',
+  titleBlock varchar(50) default '' comment '题块',
+	PRIMARY KEY (id)
+);
+DROP TABLE IF EXISTS data_sys_config;
+CREATE TABLE data_sys_config(
+	id int not null AUTO_INCREMENT,
+	code varchar(50) not null comment'系统属性代码',
+	name varchar(50) not null comment'系统属性名字',
+	value varchar(150) not null comment'系统属性值',
 	PRIMARY KEY (id)
 );
