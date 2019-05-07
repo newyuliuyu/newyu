@@ -71,4 +71,11 @@ public class SshFileOp implements FileOp {
         private String sshUrl;
         private String file;
     }
+
+    @Override
+    public boolean existFile(String filePath) {
+        SshInfo sshInfo = parse(filePath);
+        JschUtil jschUtil = JschUtil.newInstance(sshInfo.sshUrl);
+        return jschUtil.existFile(sshInfo.file);
+    }
 }

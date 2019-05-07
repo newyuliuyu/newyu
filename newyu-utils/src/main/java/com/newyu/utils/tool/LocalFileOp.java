@@ -45,4 +45,9 @@ public class LocalFileOp implements FileOp {
         }
     }
 
+    @Override
+    public boolean existFile(String filePath) {
+        Path path = Paths.get(filePath);
+        return path.toFile().exists();
+    }
 }

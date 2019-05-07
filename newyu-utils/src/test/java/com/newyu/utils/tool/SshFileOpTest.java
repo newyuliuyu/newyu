@@ -50,13 +50,26 @@ public class SshFileOpTest {
     public void open() throws Exception {
 
 //        FileInputStream in = new FileInputStream(new File("/home/liuyu/tmp/excle/a.xls"));
-        String source = "ssh:root@192.168.1.252:22:easyt&tnewa:/root/liuyu/test/a.xls";
+        String source = "ssh:root@192.168.1.252:22:easyt&tnewa:/root/liuyu/test/a22.xls";
 
         SshFileOp sshFileOp = new SshFileOp();
         InputStream inputStream = sshFileOp.read(source);
 
         LocalFileOp localFileOp = new LocalFileOp();
         localFileOp.save(inputStream, "/home/liuyu/tmp/excle/a2.xls");
+    }
+    @Test
+    public void existFile() throws Exception {
+
+        boolean k = Boolean.parseBoolean("true");
+        System.out.println();
+
+//        FileInputStream in = new FileInputStream(new File("/home/liuyu/tmp/excle/a.xls"));
+        String source = "ssh:root@192.168.1.252:22:easyt&tnewa:/root/liuyu/test/a.xls";
+
+        SshFileOp sshFileOp = new SshFileOp();
+       boolean a =  sshFileOp.existFile(source);
+       System.out.println();
     }
 
 }

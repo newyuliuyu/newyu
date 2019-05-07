@@ -18,6 +18,8 @@ public interface FileOp {
 
     void save(final InputStream filePath, final String destination);
 
+    boolean existFile(String filePath);
+
     public static boolean isSSHFile(String filePath) {
         filePath = filePath.toLowerCase();
         return filePath.startsWith("ssh:");

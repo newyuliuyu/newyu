@@ -26,7 +26,6 @@ import java.util.regex.Pattern;
 public class JschUtil {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private Session sshSession = null;
-    private ChannelSftp sftp = null;
 
     private JschUtil(String host, int port, String user, String password) {
         init(host, port, user, password);
@@ -52,64 +51,120 @@ public class JschUtil {
             sshSession.setPassword(password);
             sshSession.connect();
 
-            Channel channel = sshSession.openChannel("sftp");
-            channel.connect();
-            sftp = (ChannelSftp) channel;
+
         } catch (Exception e) {
             throw new JschException("建立链接ssh session失败", e);
         }
     }
 
     public boolean uploadFile(String src, String desc) {
+        ChannelSftp channel = null;
         try {
-            sftp.put(new FileInputStream(new File(src)), desc);
+            channel = (ChannelSftp) sshSession.openChannel("sftp");
+            channel.connect();
+            channel.put(new FileInputStream(new File(src)), desc, ChannelSftp.OVERWRITE);
         } catch (Exception e) {
             throw new JschException("上传文件" + src + "到服务" + desc + "失败", e);
+        } finally {
+            if (channel != null) {
+                channel.disconnect();
+            }
         }
         return true;
     }
-    public boolean uploadFile(InputStream in,String desc) {
+
+    public boolean uploadFile(InputStream in, String desc) {
+        ChannelSftp channel = null;
         try {
-            sftp.put(in, desc);
+            channel = (ChannelSftp) sshSession.openChannel("sftp");
+            channel.connect();
+            channel.put(in, desc);
         } catch (Exception e) {
             throw new JschException("上传本地流文件到服务" + desc + "失败", e);
+        } finally {
+            if (channel != null) {
+                channel.disconnect();
+            }
         }
         return true;
     }
 
     public boolean dowloadFile(String src, String desc) {
+        ChannelSftp channel = null;
         try {
-            sftp.get(src, desc);
+            channel = (ChannelSftp) sshSession.openChannel("sftp");
+            channel.connect();
+            channel.get(src, desc);
         } catch (Exception e) {
             throw new JschException("下载文件" + src + "到本地" + desc + "失败", e);
+        } finally {
+            if (channel != null) {
+                channel.disconnect();
+            }
         }
         return true;
     }
 
     public ByteArrayOutputStream dowloadFile(String src) {
         ByteArrayOutputStream out = new ByteArrayOutputStream();
+        ChannelSftp channel = null;
         try {
-            sftp.get(src, out);
+            channel = (ChannelSftp) sshSession.openChannel("sftp");
+            channel.connect();
+            channel.get(src, out);
         } catch (Exception e) {
             throw new JschException("下载文件" + src + "到本流中出错失败", e);
+        } finally {
+            if (channel != null) {
+                channel.disconnect();
+            }
         }
         return out;
     }
 
-    public boolean openDir(String directory) {
+
+    public boolean existFile(String filePath) {
+        ChannelExec channel = null;
+        InputStream inputStream = null;
         try {
-            sftp.cd(directory);
-            return true;
-        } catch (SftpException e) {
+            channel = (ChannelExec) sshSession.openChannel("exec");
+            channel.setCommand("if [ -f \"" + filePath + "\" ]; then echo \"true\";else echo \"false\"; fi;");
+            inputStream = channel.getInputStream();
+            channel.connect();
+            StringBuilder sb = new StringBuilder();
+            byte[] a = new byte[1024];
+            while (inputStream.read(a) > 0) {
+                sb.append(new String(a));
+            }
+            String rsult = sb.toString().replaceAll("\n", "").trim();
+            return Boolean.parseBoolean(rsult);
+        } catch (Exception e) {
             return false;
+        } finally {
+            if (inputStream != null) {
+                try {
+                    inputStream.close();
+                } catch (Exception ee) {
+                }
+            }
+            if (channel != null) {
+                channel.disconnect();
+            }
         }
     }
 
     public boolean deleteDir(String directory) {
+        ChannelSftp channel = null;
         try {
-            sftp.rmdir(directory);
-        } catch (SftpException e) {
+            channel = (ChannelSftp) sshSession.openChannel("sftp");
+            channel.connect();
+            channel.rmdir(directory);
+        } catch (Exception e) {
             throw new JschException("删除服务器目录" + directory + "出错", e);
+        } finally {
+            if (channel != null) {
+                channel.disconnect();
+            }
         }
         return true;
     }
@@ -121,29 +176,43 @@ public class JschUtil {
 
     public boolean noExistMkdirs(Path dirs) {
         Iterator<Path> it = dirs.iterator();
+        ChannelSftp channel = null;
         try {
-            String nowDir = sftp.pwd();
-            sftp.cd("/");
+            channel = (ChannelSftp) sshSession.openChannel("sftp");
+            channel.connect();
+
+            String nowDir = channel.pwd();
+            channel.cd("/");
             while (it.hasNext()) {
                 String dir = it.next().toString();
-                boolean dirExists = openDir(dir);
+                boolean dirExists = openDir(channel, dir);
                 if (!dirExists) {
-                    sftp.mkdir(dir);
-                    openDir(dir);
+                    channel.mkdir(dir);
+                    openDir(channel, dir);
                 }
             }
-            sftp.cd(nowDir);
+            channel.cd(nowDir);
         } catch (Exception e) {
             throw new JschException("创建目录失败", e);
+        } finally {
+            if (channel != null) {
+                channel.disconnect();
+            }
         }
         return true;
     }
 
+    private boolean openDir(ChannelSftp channel, String directory) {
+        try {
+            channel.cd(directory);
+            return true;
+        } catch (SftpException e) {
+            return false;
+        }
+    }
+
 
     public void close() {
-        if (sftp != null) {
-            sftp.disconnect();
-        }
         if (sshSession != null) {
             sshSession.disconnect();
         }
