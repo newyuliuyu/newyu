@@ -31,17 +31,17 @@
         </foreach>
     </insert>
     <insert id="saveClazzes">
-        insert into data_exam_org_clazz(examId,schoolCode,schoolName,code,name,groupValue)
+        insert into data_exam_org_clazz(examId,schoolCode,schoolName,code,name,wl,groupValue)
         values
         <foreach collection="orgs" item="item" index="index" separator=",">
-            (#{examId},#{item.school.code},#{item.school.name},#{item.code},#{item.name},#{item.group})
+            (#{examId},#{item.school.code},#{item.school.name},#{item.code},#{item.name},#{item.wl},#{item.group})
         </foreach>
     </insert>
     <insert id="saveTeacherClazz">
-        insert into data_exam_org_teachClazz(examId,schoolCode,schoolName,code,name,groupValue)
+        insert into data_exam_org_teachClazz(examId,schoolCode,schoolName,code,name,subjectName,groupValue)
         values
         <foreach collection="orgs" item="item" index="index" separator=",">
-            (#{examId},#{item.school.code},#{item.school.name},#{item.code},#{item.name},#{item.group})
+            (#{examId},#{item.school.code},#{item.school.name},#{item.code},#{item.name},#{item.subjectName},#{item.group})
         </foreach>
     </insert>
     <insert id="saveOrgXSchool">
@@ -74,6 +74,121 @@
     <delete id="deleteOrgXSchool">
         delete from data_exam_org_x_school where examId=#{examId}
     </delete>
+
+    <select id="getProvice" resultType="com.newyu.domain.org.Province">
+        select code,name from data_exam_org_province  where examId=#{examId} and code=#{provinceCode}
+    </select>
+    <select id="queryProvices" resultType="com.newyu.domain.org.Province">
+        select code,name from data_exam_org_province  where examId=#{examId}
+    </select>
+    <select id="queryCitysOfProvice" resultType="com.newyu.domain.org.City">
+        select distinct cityCode as code,cityName as name
+        from data_exam_org_x_school
+        where examId=#{examId} and provinceCode=#{provinceCode}
+    </select>
+    <select id="queryCountyOfProvice" resultType="com.newyu.domain.org.County">
+        select distinct countyCode as code,countyName as name
+        from data_exam_org_x_school
+        where examId=#{examId} and provinceCode=#{provinceCode}
+    </select>
+    <select id="querySchoolOfProvice" resultType="com.newyu.domain.org.School">
+        select distinct schoolCode as code,schoolName as name
+        from data_exam_org_x_school
+        where examId=#{examId} and provinceCode=#{provinceCode}
+    </select>
+
+    <select id="getCity" resultType="com.newyu.domain.org.City">
+        select code,name from data_exam_org_city  where examId=#{examId} and code=#{cityCode}
+    </select>
+    <select id="queryCitys" resultType="com.newyu.domain.org.City">
+        select code,name from data_exam_org_city  where examId=#{examId}
+    </select>
+
+    <select id="queryCountyOfCity" resultType="com.newyu.domain.org.County">
+        select distinct countyCode as code,countyName as name
+        from data_exam_org_x_school
+        where examId=#{examId} and cityCode=#{cityCode}
+    </select>
+    <select id="querySchoolOfCity" resultType="com.newyu.domain.org.School">
+        select distinct schoolCode as code,schoolName as name
+        from data_exam_org_x_school
+        where examId=#{examId} and cityCode=#{cityCode}
+    </select>
+
+    <select id="getCounty" resultType="com.newyu.domain.org.County">
+        select code,name from data_exam_org_county  where examId=#{examId} and code=#{countyCode}
+    </select>
+    <select id="queryCountys" resultType="com.newyu.domain.org.County">
+        select code,name from data_exam_org_county  where examId=#{examId}
+    </select>
+    <select id="querySchoolOfCounty" resultType="com.newyu.domain.org.School">
+        select distinct schoolCode as code,schoolName as name
+        from data_exam_org_x_school
+        where examId=#{examId} and countyCode=#{countyCode}
+    </select>
+
+    <select id="getSchool" resultType="com.newyu.domain.org.School">
+        select code,name from data_exam_org_school  where examId=#{examId} and code=#{schoolCode}
+    </select>
+    <select id="querySchools" resultType="com.newyu.domain.org.School">
+        select code,name from data_exam_org_school  where examId=#{examId}
+    </select>
+
+    <resultMap id="myClazz" type="com.newyu.domain.org.Clazz">
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="wl" column="wl"/>
+        <result property="group" column="groupValue"/>
+        <association property="school" javaType="com.newyu.domain.org.School">
+            <result property="code" column="schoolCode"/>
+            <result property="name" column="schoolName"/>
+        </association>
+    </resultMap>
+    <select id="queryClazzesOfSchool" resultMap="myClazz">
+        select schoolCode,schoolName,code,name,wl,groupValue
+        from data_exam_org_clazz
+        where examId=#{examId} and schoolCode=#{schoolCode}
+    </select>
+
+    <resultMap id="myTeachClazz" type="com.newyu.domain.org.TeachClazz">
+        <result property="code" column="code"/>
+        <result property="name" column="name"/>
+        <result property="subjectName" column="subjectName"/>
+        <result property="group" column="groupValue"/>
+        <association property="school" javaType="com.newyu.domain.org.School">
+            <result property="code" column="schoolCode"/>
+            <result property="name" column="schoolName"/>
+        </association>
+    </resultMap>
+    <select id="queryTeachClazzesOfSchool" resultMap="myTeachClazz">
+        select schoolCode,schoolName,code,name,subjectName,groupValue
+        from data_exam_org_teachClazz
+        where examId=#{examId} and schoolCode=#{schoolCode}
+    </select>
+
+    <select id="queryClazzes" resultMap="myClazz">
+        select schoolCode,schoolName,code,name,wl,groupValue
+        from data_exam_org_clazz
+        where examId=#{examId}
+    </select>
+
+    <select id="getClazz" resultMap="myClazz">
+        select schoolCode,schoolName,code,name,wl,groupValue
+        from data_exam_org_clazz
+        where examId=#{examId} and schoolCode=#{schoolCode} and code=#{clazzCode}
+    </select>
+
+    <select id="queryTeachClazzes" resultMap="myTeachClazz">
+        select schoolCode,schoolName,code,name,subjectName,groupValue
+        from data_exam_org_teachClazz
+        where examId=#{examId}
+    </select>
+
+    <select id="getTeachClazz" resultMap="myTeachClazz">
+        select schoolCode,schoolName,code,name,subjectName,groupValue
+        from data_exam_org_teachClazz
+        where examId=#{examId} and subjectName=#{subjectName} and schoolCode=#{schoolCode} and code=#{clazzCode}
+    </select>
 
 
 </mapper>

@@ -118,6 +118,7 @@ CREATE TABLE data_exam_org_clazz(
 	schoolName varchar(50) not null comment'名称',
 	code varchar(50) not null comment'编码',
 	name varchar(50) not null comment'名称',
+	wl int default 0 comment'班级文理标志',
 	groupValue varchar(50) default '' comment'名称',
 	PRIMARY KEY (id)
 );
@@ -129,6 +130,7 @@ CREATE TABLE data_exam_org_teachClazz(
 	schoolName varchar(50) not null comment'名称',
 	code varchar(50) not null comment'编码',
 	name varchar(50) not null comment'名称',
+	subjectName varchar(20) not null comment'科目名字',
 	groupValue varchar(50) default '' comment'名称',
 	PRIMARY KEY (id)
 );

@@ -48,4 +48,63 @@ public interface ExamOrgDao {
 
     int deleteOrgXSchool(@Param("examId") long examId);
 
+
+    Province getProvice(@Param("examId") long examId,
+                        @Param("provinceCode") String provinceCode);
+
+    List<Province> queryProvices(@Param("examId") long examId);
+
+    List<City> queryCitysOfProvice(@Param("examId") long examId,
+                                   @Param("provinceCode") String provinceCode);
+
+    List<County> queryCountyOfProvice(@Param("examId") long examId,
+                                      @Param("provinceCode") String provinceCode);
+
+    List<School> querySchoolOfProvice(@Param("examId") long examId,
+                                      @Param("provinceCode") String provinceCode);
+
+    City getCity(@Param("examId") long examId,
+                 @Param("cityCode") String cityCode);
+
+    List<City> queryCitys(@Param("examId") long examId);
+
+    List<County> queryCountyOfCity(@Param("examId") long examId,
+                                   @Param("cityCode") String cityCode);
+
+    List<School> querySchoolOfCity(@Param("examId") long examId,
+                                   @Param("cityCode") String cityCode);
+
+
+    County getCounty(@Param("examId") long examId,
+                     @Param("countyCode") String countyCode);
+
+    List<County> queryCountys(@Param("examId") long examId);
+
+    List<School> querySchoolOfCounty(@Param("examId") long examId,
+                                     @Param("countyCode") String countyCode);
+
+
+    School getSchool(@Param("examId") long examId,
+                     @Param("schoolCode") String schoolCode);
+
+    List<School> querySchools(@Param("examId") long examId);
+
+    List<Clazz> queryClazzesOfSchool(@Param("examId") long examId,
+                                     @Param("schoolCode") String schoolCode);
+
+    List<TeachClazz> queryTeachClazzesOfSchool(@Param("examId") long examId,
+                                               @Param("schoolCode") String schoolCode);
+
+    List<Clazz> queryClazzes(@Param("examId") long examId);
+
+    Clazz getClazz(@Param("examId") long examId,
+                     @Param("schoolCode") String schoolCode,
+                     @Param("clazzCode") String clazzCode);
+
+    List<TeachClazz> queryTeachClazzes(@Param("examId") long examId);
+
+    TeachClazz getTeachClazz(@Param("examId") long examId,
+                               @Param("subjectName") String subjectName,
+                               @Param("schoolCode") String schoolCode,
+                               @Param("clazzCode") String clazzCode);
 }
