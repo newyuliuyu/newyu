@@ -93,7 +93,7 @@ public class DefaultFxContext implements FxContext {
     }
 
     private void setSubjects() {
-        List<Subject> subjects = examXSubjectXItemService.querySubjectOfExamHasItem(examId);
+        List<Subject> subjects = examXSubjectXItemService.querySubjectOfExam(examId);
         SubjectService.setChildSubject(subjects);
         examBaseInfoMgr.setSubjects(subjects);
     }

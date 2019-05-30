@@ -1,5 +1,6 @@
 package com.newyu.service.dao;
 
+import com.newyu.domain.exam.Item;
 import com.newyu.domain.exam.Subject;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -29,4 +30,21 @@ public interface SubjectDao {
     int deleteSubjectItem(@Param("subject") Subject subject);
 
     Subject getSubject(@Param("subjectId") long subjectId);
+
+    Subject getSubjectForName(@Param("examId") long examId, @Param("subjectName") String subjectName);
+
+    List<Subject> querySubject(@Param("subjectId") long subjectId);
+
+    List<Subject> querySubjects(@Param("examId") long examId);
+
+    //////////////////////////////////////////////////////////////////////////////
+    void createItem(@Param("item") Item item);
+
+    void createItems(@Param("items") List<Item> items);
+
+    int deleteItem(@Param("item") Item item);
+
+    Item getItem(@Param("itemId") int id);
+
+    List<Item> queryItems(@Param("subjectId") long subjectId);
 }

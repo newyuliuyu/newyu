@@ -20,9 +20,8 @@ public interface ItemService {
 
     void createItems(List<Item> items);
 
-    void udpateItem(Item item);
 
-    void deleteItem(Item item);
+    int deleteItem(Item item);
 
     Item getItem(int id);
 

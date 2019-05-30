@@ -46,6 +46,115 @@
         examSubject,multiSubject,fullSubject,childSubject,parentSubject
         from data_exam_subject where id=#{subjectId}
     </select>
+    <select id="getSubjectForName" resultType="com.newyu.domain.exam.Subject">
+        select id,examId,name,wl,displayOrder,fullScore,kgFullScore,zgFullScore,childSubjectNames,
+        examSubject,multiSubject,fullSubject,childSubject,parentSubject
+        from data_exam_subject where examId=#{examId} and name=#{subjectName}
+    </select>
 
+    <resultMap id="mySubject" type="com.newyu.domain.exam.Subject">
+        <id property="id" column="id"/>
+        <result property="examId" column="examId"/>
+        <result property="name" column="name"/>
+        <result property="wl" column="wl"/>
+        <result property="displayOrder" column="displayOrder"/>
+        <result property="fullScore" column="fullScore"/>
+        <result property="kgFullScore" column="kgFullScore"/>
+        <result property="zgFullScore" column="zgFullScore"/>
+        <result property="childSubjectNames" column="childSubjectNames"/>
+        <result property="parentSubject" column="parentSubject"/>
+        <result property="childSubject" column="childSubject"/>
+        <result property="examSubject" column="examSubject"/>
+        <result property="multiSubject" column="multiSubject"/>
+        <result property="fullSubject" column="fullSubject"/>
+        <collection property="items" ofType="com.newyu.domain.exam.Item">
+            <id property="id" column="itemId"/>
+            <result property="name" column="itemName"/>
+            <result property="score" column="itemScore"/>
+            <result property="knowledge" column="knowledge"/>
+            <result property="ability" column="ability"/>
+            <result property="titleType" column="titleType"/>
+            <result property="bigTitleName" column="bigTitleName"/>
+            <result property="smallTitleName" column="smallTitleName"/>
+            <result property="itemType" column="itemType"/>
+            <result property="answer" column="answer"/>
+            <result property="fullOptional" column="fullOptional"/>
+            <result property="otherSubject" column="otherSubject"/>
+            <result property="choice" column="choice"/>
+            <result property="choiceInfo" column="choiceInfo"/>
+            <result property="fieldName" column="fieldName"/>
+            <result property="displayOrder" column="itemDisplayOrder"/>
+            <result property="titleBlock" column="titleBlock"/>
+        </collection>
+    </resultMap>
+
+    <select id="querySubject" resultMap="mySubject">
+        select  a.id,a.examId,a.name,a.wl,a.displayOrder,a.fullScore,a.kgFullScore,a.zgFullScore,
+        a.childSubjectNames,a.examSubject,a.multiSubject,a.fullSubject,a.childSubject,a.parentSubject,
+        b.id as itemId,b.name as itemName,b.score as itemScore,b.knowledge,b.ability,b.titleType,b.bigTitleName,b.smallTitleName,
+        b.itemType,b.answer,b.fullOptional,b.otherSubject,b.choice,b.choiceInfo,b.fieldName,
+        b.displayOrder as itemDisplayOrder,b.titleBlock
+        from data_exam_subject a
+        left join data_exam_subject_item b on a.id=b.subjectId
+        where a.id=#{subjectId}
+    </select>
+
+    <select id="querySubjects" resultMap="mySubject">
+        select  a.id,a.examId,a.name,a.wl,a.displayOrder,a.fullScore,a.kgFullScore,a.zgFullScore,
+        a.childSubjectNames,a.examSubject,a.multiSubject,a.fullSubject,a.childSubject,a.parentSubject,
+        b.id as itemId,b.name as itemName,b.score as itemScore,b.knowledge,b.ability,b.titleType,b.bigTitleName,b.smallTitleName,
+        b.itemType,b.answer,b.fullOptional,b.otherSubject,b.choice,b.choiceInfo,b.fieldName,
+        b.displayOrder as itemDisplayOrder,b.titleBlock
+        from data_exam_subject a
+        left join data_exam_subject_item b on a.id=b.subjectId
+        where a.examId=#{examId}
+    </select>
+
+
+    <!--///////////////////////////////////////////////////////////-->
+
+    <insert id="createItem">
+        insert into data_exam_subject_item(id,examId,subjectId,name,score,knowledge,ability,titleType,
+        bigTitleName,smallTitleName,itemType,answer,fullOptional,otherSubject,choice,choiceInfo,fieldName,
+        displayOrder,titleBlock)
+        values (#{item.id},#{item.examId},#{item.subjectId},#{item.name},#{item.score},#{item.knowledge}
+        ,#{item.ability},#{item.titleType},#{item.bigTitleName},#{item.smallTitleName},#{item.itemType}
+        ,#{item.answer},#{item.fullOptional},#{item.otherSubject},#{item.choice},#{item.choiceInfo}
+        ,#{item.fieldName},#{item.displayOrder},#{item.titleBlock})
+    </insert>
+
+    <insert id="createItems">
+        insert into data_exam_subject_item(id,examId,subjectId,name,score,knowledge,ability,titleType,
+        bigTitleName,smallTitleName,itemType,answer,fullOptional,otherSubject,choice,choiceInfo,fieldName,
+        displayOrder,titleBlock)
+        values
+        <foreach collection="items" item="item" index="index" separator=",">
+            (#{item.id},#{item.examId},#{item.subjectId},#{item.name},#{item.score},#{item.knowledge}
+            ,#{item.ability},#{item.titleType},#{item.bigTitleName},#{item.smallTitleName},#{item.itemType}
+            ,#{item.answer},#{item.fullOptional},#{item.otherSubject},#{item.choice},#{item.choiceInfo}
+            ,#{item.fieldName},#{item.displayOrder},#{item.titleBlock})
+        </foreach>
+
+    </insert>
+
+    <delete id="deleteItem">
+        delete from data_exam_subject_item where id=#{item.id}
+    </delete>
+
+    <select id="getItem" resultType="com.newyu.domain.exam.Item">
+        select id,examId,subjectId,name,score,knowledge,ability,titleType,
+        bigTitleName,smallTitleName,itemType,answer,fullOptional,otherSubject,choice,choiceInfo,fieldName,
+        displayOrder,titleBlock
+        from data_exam_subject_item
+        where id=#{itemId}
+    </select>
+
+    <select id="queryItems" resultType="com.newyu.domain.exam.Item">
+        select id,examId,subjectId,name,score,knowledge,ability,titleType,
+        bigTitleName,smallTitleName,itemType,answer,fullOptional,otherSubject,choice,choiceInfo,fieldName,
+        displayOrder,titleBlock
+        from data_exam_subject_item
+        where subjectId=#{subjectId}
+    </select>
 
 </mapper>

@@ -3,7 +3,10 @@ package com.newyu.service.impl;
 import com.newyu.domain.exam.Subject;
 import com.newyu.domain.fx.SubjectDataVersion;
 import com.newyu.service.ExamXSubjectXItemService;
+import com.newyu.service.dao.SubjectDao;
+import com.newyu.service.dao.SubjectDataVersionDao;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,23 +24,24 @@ import java.util.List;
 @Slf4j
 @Service
 public class ExamXSubjectXItemServiceImpl implements ExamXSubjectXItemService {
-    @Override
-    public List<Subject> querySubjectOfExam(long examId) {
-        return null;
-    }
+    @Autowired
+    private SubjectDao subjectDao;
+    @Autowired
+    private SubjectDataVersionDao subjectDataVersionDao;
 
     @Override
-    public List<Subject> querySubjectOfExamHasItem(long examId) {
-        return null;
+    public List<Subject> querySubjectOfExam(long examId) {
+        return subjectDao.querySubjects(examId);
     }
+
 
     @Override
     public List<SubjectDataVersion> querySubjectDataVersion(long examId) {
-        return null;
+        return subjectDataVersionDao.list(examId);
     }
 
     @Override
     public Subject getSubject(long examId, String subjectName) {
-        return null;
+        return subjectDao.getSubjectForName(examId, subjectName);
     }
 }

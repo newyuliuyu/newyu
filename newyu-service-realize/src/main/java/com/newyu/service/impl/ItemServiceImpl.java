@@ -2,6 +2,8 @@ package com.newyu.service.impl;
 
 import com.newyu.domain.exam.Item;
 import com.newyu.service.ItemService;
+import com.newyu.service.dao.SubjectDao;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,32 +21,31 @@ import java.util.List;
  */
 @Service
 public class ItemServiceImpl implements ItemService {
+
+    @Autowired
+    private SubjectDao subjectDao;
+
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createItem(Item item) {
-
+        subjectDao.createItem(item);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
     public void createItems(List<Item> items) {
-
+        subjectDao.createItems(items);
     }
+
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public void udpateItem(Item item) {
-
-    }
-
-    @Override
-    @Transactional(rollbackFor = Exception.class)
-    public void deleteItem(Item item) {
-
+    public int deleteItem(Item item) {
+        return subjectDao.deleteItem(item);
     }
 
     @Override
     public Item getItem(int id) {
-        return null;
+        return subjectDao.getItem(id);
     }
 }

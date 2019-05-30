@@ -25,13 +25,7 @@ public interface ExamXSubjectXItemService {
      */
     List<Subject> querySubjectOfExam(long examId);
 
-    /**
-     * 查询科目带有科目题目数据
-     *
-     * @param examId
-     * @return
-     */
-    List<Subject> querySubjectOfExamHasItem(long examId);
+
 
     /**
      * 获取考试科目的数据版本
