@@ -35,13 +35,6 @@ public interface SubjectService {
      */
     void createSubjects(List<Subject> subjects);
 
-    /**
-     * 修改一个科目信息
-     *
-     * @param subject
-     * @return
-     */
-    int updateSubject(Subject subject);
 
     /**
      * 修改科目分值

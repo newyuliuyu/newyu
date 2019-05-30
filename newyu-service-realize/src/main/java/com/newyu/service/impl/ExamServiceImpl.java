@@ -58,7 +58,7 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public Exam getExam(long examId) {
-        return null;
+        return examDao.getExam(examId);
     }
 
     @Override
@@ -68,6 +68,6 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public Exam getExamFromSourceId(String sourceId) {
-        return null;
+        return examDao.getExamFromSourceId(sourceId);
     }
 }

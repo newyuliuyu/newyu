@@ -2,7 +2,9 @@ package com.newyu.service.impl;
 
 import com.newyu.domain.exam.Subject;
 import com.newyu.service.SubjectService;
+import com.newyu.service.dao.SubjectDao;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,38 +22,37 @@ import java.util.List;
 @Service
 @Slf4j
 public class SubjectServiceImpl implements SubjectService {
+    @Autowired
+    private SubjectDao subjectDao;
+
     @Override
     public void createSubject(Subject subject) {
-
-    }
-
-    @Override
-    public int updateSubjectScore(Subject subject) {
-        return 0;
+        subjectDao.createSubject(subject);
     }
 
     @Override
     public void createSubjects(List<Subject> subjects) {
-
+        subjectDao.createSubjects(subjects);
     }
 
     @Override
-    public int updateSubject(Subject subject) {
-        return 0;
+    public int updateSubjectScore(Subject subject) {
+        return subjectDao.updateSubjectScore(subject);
     }
+
 
     @Override
     public int deleteSubject(Subject subject) {
-        return 0;
+        return subjectDao.deleteSubject(subject);
     }
 
     @Override
     public int deleteSubjectItem(Subject subject) {
-        return 0;
+        return subjectDao.deleteSubjectItem(subject);
     }
 
     @Override
     public Subject getSubject(long subjectId) {
-        return null;
+        return subjectDao.getSubject(subjectId);
     }
 }

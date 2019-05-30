@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newyu.service.dao.SubjectDao">
+
+    <insert id="createSubject">
+        insert into
+        data_exam_subject(id,examId,name,wl,displayOrder,fullScore,kgFullScore,zgFullScore,childSubjectNames,
+        examSubject,multiSubject,fullSubject,childSubject,parentSubject)
+        values(#{subject.id},#{subject.examId},#{subject.name},#{subject.wl},#{subject.displayOrder},
+        #{subject.fullScore},#{subject.kgFullScore},#{subject.zgFullScore},#{subject.childSubjectNames}
+        ,#{subject.examSubject},#{subject.multiSubject},#{subject.fullSubject},#{subject.childSubject},
+        #{subject.parentSubject})
+    </insert>
+
+    <insert id="createSubjects">
+        insert into
+        data_exam_subject(id,examId,name,wl,displayOrder,fullScore,kgFullScore,zgFullScore,childSubjectNames,
+        examSubject,multiSubject,fullSubject,childSubject,parentSubject)
+        values
+        <foreach collection="subjects" item="subject" index="index" separator=",">
+            (#{subject.id},#{subject.examId},#{subject.name},#{subject.wl},#{subject.displayOrder},
+            #{subject.fullScore},#{subject.kgFullScore},#{subject.zgFullScore},#{subject.childSubjectNames}
+            ,#{subject.examSubject},#{subject.multiSubject},#{subject.fullSubject},#{subject.childSubject},
+            #{subject.parentSubject})
+        </foreach>
+    </insert>
+
+    <update id="updateSubjectScore">
+        update data_exam_subject
+        set fullScore=#{subject.fullScore},
+        kgFullScore=#{subject.kgFullScore},
+        zgFullScore=#{subject.zgFullScore}
+        where id=#{subject.id}
+    </update>
+
+    <delete id="deleteSubject">
+        delete from data_exam_subject  where id=#{subject.id}
+    </delete>
+
+    <delete id="deleteSubjectItem">
+        delete from data_exam_subject_item  where subjectId=#{subject.id}
+    </delete>
+
+    <select id="getSubject" resultType="com.newyu.domain.exam.Subject">
+        select id,examId,name,wl,displayOrder,fullScore,kgFullScore,zgFullScore,childSubjectNames,
+        examSubject,multiSubject,fullSubject,childSubject,parentSubject
+        from data_exam_subject where id=#{subjectId}
+    </select>
+
+
+</mapper>
