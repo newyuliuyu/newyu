@@ -74,7 +74,8 @@ CREATE TABLE data_sys_student_extend_filed(
 	code varchar(50) not null comment'编码',
 	name varchar(50) not null comment'名称',
 	fileName varchar(150) not null comment'对应外部文件的字段都，多个相同以上的字段用英文逗号隔开',
-	PRIMARY KEY (id)
+	PRIMARY KEY (id),
+	key code(code)
 );
 
 

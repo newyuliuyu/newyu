@@ -1,9 +1,10 @@
 package com.newyu.service.impl;
 
-import com.google.common.collect.Sets;
 import com.newyu.domain.exam.StudentExtendField;
 import com.newyu.service.StudentExtendFieldService;
+import com.newyu.service.dao.StudentExtendFieldDao;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Set;
@@ -21,8 +22,11 @@ import java.util.Set;
 @Service
 @Slf4j
 public class StudentExtendFieldServiceImpl implements StudentExtendFieldService {
+    @Autowired
+    private StudentExtendFieldDao studentExtendFieldDao;
+
     @Override
     public Set<StudentExtendField> getStudentExtendFields() {
-        return Sets.newHashSet();
+        return studentExtendFieldDao.getStudentExtendFields();
     }
 }
