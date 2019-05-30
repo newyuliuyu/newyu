@@ -1,5 +1,6 @@
 package com.newyu.fx.spi;
 
+import com.newyu.domain.exam.Student;
 import com.newyu.domain.exam.StudentCj;
 import com.newyu.domain.exam.WLType;
 import com.newyu.domain.fx.GroupInfo;
@@ -25,7 +26,7 @@ public class DatasetImplTest {
     @Test
     public void test() throws Exception {
         Dataset<StudentCj> dataset = create();
-        List<StudentCj> studentCjs = dataset.filter(x -> x.getZkzh().equals("1")).getList();
+        List<StudentCj> studentCjs = dataset.filter(x -> x.getStudent().getZkzh().equals("1")).getList();
         System.out.println();
     }
 
@@ -41,8 +42,8 @@ public class DatasetImplTest {
         Dataset<StudentCj> dataset = create();
         GroupInfo groupInfo = new GroupInfo();
         List<StudentCj> studentCjs = dataset.sort((x, y) -> {
-            return y.getZkzh().compareTo(x.getZkzh());
-        }).filter(x->!x.getZkzh().equals("10")).getList();
+            return y.getStudent().getZkzh().compareTo(x.getStudent().getZkzh());
+        }).filter(x -> !x.getStudent().getZkzh().equals("10")).getList();
         System.out.println();
     }
 
@@ -52,7 +53,7 @@ public class DatasetImplTest {
         GroupInfo groupInfo = new GroupInfo();
         groupInfo.add("wl");
         List<GroupDataset<StudentCj>> studentCjs = dataset.filter(x -> {
-            return !x.getZkzh().equals("1") && !x.getZkzh().equals("5");
+            return !x.getStudent().getZkzh().equals("1") && !x.getStudent().getZkzh().equals("5");
         }).getGroupDataset(groupInfo);
         System.out.println();
     }
@@ -60,17 +61,17 @@ public class DatasetImplTest {
 
     public Dataset<StudentCj> create() {
         DatasetImpl dataset = new DatasetImpl();
-        dataset.add(StudentCj.builder().zkzh("1").name("1").wl(WLType.Like).build());
-        dataset.add(StudentCj.builder().zkzh("2").name("2").wl(WLType.Like).build());
-        dataset.add(StudentCj.builder().zkzh("3").name("3").wl(WLType.Like).build());
-        dataset.add(StudentCj.builder().zkzh("4").name("4").wl(WLType.Like).build());
-        dataset.add(StudentCj.builder().zkzh("5").name("5").wl(WLType.Like).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("1").name("1").wl(WLType.Like).build()).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("2").name("2").wl(WLType.Like).build()).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("3").name("3").wl(WLType.Like).build()).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("4").name("4").wl(WLType.Like).build()).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("5").name("5").wl(WLType.Like).build()).build());
 
-        dataset.add(StudentCj.builder().zkzh("6").name("6").wl(WLType.Wenke).build());
-        dataset.add(StudentCj.builder().zkzh("7").name("7").wl(WLType.Wenke).build());
-        dataset.add(StudentCj.builder().zkzh("8").name("8").wl(WLType.Wenke).build());
-        dataset.add(StudentCj.builder().zkzh("9").name("9").wl(WLType.Wenke).build());
-        dataset.add(StudentCj.builder().zkzh("10").name("10").wl(WLType.Wenke).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("6").name("6").wl(WLType.Wenke).build()).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("7").name("7").wl(WLType.Wenke).build()).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("8").name("8").wl(WLType.Wenke).build()).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("9").name("9").wl(WLType.Wenke).build()).build());
+        dataset.add(StudentCj.builder().student(Student.builder().zkzh("10").name("10").wl(WLType.Wenke).build()).build());
         return dataset;
     }
 

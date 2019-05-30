@@ -1,7 +1,6 @@
 package com.newyu.domain.exam;
 
 import com.google.common.collect.Maps;
-import com.newyu.domain.org.*;
 import lombok.*;
 
 import java.util.List;
@@ -21,19 +20,10 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString(of = {"name", "wl", "zkzh", "ownId", "subjectCjs", "school", "clazz"})
+@ToString(of = {"student"})
 @Builder
 public class StudentCj {
-    private String name;
-    private String zkzh;
-    private String code;
-    private String ownId;
-    private WLType wl;
-    private School school;
-    private Clazz clazz;
-    private County county;
-    private City city;
-    private Province province;
+    private Student student;
     private Map<String, SubjectCj> subjectCjs = Maps.newHashMap();
 
     public void addSubjectCj(SubjectCj subjectCj) {

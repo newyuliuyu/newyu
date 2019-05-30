@@ -28,7 +28,7 @@ public class GroupDatasetImpl extends DatasetImpl implements GroupDataset<Studen
     }
 
     public void setStudentCjs(List<StudentCj> studentCjs) {
-        studentCjMap = studentCjs.stream().collect(Collectors.toMap(x -> x.getZkzh(), x -> x));
+        studentCjMap = studentCjs.stream().collect(Collectors.toMap(x -> x.getStudent().getZkzh(), x -> x));
     }
 
     @Override

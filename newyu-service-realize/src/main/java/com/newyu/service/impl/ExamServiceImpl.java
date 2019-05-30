@@ -1,8 +1,6 @@
 package com.newyu.service.impl;
 
 import com.newyu.domain.exam.Exam;
-import com.newyu.domain.exam.ExamLevel;
-import com.newyu.domain.exam.ExamState;
 import com.newyu.service.ExamService;
 import com.newyu.service.dao.ExamDao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,16 +34,20 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateExamState(long examId, ExamState examState) {
-        Exam exam = Exam.builder().id(examId).state(examState).build();
+    public int updateExamState(Exam exam) {
         return examDao.updateExamState(exam);
     }
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int updateExamLevel(long examId, ExamLevel examLevel) {
-        Exam exam = Exam.builder().id(examId).examLevel(examLevel).build();
+    public int updateExamLevel(Exam exam) {
         return examDao.updateExamLevel(exam);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int updateExamWLAndLevel(Exam exam) {
+        return examDao.updateExamWLAndLevel(exam);
     }
 
     @Override

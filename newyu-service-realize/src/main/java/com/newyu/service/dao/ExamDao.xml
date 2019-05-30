@@ -17,6 +17,11 @@
         set examLevel=#{exam.examLevel}
         where id=#{exam.id}
     </update>
+    <update id="updateExamWLAndLevel">
+        update data_exam
+        set wl=#{exam.wl},examLevel=#{exam.examLevel}
+        where id=#{exam.id}
+    </update>
 
     <delete id="deleteExam">
         delete from data_exam where id=#{examId}

@@ -40,4 +40,12 @@ public interface ExamXSubjectXItemService {
      * @return
      */
     List<SubjectDataVersion> querySubjectDataVersion(long examId);
+
+    /**
+     * 获取科目数据
+     * @param examId
+     * @param subjectName
+     * @return
+     */
+    Subject getSubject(long examId,String subjectName);
 }

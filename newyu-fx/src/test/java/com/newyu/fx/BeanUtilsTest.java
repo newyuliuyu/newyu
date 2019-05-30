@@ -1,5 +1,6 @@
 package com.newyu.fx;
 
+import com.newyu.domain.exam.Student;
 import com.newyu.domain.exam.StudentCj;
 import com.newyu.domain.org.Clazz;
 import com.newyu.domain.org.School;
@@ -24,13 +25,17 @@ public class BeanUtilsTest {
         Clazz clazz = Clazz.builder().code("1").name("班级").build();
         clazz.setSchool(school);
 
+        Student student = new Student();
+        student.setClazz(clazz);
+        student.setSchool(school);
+        student.setZkzh("zkzh");
+        student.setName("name");
+
         StudentCj studentCj = new StudentCj();
-        studentCj.setClazz(clazz);
-        studentCj.setSchool(school);
-        studentCj.setZkzh("zkzh");
-        studentCj.setName("name");
-        Object obj1 = PropertyUtils.getProperty(studentCj, "school");
-        Object obj2 = PropertyUtils.getProperty(studentCj, "city");
+        studentCj.setStudent(student);
+
+        Object obj1 = PropertyUtils.getProperty(studentCj, "student.school");
+        Object obj2 = PropertyUtils.getProperty(studentCj, "student.city");
 
         System.out.println();
     }

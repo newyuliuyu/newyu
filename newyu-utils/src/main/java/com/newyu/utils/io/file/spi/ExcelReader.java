@@ -10,6 +10,7 @@ package com.newyu.utils.io.file.spi;
 import com.newyu.utils.io.file.FileProcess;
 import com.newyu.utils.io.file.HeaderMetadata;
 import com.newyu.utils.io.file.Rowdata;
+import com.newyu.utils.tool.FileUtil;
 import org.apache.poi.ss.usermodel.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,7 +47,9 @@ public class ExcelReader implements FileProcess {
 
     private void open() {
         try {
-            wb = WorkbookFactory.create(filepath.toFile());
+
+//            wb = WorkbookFactory.create(filepath.toFile());
+            wb = WorkbookFactory.create(FileUtil.read(filepath.toString()));
             sheet = wb.getSheetAt(0);
             int rowNum = sheet.getPhysicalNumberOfRows();
             headerMetadata.setTotalRow(rowNum);
@@ -141,7 +144,7 @@ public class ExcelReader implements FileProcess {
                     if (va == (int) va) {
                         // 去掉数值类型后面的".0"
                         result = String.valueOf((int) va);
-                    }else {
+                    } else {
                         // result = String.valueOf(va); //if the double value is too
                         // big, it will be displayed in E-notation
                         result = decimalFormat.format(va);

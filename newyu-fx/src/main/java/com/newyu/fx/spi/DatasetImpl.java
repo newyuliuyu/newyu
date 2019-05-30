@@ -32,7 +32,7 @@ public class DatasetImpl implements Dataset<StudentCj> {
 
 
     public DatasetImpl add(StudentCj studentCj) {
-        studentCjMap.put(studentCj.getZkzh(), studentCj);
+        studentCjMap.put(studentCj.getStudent().getZkzh(), studentCj);
         return this;
     }
 

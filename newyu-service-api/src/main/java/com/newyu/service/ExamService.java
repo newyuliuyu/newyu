@@ -1,8 +1,6 @@
 package com.newyu.service;
 
 import com.newyu.domain.exam.Exam;
-import com.newyu.domain.exam.ExamLevel;
-import com.newyu.domain.exam.ExamState;
 
 import java.util.List;
 
@@ -33,7 +31,7 @@ public interface ExamService {
      * @param examState
      * @return
      */
-    int updateExamState(long examId, ExamState examState);
+    int updateExamState(Exam exam);
 
     /**
      * 修改考试级别
@@ -42,7 +40,17 @@ public interface ExamService {
      * @param examLevel
      * @return
      */
-    int updateExamLevel(long examId, ExamLevel examLevel);
+    int updateExamLevel(Exam exam);
+
+    /**
+     * 修改考试文理和级别
+     *
+     * @param examId
+     * @param wl
+     * @param examLevel
+     * @return
+     */
+    int updateExamWLAndLevel(Exam exam);
 
     /**
      * 删除一次考试

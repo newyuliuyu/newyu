@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newyu.service.dao.SubjectDataVersionDao">
+
+    <insert id="createSubjectDataVersion">
+      insert into data_exam_subject_version(examId,subjectId,previousVesrion,curVesrion)
+      values(#{version.examId},#{version.subjectId},#{version.previousVesrion},#{version.curVesrion})
+    </insert>
+
+    <update id="update">
+        update data_exam_subject_version
+        set previousVesrion=#{version.previousVesrion},curVesrion=#{version.curVesrion}
+        where subjectId=#{version.subjectId}
+    </update>
+    <delete id="delete">
+        delete from  data_exam_subject_version
+        where subjectId=#{version.subjectId}
+    </delete>
+
+    <select id="get" resultType="com.newyu.domain.fx.SubjectDataVersion">
+      select examId,subjectId,previousVesrion,curVesrion
+      from data_exam_subject_version
+      where subjectId=#{subjectId}
+    </select>
+    <select id="list" resultType="com.newyu.domain.fx.SubjectDataVersion">
+      select examId,subjectId,previousVesrion,curVesrion
+      from data_exam_subject_version
+      where examId=#{examId}
+    </select>
+
+
+</mapper>

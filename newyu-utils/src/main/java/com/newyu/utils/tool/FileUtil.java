@@ -53,5 +53,25 @@ public class FileUtil {
         fileOp.save(source, destination);
     }
 
+    public static InputStream read(final String destination) {
+        FileOp fileOp = null;
+        if (FileOp.isSSHFile(destination)) {
+            fileOp = new SshFileOp();
+        } else {
+            fileOp = new LocalFileOp();
+        }
+        return fileOp.read(destination);
+    }
+
+    public static boolean existFile(final String filePath) {
+        FileOp fileOp = null;
+        if (FileOp.isSSHFile(filePath)) {
+            fileOp = new SshFileOp();
+        } else {
+            fileOp = new LocalFileOp();
+        }
+        return fileOp.existFile(filePath);
+    }
+
 
 }

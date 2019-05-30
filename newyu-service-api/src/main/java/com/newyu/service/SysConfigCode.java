@@ -15,4 +15,9 @@ public interface SysConfigCode {
      * 上传文件保存路径
      */
     public static final String uploadDir = "upload.dir";
+
+    /**
+     * 文件保存的地方
+     */
+    public static final String saveDir = "upload.dir";
 }

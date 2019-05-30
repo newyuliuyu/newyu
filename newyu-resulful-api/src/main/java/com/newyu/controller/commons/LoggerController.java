@@ -21,8 +21,8 @@ import java.util.Map;
 
 /**
  * ClassName: LoggerController <br/>
- * Function: TODO ADD FUNCTION. <br/>
- * Reason: TODO ADD REASON(可选). <br/>
+ * Function: ADD FUNCTION. <br/>
+ * Reason: ADD REASON(可选). <br/>
  * date: 17-11-29 上午9:00 <br/>
  *
  * @author liuyu

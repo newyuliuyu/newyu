@@ -3,6 +3,7 @@ package com.newyu.utils.tool;
 import org.apache.commons.io.FileUtils;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -22,7 +23,11 @@ public class LocalFileOp implements FileOp {
 
     @Override
     public InputStream read(String filePath) {
-        return null;
+        try {
+            return new FileInputStream(filePath);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     @Override

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newyu.service.dao.ImportFiledDao">
+
+    <insert id="saveFiled">
+        insert into data_exam_import_filed(examId,subjectId,code,name,hasValue)
+        values
+        <foreach collection="fileds" item="item" index="index" separator=",">
+            (#{examId},#{item.subject.id},#{item.code},#{item.name},#{item.hasValue})
+        </foreach>
+    </insert>
+
+    <delete id="deleteFiled">
+        delete from data_exam_import_filed where examId=#{examId} and subjectId=#{subjectId}
+    </delete>
+
+
+</mapper>

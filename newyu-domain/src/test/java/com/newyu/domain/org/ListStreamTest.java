@@ -38,8 +38,8 @@ public class ListStreamTest {
         List<Item> items = new ArrayList<>();
 //        items.add(Item.builder().id(1).name("1").choiceInfo("从12,13中选1题每题10分").build());
 //        items.add(Item.builder().id(2).name("2").choiceInfo("从12,13中选1题每题10分").build());
-        items.add(Item.builder().id(2).name("3").build());
-        items.add(Item.builder().id(2).name("4").build());
+        items.add(Item.builder().id(2L).name("3").build());
+        items.add(Item.builder().id(2L).name("4").build());
 //        items.add(Item.builder().id(2).name("5").choiceInfo("从22,23中选1题每题10分").build());
 //        items.add(Item.builder().id(2).name("6").choiceInfo("从22,23中选1题每题10分").build());
 

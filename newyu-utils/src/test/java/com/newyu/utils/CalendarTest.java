@@ -1,5 +1,7 @@
 package com.newyu.utils;
 
+import org.apache.shiro.crypto.hash.SimpleHash;
+import org.apache.shiro.util.ByteSource;
 import org.junit.Test;
 
 import java.util.Calendar;
@@ -22,5 +24,11 @@ public class CalendarTest {
         Calendar c  = Calendar.getInstance();
         System.out.println(c.getTime());
         System.out.println(new Date());
+    }
+
+    @Test
+    public void test02() throws Exception{
+        String k = new SimpleHash("md5", "12345678", ByteSource.Util.bytes("1356"), 2).toHex();
+        System.out.println(k);
     }
 }

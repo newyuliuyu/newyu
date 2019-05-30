@@ -19,8 +19,8 @@ import java.util.List;
 
 /**
  * ClassName: ProgressController <br/>
- * Function: TODO ADD FUNCTION. <br/>
- * Reason: TODO ADD REASON(可选). <br/>
+ * Function: ADD FUNCTION. <br/>
+ * Reason: ADD REASON(可选). <br/>
  * date: 17-11-27 下午2:27 <br/>
  *
  * @author liuyu

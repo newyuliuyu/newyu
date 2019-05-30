@@ -20,7 +20,7 @@ import lombok.*;
 @ToString(of = {"num", "name", "score"})
 @Builder
 public class Item {
-    private int id;
+    private Long id;
     private Long examId;
     private Long subjectId;
     private String name;

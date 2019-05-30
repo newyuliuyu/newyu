@@ -32,6 +32,7 @@ public class Exam {
     private Semester semester;
     private LearningSegment learningSegment;
     private ExamLevel examLevel;
+    private int wl;
     private String examType;
 
     private Date beginDate;

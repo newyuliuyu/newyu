@@ -13,6 +13,7 @@ CREATE TABLE data_exam(
 	endTiemstamp bigint default 0 comment'考试开始时间',
 	createTiemstamp bigint default 0 comment'考试开始时间',
 	sourceId varchar(32) default '' comment'考试数据来源唯一ID',
+	wl tinyint default 0 comment'考试文理数据 0不分文理，1 理科 2 文科 3 文理分科',
 	PRIMARY KEY (id)
 );
 
@@ -66,3 +67,106 @@ CREATE TABLE data_sys_config(
 	value varchar(150) not null comment'系统属性值',
 	PRIMARY KEY (id)
 );
+
+DROP TABLE IF EXISTS data_sys_student_extend_filed;
+CREATE TABLE data_sys_student_extend_filed(
+	id int not null AUTO_INCREMENT,
+	code varchar(50) not null comment'编码',
+	name varchar(50) not null comment'名称',
+	fileName varchar(150) not null comment'对应外部文件的字段都，多个相同以上的字段用英文逗号隔开',
+	PRIMARY KEY (id)
+);
+
+
+DROP TABLE IF EXISTS data_exam_org_province;
+CREATE TABLE data_exam_org_province(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	code varchar(50) not null comment'编码',
+	name varchar(50) not null comment'名称',
+	PRIMARY KEY (id)
+);
+DROP TABLE IF EXISTS data_exam_org_city;
+CREATE TABLE data_exam_org_city(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	code varchar(50) not null comment'编码',
+	name varchar(50) not null comment'名称',
+	PRIMARY KEY (id)
+);
+DROP TABLE IF EXISTS data_exam_org_county;
+CREATE TABLE data_exam_org_county(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	code varchar(50) not null comment'编码',
+	name varchar(50) not null comment'名称',
+	PRIMARY KEY (id)
+);
+DROP TABLE IF EXISTS data_exam_org_school;
+CREATE TABLE data_exam_org_county(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	code varchar(50) not null comment'编码',
+	name varchar(50) not null comment'名称',
+	PRIMARY KEY (id)
+);
+DROP TABLE IF EXISTS data_exam_org_clazz;
+CREATE TABLE data_exam_org_clazz(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	schoolCode varchar(50) not null comment'名称',
+	schoolName varchar(50) not null comment'名称',
+	code varchar(50) not null comment'编码',
+	name varchar(50) not null comment'名称',
+	groupValue varchar(50) default '' comment'名称',
+	PRIMARY KEY (id)
+);
+DROP TABLE IF EXISTS data_exam_org_teachClazz;
+CREATE TABLE data_exam_org_teachClazz(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	schoolCode varchar(50) not null comment'名称',
+	schoolName varchar(50) not null comment'名称',
+	code varchar(50) not null comment'编码',
+	name varchar(50) not null comment'名称',
+	groupValue varchar(50) default '' comment'名称',
+	PRIMARY KEY (id)
+);
+
+DROP TABLE IF EXISTS data_exam_org_x_school;
+CREATE TABLE data_exam_org_x_school(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	provinceCode varchar(50) default '' comment'名称',
+	provinceName varchar(50) default '' comment'名称',
+	cityCode varchar(50) default '' comment'名称',
+	cityName varchar(50) default '' comment'名称',
+	countyCode varchar(50) default '' comment'名称',
+	countyName varchar(50) default '' comment'名称',
+	schoolCode varchar(50) not null comment'名称',
+	schoolName varchar(50) not null comment'名称',
+	PRIMARY KEY (id)
+);
+DROP TABLE IF EXISTS data_exam_import_filed;
+CREATE TABLE data_exam_import_filed(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	subjectId bigint default 0 comment'科目ID,当科目id为0的时候代表报名库里面的字段',
+	code varchar(50) default '' comment'代码名称',
+	name varchar(50) default '' comment'名称',
+	hasValue boolean default 1 comment'是否右值',
+	PRIMARY KEY (id)
+);
+DROP TABLE IF EXISTS data_exam_subject_version;
+CREATE TABLE data_exam_subject_version(
+	id int not null AUTO_INCREMENT,
+	examId bigint not null comment'考试ID',
+	subjectId bigint default 0 comment'科目ID,当科目id为0的时候代表报名库里面的字段',
+	previousVesrion int default 0 comment'上一个版本号',
+	curVesrion int default 0 comment'当前版本号',
+	PRIMARY KEY (id)
+);
+
+
+
+

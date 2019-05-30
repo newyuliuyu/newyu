@@ -22,6 +22,8 @@ public interface ExamDao {
 
     int updateExamLevel(@Param("exam") Exam exam);
 
+    int updateExamWLAndLevel(@Param("exam") Exam exam);
+
     int deleteExam(@Param("examId") long examId);
 
     Exam getExam(@Param("examId") long examId);

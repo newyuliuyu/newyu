@@ -122,6 +122,7 @@ public class ListAPITest {
 
         double sumScore  = scoreInfos.stream().reduce(0d,(v1,v2)->v1+v2.getScore()*v2.getNum(),(v1,v2)->v1+v2);
 
+
         System.out.println(sumScore);
         System.out.println(100*20+80*20+76*20+50*20+40*20);
 

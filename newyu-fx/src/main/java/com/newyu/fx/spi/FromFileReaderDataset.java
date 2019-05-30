@@ -7,19 +7,20 @@ import com.newyu.domain.org.*;
 import com.newyu.fx.Dataset;
 import com.newyu.fx.FxContext;
 import com.newyu.fx.ReaderDataset;
+import com.newyu.service.data.FromRowDataReader;
+import com.newyu.service.data.OrgMgr;
 import com.newyu.utils.io.file.FileProcess;
 import com.newyu.utils.io.file.FileProcessUtil;
 import com.newyu.utils.io.file.Rowdata;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.MessageFormat;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -41,13 +42,16 @@ public class FromFileReaderDataset implements ReaderDataset {
 
     private Path fileDirPath;
 
-    public static FromFileReaderDataset newInstance(String fileDirPath) {
-        return newInstance(Paths.get(fileDirPath));
+    private Set<StudentExtendField> studentExtendFields;
+
+    public static FromFileReaderDataset newInstance(String fileDirPath, Set<StudentExtendField> extendFields) {
+        return newInstance(Paths.get(fileDirPath), extendFields);
     }
 
-    public static FromFileReaderDataset newInstance(Path fileDirPath) {
+    public static FromFileReaderDataset newInstance(Path fileDirPath, Set<StudentExtendField> studentExtendFields) {
         FromFileReaderDataset result = new FromFileReaderDataset();
         result.fileDirPath = fileDirPath;
+        result.studentExtendFields = studentExtendFields;
         return result;
     }
 
@@ -61,21 +65,13 @@ public class FromFileReaderDataset implements ReaderDataset {
     }
 
     private void readBmk() {
-        Map<String, School> schoolMap = new HashMap<>(16);
-        Map<String, Clazz> clazzMap = new HashMap<>(16);
-        Map<String, City> cityMap = new HashMap<>(16);
-        Map<String, County> countyMap = new HashMap<>(16);
-        Map<String, Province> provinceMap = new HashMap<>(32);
+        OrgMgr orgMgr = new OrgMgr();
+
         FileProcess fileProcess = FileProcessUtil.getFileProcess(fileDirPath.resolve("bmk.csv"));
         try {
             while (fileProcess.next()) {
                 Rowdata rowdata = fileProcess.getRowdata();
-                Province province = getProvince(rowdata, provinceMap);
-                City city = getCity(rowdata, cityMap);
-                County county = getCounty(rowdata, countyMap);
-                School school = getSchool(rowdata, schoolMap);
-                Clazz clazz = getClazz(rowdata, schoolMap, clazzMap);
-                StudentCj studentCj = getStudentCj(rowdata);
+                StudentCj studentCj = getStudentCj(rowdata, orgMgr);
                 dataset.add(studentCj);
             }
         } finally {
@@ -83,122 +79,12 @@ public class FromFileReaderDataset implements ReaderDataset {
         }
     }
 
-    private StudentCj getStudentCj(Rowdata rowdata) {
-
-
-        String name = rowdata.getData("name");
-        String zkzh = rowdata.getData("zkzh");
-        String code = rowdata.getData("code");
-        String ownId = rowdata.getData("ownId");
-        String wl = rowdata.getData("wl");
-
-
-        StudentCj studentCj = StudentCj.builder().name(name)
-                .zkzh(zkzh)
-                .code(code)
-                .ownId(ownId)
-                .wl(getWLType(wl))
+    private StudentCj getStudentCj(Rowdata rowdata, OrgMgr orgMgr) {
+        Student student = FromRowDataReader.getStudent(rowdata, studentExtendFields, orgMgr);
+        StudentCj studentCj = StudentCj.builder()
+                .student(student)
                 .build();
         return studentCj;
-    }
-
-    private WLType getWLType(String wl) {
-        int wlValue = Integer.parseInt(wl);
-        WLType[] wlTypes = WLType.values();
-        for (WLType wlType : wlTypes) {
-            if (wlType.getCode() == wlValue) {
-                return wlType;
-            }
-        }
-        return WLType.Not_Branch_Subject;
-    }
-
-    private Province getProvince(Rowdata rowdata, Map<String, Province> provinceMap) {
-        String code = rowdata.getData("provinceCode");
-        String name = rowdata.getData("provinceName");
-        if (StringUtils.isBlank(code) && StringUtils.isBlank(name)) {
-            Province province = provinceMap.get(code);
-            if (province == null) {
-                province = Province.builder().code(code).name(name).build();
-                provinceMap.put(code, province);
-            }
-            return province;
-        }
-        return null;
-    }
-
-    private City getCity(Rowdata rowdata, Map<String, City> cityMap) {
-        String code = rowdata.getData("cityCode");
-        String name = rowdata.getData("cityName");
-        if (StringUtils.isBlank(code) && StringUtils.isBlank(name)) {
-            City city = cityMap.get(code);
-            if (city == null) {
-                city = City.builder().code(code).name(name).build();
-                cityMap.put(code, city);
-            }
-            return city;
-        }
-        return null;
-    }
-
-    private County getCounty(Rowdata rowdata, Map<String, County> countyMap) {
-        String code = rowdata.getData("countyCode");
-        String name = rowdata.getData("countyName");
-        if (StringUtils.isBlank(code) && StringUtils.isBlank(name)) {
-            County county = countyMap.get(code);
-            if (county == null) {
-                county = County.builder().code(code).name(name).build();
-                countyMap.put(code, county);
-            }
-            return county;
-        }
-        return null;
-    }
-
-    private School getSchool(Rowdata rowdata, Map<String, School> schoolMap) {
-        String code = rowdata.getData("schoolCode");
-        String name = rowdata.getData("schoolName");
-        if (StringUtils.isBlank(code) && StringUtils.isBlank(name)) {
-            School school = schoolMap.get(code);
-            if (school == null) {
-                school = School.builder().code(code).name(name).build();
-                schoolMap.put(code, school);
-            }
-            return school;
-        }
-        return null;
-    }
-
-    private Clazz getClazz(Rowdata rowdata, Map<String, School> schoolMap, Map<String, Clazz> clazzMap) {
-        School school = getSchool(rowdata, schoolMap);
-        String code = rowdata.getData("clazzCode");
-        String name = rowdata.getData("clazzName");
-        if (StringUtils.isBlank(code) && StringUtils.isBlank(name)) {
-            Clazz clazz = clazzMap.get(code);
-            if (clazz == null) {
-                clazz = Clazz.builder().code(code).name(name).build();
-                clazz.setSchool(school);
-                clazzMap.put(code, clazz);
-            }
-            return clazz;
-        }
-        return null;
-    }
-
-    private TeachClazz getTeachClazz(String subjectName, School school, Rowdata rowdata, Map<String, TeachClazz> teachClazzMap) {
-        String code = rowdata.getData("teachClazzCode");
-        String name = rowdata.getData("teachClazzName");
-        if (StringUtils.isBlank(code) && StringUtils.isBlank(name)) {
-            TeachClazz teachClazz = teachClazzMap.get(code);
-            if (teachClazz == null) {
-                teachClazz = TeachClazz.teachClazzBuilder().code(code).name(name).build();
-                teachClazz.setSubjectName(subjectName);
-                teachClazz.setSchool(school);
-                teachClazzMap.put(code, teachClazz);
-            }
-            return teachClazz;
-        }
-        return null;
     }
 
 
@@ -224,7 +110,8 @@ public class FromFileReaderDataset implements ReaderDataset {
                     log.warn(msg);
                     continue;
                 }
-                TeachClazz teachClazz = getTeachClazz(subject.getName(), studentCj.get().getSchool(), rowdata, teachClazzMap);
+
+                TeachClazz teachClazz = FromRowDataReader.getTeachClazz(subject.getName(), studentCj.get().getStudent().getSchool(), rowdata, teachClazzMap);
                 SubjectCj subjectCj = getSubjectCj(subject, rowdata);
                 studentCj.get().addSubjectCj(subjectCj);
                 subjectCj.setTeachClazz(teachClazz);

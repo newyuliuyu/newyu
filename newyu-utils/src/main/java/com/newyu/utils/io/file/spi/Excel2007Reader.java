@@ -11,6 +11,7 @@ import com.google.common.collect.Lists;
 import com.newyu.utils.io.file.FileProcess;
 import com.newyu.utils.io.file.HeaderMetadata;
 import com.newyu.utils.io.file.Rowdata;
+import com.newyu.utils.tool.FileUtil;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.model.SharedStringsTable;
@@ -66,7 +67,8 @@ public class Excel2007Reader implements FileProcess {
     }
 
     private void readData() throws Exception {
-        OPCPackage pkg = OPCPackage.open(filepath.toFile());
+
+        OPCPackage pkg = OPCPackage.open(FileUtil.read(filepath.toString()));
         XSSFReader reader = new XSSFReader(pkg);
         SharedStringsTable sst = reader.getSharedStringsTable();
 

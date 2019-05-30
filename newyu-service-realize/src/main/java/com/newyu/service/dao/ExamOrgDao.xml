@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.newyu.service.dao.ExamOrgDao">
+
+    <insert id="saveProinces">
+        insert into data_exam_org_province(examId,code,name)
+        values
+        <foreach collection="orgs" item="item" index="index" separator=",">
+            (#{examId},#{item.code},#{item.name})
+        </foreach>
+    </insert>
+    <insert id="saveCitys">
+        insert into data_exam_org_city(examId,code,name)
+        values
+        <foreach collection="orgs" item="item" index="index" separator=",">
+            (#{examId},#{item.code},#{item.name})
+        </foreach>
+    </insert>
+    <insert id="saveCountys">
+        insert into data_exam_org_county(examId,code,name)
+        values
+        <foreach collection="orgs" item="item" index="index" separator=",">
+            (#{examId},#{item.code},#{item.name})
+        </foreach>
+    </insert>
+    <insert id="saveSchools">
+        insert into data_exam_org_school(examId,code,name)
+        values
+        <foreach collection="orgs" item="item" index="index" separator=",">
+            (#{examId},#{item.code},#{item.name})
+        </foreach>
+    </insert>
+    <insert id="saveClazzes">
+        insert into data_exam_org_clazz(examId,schoolCode,schoolName,code,name,groupValue)
+        values
+        <foreach collection="orgs" item="item" index="index" separator=",">
+            (#{examId},#{item.school.code},#{item.school.name},#{item.code},#{item.name},#{item.group})
+        </foreach>
+    </insert>
+    <insert id="saveTeacherClazz">
+        insert into data_exam_org_teachClazz(examId,schoolCode,schoolName,code,name,groupValue)
+        values
+        <foreach collection="orgs" item="item" index="index" separator=",">
+            (#{examId},#{item.school.code},#{item.school.name},#{item.code},#{item.name},#{item.group})
+        </foreach>
+    </insert>
+    <insert id="saveOrgXSchool">
+        insert into
+        data_exam_org_x_school(examId,provinceCode,provinceName,cityCode,cityName,countyCode,countyName,schoolCode,schoolName)
+        values
+        <foreach collection="orgs" item="item" index="index" separator=",">
+            (#{examId},#{item.province.code},#{item.province.name},#{item.city.code},#{item.city.name},#{item.county.code},#{item.county.name},#{item.school.code},#{item.school.name})
+        </foreach>
+    </insert>
+
+    <delete id="deleteProinces">
+        delete from data_exam_org_province where examId=#{examId}
+    </delete>
+    <delete id="deleteCitys">
+        delete from data_exam_org_city where examId=#{examId}
+    </delete>
+    <delete id="deleteCountys">
+        delete from data_exam_org_county where examId=#{examId}
+    </delete>
+    <delete id="deleteSchools">
+        delete from data_exam_org_school where examId=#{examId}
+    </delete>
+    <delete id="deleteClazzes">
+        delete from data_exam_org_clazz where examId=#{examId}
+    </delete>
+    <delete id="deleteTeachers">
+        delete from data_exam_org_teachClazz where examId=#{examId}
+    </delete>
+    <delete id="deleteOrgXSchool">
+        delete from data_exam_org_x_school where examId=#{examId}
+    </delete>
+
+
+</mapper>

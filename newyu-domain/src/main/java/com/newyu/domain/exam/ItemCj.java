@@ -19,7 +19,7 @@ import lombok.*;
 @ToString(of = {"itemId", "itemName", "score", "selected"})
 @Builder
 public class ItemCj {
-    private int itemId;
+    private long itemId;
     private String itemName;
     private double score;
     private String selected = "";

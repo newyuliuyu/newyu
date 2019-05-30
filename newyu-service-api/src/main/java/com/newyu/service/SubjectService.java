@@ -44,12 +44,29 @@ public interface SubjectService {
     int updateSubject(Subject subject);
 
     /**
+     * 修改科目分值
+     *
+     * @param subject
+     * @return
+     */
+    int updateSubjectScore(Subject subject);
+
+
+    /**
      * 删除一个科目
      *
      * @param subject
      * @return
      */
     int deleteSubject(Subject subject);
+
+    /**
+     * 删除科目的細目表
+     *
+     * @param subject
+     * @return
+     */
+    int deleteSubjectItem(Subject subject);
 
     /**
      * 获取一个科目

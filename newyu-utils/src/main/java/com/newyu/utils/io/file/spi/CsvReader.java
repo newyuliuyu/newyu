@@ -10,7 +10,9 @@ package com.newyu.utils.io.file.spi;
 import com.newyu.utils.io.file.FileProcess;
 import com.newyu.utils.io.file.HeaderMetadata;
 import com.newyu.utils.io.file.Rowdata;
-import org.apache.commons.io.FileUtils;
+import com.newyu.utils.tool.FileUtil;
+import org.apache.commons.io.Charsets;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +47,9 @@ public class CsvReader implements FileProcess {
 
     private void init(String encoding) {
         try {
-            lines = FileUtils.readLines(filepath.toFile(), encoding);
+
+            lines = IOUtils.readLines(FileUtil.read(filepath.toString()), Charsets.toCharset(encoding));
+            //FileUtils.readLines(filepath.toFile(), encoding);
             if (lines.isEmpty()) {
                 throw new RuntimeException(String.format("csv文件%s没有数据", filepath));
             }

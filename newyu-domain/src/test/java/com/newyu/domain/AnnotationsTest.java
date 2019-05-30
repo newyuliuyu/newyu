@@ -32,9 +32,10 @@ public class AnnotationsTest {
         System.out.println();
 
     }
+
     @Test
     public void test2() throws Exception {
-        Item item = Item.builder().id(1).build();
+        Item item = Item.builder().id(1L).build();
 
 
         System.out.println();

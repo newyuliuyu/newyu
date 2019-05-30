@@ -2,7 +2,6 @@ package com.newyu.controller.data;
 
 import com.newyu.domain.commons.UploadFile;
 import com.newyu.domain.dto.ExamDatasource;
-import com.newyu.domain.dto.SubjectAddItemCj;
 import com.newyu.domain.dto.SubjectDatasource;
 import com.newyu.utils.excel.ExcelTable;
 import com.newyu.utils.excel.ExcelTableBuilder;
@@ -10,7 +9,10 @@ import com.newyu.utils.excel.Row;
 import com.newyu.utils.excel.Table;
 import com.newyu.utils.spring.ModelAndViewFactory;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -50,9 +52,9 @@ public class ProcessDataController {
         return ModelAndViewFactory.instance("").build();
     }
 
-    @RequestMapping("/update/subject/add/item")
+    @RequestMapping("/update/subject/add/item/{subjectId}")
     public ModelAndView updateSubjectAddItem(@PathVariable long subjectId,
-                                             @RequestBody SubjectAddItemCj subjectAddItemCj,
+                                             @RequestBody SubjectDatasource subjectDatasource,
                                              HttpServletRequest request,
                                              HttpServletResponse response) throws Exception {
         log.debug("处理一次考试科目数据....");
@@ -118,8 +120,7 @@ public class ProcessDataController {
         Table table = new Table();
         Row row = new Row();
         table.addHeader(row);
-        row.add("准考证号", "学号", "学生唯一ID", "文理",
-                "教学班代码", "教学班名称", "教学班分组", "缺考", "总分",
+        row.add("准考证号", "教学班代码", "教学班名称", "教学班分组", "缺考", "总分",
                 "客观题总分", "主观题总分", "x题", "x题选项");
         ExcelTable et = new ExcelTable();
         et.addSheet("成績");
@@ -143,7 +144,8 @@ public class ProcessDataController {
         Table table = new Table();
         Row row = new Row();
         table.addHeader(row);
-        row.add("题号", "选择题类型", "正确答案", "可选项", "知识点", "能力结构", "题型", "科目", "满分", "是否选做题", "选做题规则", "对应字段", "题块", "大题号");
+        row.add("题号", "选择题类型", "正确答案", "可选项", "知识点", "能力结构", "题型",
+                "科目", "满分", "是否选做题", "选做题规则", "对应字段", "题块", "大题号", "小题号");
 
         row = new Row();
         row.setHeight(150);

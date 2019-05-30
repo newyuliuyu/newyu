@@ -2,8 +2,9 @@ package com.newyu.service.data;
 
 import com.newyu.domain.commons.UploadFile;
 import com.newyu.domain.dto.ExamDatasource;
-import com.newyu.domain.dto.SubjectAddItemCj;
 import com.newyu.domain.dto.SubjectDatasource;
+import com.newyu.domain.exam.Exam;
+import com.newyu.domain.exam.Subject;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public interface ProcessDataService {
 
     void importExamData(ExamDatasource examDatasource);
 
-    void importExamDataOnlyZf(int scoreBeginColumn, ExamDatasource examDatasource);
+    List<Subject> importExamDataOnlyZf(int scoreBeginColumn, ExamDatasource examDatasource);
 
-    void updateBmk(long eamId, List<UploadFile> bmks);
+    void updateBmk(Exam exam, List<UploadFile> bmks);
 
-    void updateSubjectCj(long examId, List<SubjectDatasource> subjectDatasources);
+    void updateSubjectCj(Exam exam, List<SubjectDatasource> subjectDatasources);
 
-    void addSubjectItemCj(long subjectId, SubjectAddItemCj subjectAddItemCj);
+    void addSubjectItemCj(Subject subject, SubjectDatasource subjectDatasource);
 }

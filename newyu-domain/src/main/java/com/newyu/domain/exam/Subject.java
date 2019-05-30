@@ -36,23 +36,29 @@ public class Subject {
     private Long id;
     private String name;
 
-    private WLType wl;
+    @Builder.Default
+    private WLType wl = WLType.Not_Branch_Subject;
+    @Builder.Default
     private int displayOrder = 0;
 
     private double fullScore;
     private double kgFullScore;
     private double zgFullScore;
 
+    @Builder.Default
     private String childSubjectNames = "";
     private List<Subject> childSubjects;
     /**
      * 如果该科目是从综合科目拆分出来的化需要设置它父级科目为综合科目,其他科目不用设置
      */
     private String parentSubject = "";
+    @Builder.Default
     private boolean childSubject = false;
-
+    @Builder.Default
     private boolean examSubject = true;
+    @Builder.Default
     private boolean multiSubject = false;
+    @Builder.Default
     private boolean fullSubject = false;
 
     private List<Item> items;
@@ -113,7 +119,7 @@ public class Subject {
     public List<Subject> splitChildSubject() {
         Multimap<String, Item> itemMultimap = Multimaps.index(items, x -> x.getOtherSubject());
         List<Subject> newChildSubjects = new ArrayList<>();
-        if (itemMultimap.size() < 1) {
+        if (itemMultimap.size() < 2) {
             return newChildSubjects;
         }
         StringBuilder newChildSubjectNames = new StringBuilder();
@@ -138,7 +144,7 @@ public class Subject {
         return newChildSubjects;
     }
 
-    private static void calcaluteSubjectScore(Subject subject) {
+    public static void calcaluteSubjectScore(Subject subject) {
         List<Item> items = subject.getItems();
         double kgScore = 0;
         double zgScore = 0;
