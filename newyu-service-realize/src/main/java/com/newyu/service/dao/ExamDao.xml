@@ -3,8 +3,11 @@
 <mapper namespace="com.newyu.service.dao.ExamDao">
 
     <insert id="createExam">
-      insert into data_exam(id,name,examState,gradeName,entranceSchoolYear,semester,learningSegment,examLevel,beginTiemstamp,endTiemstamp,createTiemstamp,sourceId)
-      values(#{exam.id},#{exam.name},#{exam.state},#{exam.gradeName},#{exam.entranceSchoolYear},#{exam.semester},#{exam.learningSegment},#{exam.examLevel},#{exam.beginTiemstamp},#{exam.endTimestamp},#{exam.createTimestamp})
+      insert into data_exam(id,name,examState,gradeName,entranceSchoolYear,semester,learningSegment,examLevel,
+      beginTimestamp,endTimestamp,createTimestamp,sourceId,examType)
+      values(#{exam.id},#{exam.name},#{exam.state},#{exam.gradeName},#{exam.entranceSchoolYear},#{exam.semester},
+      #{exam.learningSegment},#{exam.examLevel},#{exam.beginTimestamp},#{exam.endTimestamp},#{exam.createTimestamp},
+      #{exam.sourceId},#{exam.examType})
     </insert>
 
     <update id="updateExamState">
@@ -29,16 +32,16 @@
 
     <select id="getExam" resultType="com.newyu.domain.exam.Exam">
         select id,name,examState as state,gradeName,entranceSchoolYear,
-        semester,learningSegment,examLevel,beginTiemstamp,
-        endTiemstamp,createTiemstamp,sourceId
+        semester,learningSegment,examLevel,beginTimestamp,
+        endTimestamp,createTimestamp,sourceId,examType
         from data_exam a
         where a.id=#{examId}
     </select>
 
     <select id="getExamFromSourceId" resultType="com.newyu.domain.exam.Exam">
         select id,name,examState as state,gradeName,entranceSchoolYear,
-        semester,learningSegment,examLevel,beginTiemstamp,
-        endTiemstamp,createTiemstamp,sourceId
+        semester,learningSegment,examLevel,beginTimestamp,
+        endTimestamp,createTimestamp,sourceId,examType
         from data_exam a where a.sourceId=#{sourceId}
     </select>
 </mapper>

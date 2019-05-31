@@ -16,51 +16,51 @@ public enum GradeName implements GenericEnum {
     /**
      *
      */
-    Grade1("一年级", 1),
+    OneGrade("一年级", 1),
     /**
      *
      */
-    Grade2("二年级", 2),
+    TwoGrade("二年级", 2),
     /**
      *
      */
-    Grade3("三年级", 3),
+    ThreeGrade("三年级", 3),
     /**
      *
      */
-    Grade4("四年级", 4),
+    FourGrade("四年级", 4),
     /**
      *
      */
-    Grade5("五年级", 5),
+    FiveGrade("五年级", 5),
     /**
      *
      */
-    Grade6("六年级", 6),
+    SixGrade("六年级", 6),
     /**
      *
      */
-    Grade7("初一", 7),
+    Chuyi("初一", 7),
     /**
      *
      */
-    Grade8("初二", 8),
+    Chuer("初二", 8),
     /**
      *
      */
-    Grade9("初三", 9),
+    Chusan("初三", 9),
     /**
      *
      */
-    Grade10("高一", 10),
+    Gaoyi("高一", 10),
     /**
      *
      */
-    Grade11("高二", 11),
+    Gaoer("高二", 11),
     /**
      *
      */
-    Grade12("高三", 12);
+    Gaosan("高三", 12);
 
     private String name;
     private int code;

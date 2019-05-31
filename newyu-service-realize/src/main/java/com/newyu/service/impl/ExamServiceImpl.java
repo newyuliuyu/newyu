@@ -1,8 +1,10 @@
 package com.newyu.service.impl;
 
+import com.google.common.collect.Lists;
 import com.newyu.domain.exam.Exam;
 import com.newyu.service.ExamService;
 import com.newyu.service.dao.ExamDao;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,7 @@ import java.util.List;
  * @since JDK 1.7+
  */
 @Service
+@Slf4j
 public class ExamServiceImpl implements ExamService {
 
     @Autowired
@@ -63,7 +66,10 @@ public class ExamServiceImpl implements ExamService {
 
     @Override
     public List<Exam> queryHistoryExam(long exam) {
-        return null;
+        if (true) {
+            throw new RuntimeException("暂时还没有实现");
+        }
+        return Lists.newArrayList();
     }
 
     @Override

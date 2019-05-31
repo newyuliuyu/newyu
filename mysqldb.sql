@@ -1,19 +1,19 @@
 DROP TABLE IF EXISTS data_exam;
 CREATE TABLE data_exam(
-	id bigint not null comment'考试ID 由系统业务系统生成',
-	name varchar(255) not null comment'考试名字',
-	examState int default 0 comment'考试状态 0新建考试 1分析成功 2正在分析 3分析失败 4分析等待 ',
-	gradeName varchar(5) default '' comment'考试的年级名称',
-	entranceSchoolYear int default 0 comment'入学年份',
-	semester int default 1 comment'学期 1上学期 2下学期',
-	learningSegment int default 1 comment'学段1小学 2初中 3高中 4其他',
-	examLevel int default 4 comment'考试级别 1省级 2地市级考试 3区县级考试 4学校级考试 5联考',
-	eamType varchar(30) default '' comment'考试类型',
-	beginTiemstamp bigint default 0 comment'考试开始时间',
-	endTiemstamp bigint default 0 comment'考试开始时间',
-	createTiemstamp bigint default 0 comment'考试开始时间',
-	sourceId varchar(32) default '' comment'考试数据来源唯一ID',
-	wl tinyint default 0 comment'考试文理数据 0不分文理，1 理科 2 文科 3 文理分科',
+	id                  bigint        not null    comment'考试ID 由系统业务系统生成',
+	name                varchar(255)  not null    comment'考试名字',
+	examState           int           default 0   comment'考试状态 0新建考试 1分析成功 2正在分析 3分析失败 4分析等待 ',
+	gradeName           varchar(5)    default ''  comment'考试的年级名称',
+	entranceSchoolYear  int           default 0   comment'入学年份',
+	semester            int           default 1   comment'学期 1上学期 2下学期',
+	learningSegment     int           default 1   comment'学段1小学 2初中 3高中 4其他',
+	examLevel           int           default 4   comment'考试级别 1省级 2地市级考试 3区县级考试 4学校级考试 5联考',
+	examType             varchar(30)   default ''  comment'考试类型',
+	beginTimestamp      bigint        default 0   comment'考试开始时间',
+	endTimestamp        bigint        default 0   comment'考试开始时间',
+	createTimestamp     bigint        default 0   comment'考试开始时间',
+	sourceId            varchar(32)   default ''  comment'考试数据来源唯一ID',
+	wl                  tinyint       default 0   comment'考试文理数据 0不分文理，1 理科 2 文科 3 文理分科',
 	PRIMARY KEY (id)
 );
 
@@ -52,10 +52,10 @@ CREATE TABLE data_exam_subject_item(
   answer varchar(15) default '' comment '正确选项',
   fullOptional varchar(15) default 'ABCD' comment '题目选项列表,默认为ABCD',
   otherSubject varchar(20) default '' comment '综合科目包含的科目，如理综包含物理化学生物',
-  choice boolean default 0 commit '是否是选做题',
+  choice boolean default 0 comment '是否是选做题',
   choiceInfo varchar(255) default '' comment '选做题规则："从12,13中选1题每题10分"',
   fieldName varchar(20) default '' comment '非选择题对应的成绩数据表中的字段索引，需要根据它查找对应的项',
-  displayOrder int default 0 commit '顺序号',
+  displayOrder int default 0 comment '顺序号',
   titleBlock varchar(50) default '' comment '题块',
 	PRIMARY KEY (id)
 );
@@ -104,7 +104,7 @@ CREATE TABLE data_exam_org_county(
 	PRIMARY KEY (id)
 );
 DROP TABLE IF EXISTS data_exam_org_school;
-CREATE TABLE data_exam_org_county(
+CREATE TABLE data_exam_org_school(
 	id int not null AUTO_INCREMENT,
 	examId bigint not null comment'考试ID',
 	code varchar(50) not null comment'编码',

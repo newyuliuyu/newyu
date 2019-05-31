@@ -40,15 +40,15 @@ public class Exam {
     private Date createDate;
 
 
-    public long getBeginTiemstamp() {
+    public long getBeginTimestamp() {
         if (beginDate == null) {
             beginDate = new Date();
         }
-        return beginDate.getTime();
+        return beginDate.getTime()/1000;
     }
 
-    public void setBeginTiemstamp(long beginTiemstamp) {
-        this.beginDate = new Date(beginTiemstamp);
+    public void setBeginTimestamp(long beginTimestamp) {
+        this.beginDate = new Date(beginTimestamp*1000);
     }
 
     public long getEndTimestamp() {
@@ -56,21 +56,21 @@ public class Exam {
             endDate = new Date();
             Calendar calendar = Calendar.getInstance();
         }
-        return endDate.getTime();
+        return endDate.getTime()/1000;
     }
 
     public void setEndTimestamp(long endTimestamp) {
-        this.endDate = new Date(endTimestamp);
+        this.endDate = new Date(endTimestamp*1000);
     }
 
     public long getCreateTimestamp() {
         if (createDate == null) {
             createDate = new Date();
         }
-        return createDate.getTime();
+        return createDate.getTime()/1000;
     }
 
     public void setCreateTimestamp(long createTimestamp) {
-        this.createDate = new Date(createTimestamp);
+        this.createDate = new Date(createTimestamp*1000);
     }
 }
