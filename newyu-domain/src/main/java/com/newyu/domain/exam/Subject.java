@@ -51,6 +51,7 @@ public class Subject {
     /**
      * 如果该科目是从综合科目拆分出来的化需要设置它父级科目为综合科目,其他科目不用设置
      */
+    @Builder.Default
     private String parentSubject = "";
     @Builder.Default
     private boolean childSubject = false;

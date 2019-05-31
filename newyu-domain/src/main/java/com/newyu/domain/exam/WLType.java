@@ -22,7 +22,7 @@ public enum WLType implements GenericEnum {
     /**
      *
      */
-    Like("理科", 0),
+    Like("理科", 1),
 
     /**
      *
