@@ -43,10 +43,10 @@ public class SubjectServiceImplTest {
                 .zgFullScore(50)
                 .childSubjectNames("语文,英语")
                 .parentSubject("总分")
-//                .childSubject(false)
-//                .examSubject(true)
-//                .multiSubject(false)
-//                .fullSubject(false)
+                .childSubject(false)
+                .examSubject(true)
+                .multiSubject(false)
+                .fullSubject(false)
                 .build();
 
         subjectService.createSubject(subject);
@@ -107,5 +107,12 @@ public class SubjectServiceImplTest {
                 .build();
         subjectService.updateSubjectScore(subject);
     }
+
+    @Test
+    public void getSubject() throws Exception{
+        Subject subject = subjectService.getSubject(4);
+        System.out.println();
+    }
+
 
 }
