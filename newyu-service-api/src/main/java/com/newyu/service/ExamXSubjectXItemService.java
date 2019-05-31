@@ -18,13 +18,19 @@ import java.util.List;
 public interface ExamXSubjectXItemService {
 
     /**
-     * 查询一次考试的所有科目
+     * 查询一次考试的所有科目带有小题信息
      *
      * @param examId
      * @return
      */
     List<Subject> querySubjectOfExam(long examId);
 
+    /**
+     * 查询一个科目带有小题信息
+     * @param subjectId
+     * @return
+     */
+    Subject querySubject(long subjectId);
 
 
     /**

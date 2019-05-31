@@ -33,7 +33,7 @@ public interface SubjectDao {
 
     Subject getSubjectForName(@Param("examId") long examId, @Param("subjectName") String subjectName);
 
-    List<Subject> querySubject(@Param("subjectId") long subjectId);
+    Subject querySubject(@Param("subjectId") long subjectId);
 
     List<Subject> querySubjects(@Param("examId") long examId);
 

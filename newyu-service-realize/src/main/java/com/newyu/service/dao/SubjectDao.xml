@@ -67,7 +67,7 @@
         <result property="examSubject" column="examSubject"/>
         <result property="multiSubject" column="multiSubject"/>
         <result property="fullSubject" column="fullSubject"/>
-        <collection property="items" ofType="com.newyu.domain.exam.Item">
+        <collection property="items" javaType="java.util.ArrayList" ofType="com.newyu.domain.exam.Item">
             <id property="id" column="itemId"/>
             <result property="name" column="itemName"/>
             <result property="score" column="itemScore"/>

@@ -72,7 +72,7 @@ public class Subject {
 
     public List<Item> getItems() {
         if (items == null) {
-            return Lists.newArrayList();
+            items = Lists.newArrayList();
         }
         return items;
     }

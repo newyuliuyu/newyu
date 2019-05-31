@@ -36,6 +36,11 @@ public class ExamXSubjectXItemServiceImpl implements ExamXSubjectXItemService {
 
 
     @Override
+    public Subject querySubject(long subjectId) {
+        return subjectDao.querySubject(subjectId);
+    }
+
+    @Override
     public List<SubjectDataVersion> querySubjectDataVersion(long examId) {
         return subjectDataVersionDao.list(examId);
     }
