@@ -19,5 +19,5 @@ public interface SysConfigCode {
     /**
      * 文件保存的地方
      */
-    public static final String saveDir = "upload.dir";
+    public static final String saveDir = "save.dir";
 }

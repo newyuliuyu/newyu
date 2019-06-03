@@ -23,8 +23,8 @@ import java.util.Set;
  */
 public class FromRowDataReader {
     public static Province getProvince(Rowdata rowdata, Map<String, Province> provinceMap) {
-        String code = rowdata.getData("provinceCode,省代码");
-        String name = rowdata.getData("provinceName,省名称");
+        String code = rowdata.getData("provinceCode", "省代码");
+        String name = rowdata.getData("provinceName", "省名称");
         if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(name)) {
             Province province = provinceMap.get(code);
             if (province == null) {
@@ -37,8 +37,8 @@ public class FromRowDataReader {
     }
 
     public static City getCity(Rowdata rowdata, Map<String, City> cityMap) {
-        String code = rowdata.getData("cityCode,地市代码");
-        String name = rowdata.getData("cityName,地市名称");
+        String code = rowdata.getData("cityCode", "地市代码");
+        String name = rowdata.getData("cityName", "地市名称");
         if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(name)) {
             City city = cityMap.get(code);
             if (city == null) {
@@ -51,8 +51,8 @@ public class FromRowDataReader {
     }
 
     public static County getCounty(Rowdata rowdata, Map<String, County> countyMap) {
-        String code = rowdata.getData("countyCode,区县代码");
-        String name = rowdata.getData("countyName,区县名称");
+        String code = rowdata.getData("countyCode", "区县代码");
+        String name = rowdata.getData("countyName", "区县名称");
         if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(name)) {
             County county = countyMap.get(code);
             if (county == null) {
@@ -65,8 +65,8 @@ public class FromRowDataReader {
     }
 
     public static School getSchool(Rowdata rowdata, Map<String, School> schoolMap) {
-        String code = rowdata.getData("schoolCode,学校代码");
-        String name = rowdata.getData("schoolName,学校名称");
+        String code = rowdata.getData("schoolCode", "学校代码");
+        String name = rowdata.getData("schoolName", "学校名称");
         if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(name)) {
             School school = schoolMap.get(code);
             if (school == null) {
@@ -80,9 +80,9 @@ public class FromRowDataReader {
 
     public static Clazz getClazz(Rowdata rowdata, Map<String, School> schoolMap, Map<String, Clazz> clazzMap, int wl) {
         School school = getSchool(rowdata, schoolMap);
-        String code = rowdata.getData("clazzCode,班级代码");
-        String name = rowdata.getData("clazzName,班级名称");
-        String clazzGroup = rowdata.getData("clazzGroup,班级分组");
+        String code = rowdata.getData("clazzCode", "班级代码");
+        String name = rowdata.getData("clazzName", "班级名称");
+        String clazzGroup = rowdata.getData("clazzGroup", "班级分组");
         if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(name)) {
             Clazz clazz = clazzMap.get(code);
             if (clazz == null) {
@@ -96,9 +96,9 @@ public class FromRowDataReader {
     }
 
     public static TeachClazz getTeachClazz(String subjectName, School school, Rowdata rowdata, Map<String, TeachClazz> teachClazzMap) {
-        String code = rowdata.getData("teachClazzCode,教学班代码");
-        String name = rowdata.getData("teachClazzName,教学班名称");
-        String clazzGroup = rowdata.getData("teachClazzGroup,教学班分组");
+        String code = rowdata.getData("teachClazzCode", "教学班代码");
+        String name = rowdata.getData("teachClazzName", "教学班名称");
+        String clazzGroup = rowdata.getData("teachClazzGroup", "教学班分组");
         if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(name)) {
             TeachClazz teachClazz = teachClazzMap.get(code);
             if (teachClazz == null) {
@@ -114,11 +114,11 @@ public class FromRowDataReader {
 
     public static Student getStudent(Rowdata rowdata, Set<StudentExtendField> studentExtendFields, OrgMgr orgMgr) {
 
-        String name = rowdata.getData("name");
-        String zkzh = rowdata.getData("zkzh");
-        String code = rowdata.getData("code");
-        String ownId = rowdata.getData("ownId");
-        String wl = rowdata.getData("wl");
+        String name = rowdata.getData("name", "姓名");
+        String zkzh = rowdata.getData("zkzh", "准考证号");
+        String code = rowdata.getData("code", "学号");
+        String ownId = rowdata.getData("ownId", "学生ID");
+        String wl = rowdata.getData("wl", "文理");
         Student student = Student.builder()
                 .name(name)
                 .zkzh(zkzh)
@@ -150,7 +150,8 @@ public class FromRowDataReader {
         Map<String, String> valueMap = Maps.newHashMap();
         if (studentExtendFields != null) {
             for (StudentExtendField studentExtendField : studentExtendFields) {
-                String value = rowdata.getData(studentExtendField.getCode());
+                String[] fileds = studentExtendField.getFileName().split("\\|");
+                String value = rowdata.getData(fileds);
                 if (StringUtils.isNotBlank(value)) {
                     valueMap.put(studentExtendField.getCode(), value);
                 }
