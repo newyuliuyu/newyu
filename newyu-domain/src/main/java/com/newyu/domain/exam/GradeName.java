@@ -1,6 +1,6 @@
 package com.newyu.domain.exam;
 
-import com.newyu.utils.mybatis.GenericEnum;
+import com.newyu.utils.mybatis.NameEnum;
 
 /**
  * ClassName: GradeName <br/>
@@ -12,7 +12,7 @@ import com.newyu.utils.mybatis.GenericEnum;
  * @version v1.0
  * @since JDK 1.7+
  */
-public enum GradeName implements GenericEnum {
+public enum GradeName implements NameEnum {
     /**
      *
      */
@@ -71,7 +71,7 @@ public enum GradeName implements GenericEnum {
     }
 
 
-    @Override
+
     public int getCode() {
         return code;
     }

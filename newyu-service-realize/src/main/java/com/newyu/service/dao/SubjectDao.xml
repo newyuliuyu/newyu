@@ -32,6 +32,11 @@
         zgFullScore=#{subject.zgFullScore}
         where id=#{subject.id}
     </update>
+    <update id="updateSubjectWL">
+        update data_exam_subject
+        set wl=#{subject.wl}
+        where id=#{subject.id}
+    </update>
 
     <delete id="deleteSubject">
         delete from data_exam_subject  where id=#{subject.id}

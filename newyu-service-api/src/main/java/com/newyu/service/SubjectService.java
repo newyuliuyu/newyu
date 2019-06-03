@@ -21,6 +21,8 @@ import java.util.stream.Collectors;
  */
 public interface SubjectService {
 
+    int updateSubjectWL(Subject subject);
+
     /**
      * 创建科目
      *

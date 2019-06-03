@@ -1,6 +1,7 @@
 package com.newyu.domain.exam;
 
-import com.newyu.utils.mybatis.GenericEnum;
+import com.newyu.utils.mybatis.CodeEnum;
+
 
 /**
  * ClassName: WLType <br/>
@@ -12,7 +13,7 @@ import com.newyu.utils.mybatis.GenericEnum;
  * @version v1.0
  * @since JDK 1.7+
  */
-public enum WLType implements GenericEnum {
+public enum WLType implements CodeEnum {
 
     /**
      *
@@ -43,7 +44,7 @@ public enum WLType implements GenericEnum {
         return code;
     }
 
-    @Override
+
     public String getName() {
         return name;
     }

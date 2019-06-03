@@ -87,11 +87,12 @@ public class AppConfig {
         bean.setDataSource(ds);
         bean.setMapperLocations(resources);
 
+//        new NameEnumCodeHandler<GradeName>();
 
         TypeHandler[] typeHandlers = new TypeHandler[]{
+                new NameEnumCodeHandler(GradeName.class),
                 new CodeEnumCodeHandler(ExamState.class),
                 new CodeEnumCodeHandler(ExamLevel.class),
-                new NameEnumCodeHandler(GradeName.class),
                 new CodeEnumCodeHandler(LearningSegment.class),
                 new CodeEnumCodeHandler(Semester.class),
         };
@@ -102,6 +103,7 @@ public class AppConfig {
         properties.put("param1", "value1");
         pageInterceptor.setProperties(properties);
         bean.setPlugins(new Interceptor[]{pageInterceptor});
+
 
         return bean;
     }

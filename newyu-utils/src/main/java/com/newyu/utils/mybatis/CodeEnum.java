@@ -18,8 +18,6 @@ package com.newyu.utils.mybatis;
  * @version v1.0
  * @since JDK 1.7+
  */
-public interface GenericEnum {
+public interface CodeEnum {
 	int getCode();
-
-	String getName();
 }

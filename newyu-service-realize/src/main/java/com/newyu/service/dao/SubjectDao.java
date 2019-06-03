@@ -25,6 +25,8 @@ public interface SubjectDao {
 
     int updateSubjectScore(@Param("subject") Subject subject);
 
+    int updateSubjectWL(@Param("subject")Subject subject);
+
     int deleteSubject(@Param("subject") Subject subject);
 
     int deleteSubjectItem(@Param("subject") Subject subject);
@@ -36,6 +38,8 @@ public interface SubjectDao {
     Subject querySubject(@Param("subjectId") long subjectId);
 
     List<Subject> querySubjects(@Param("examId") long examId);
+
+
 
     //////////////////////////////////////////////////////////////////////////////
     void createItem(@Param("item") Item item);

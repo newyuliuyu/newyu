@@ -50,7 +50,7 @@ public class GradeNameOrderHelper {
     public static GradeInfo getGradeInfo(String gradeName, Date date) {
 
         GradeInfo gradeInfo = new GradeInfo();
-
+        gradeInfo.setGradeName(gradeName);
         int month = Integer.parseInt(Dateutil.getMonth(date));
         int year = Integer.parseInt(Dateutil.getYear(date));
 

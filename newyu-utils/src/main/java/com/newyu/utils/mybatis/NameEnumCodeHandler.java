@@ -25,10 +25,10 @@ import java.sql.SQLException;
  * @version v1.0
  * @since JDK 1.7+
  */
-public class NameEnumCodeHandler extends BaseTypeHandler<GenericEnum> {
-    private final GenericEnum[] enums;
+public class NameEnumCodeHandler extends BaseTypeHandler<NameEnum> {
+    private final NameEnum[] enums;
 
-    public NameEnumCodeHandler(Class<? extends GenericEnum> type) {
+    public NameEnumCodeHandler(Class<? extends NameEnum> type) {
         if (type == null) {
             throw new IllegalArgumentException("Type argument cannot be null");
         }
@@ -39,13 +39,13 @@ public class NameEnumCodeHandler extends BaseTypeHandler<GenericEnum> {
     }
 
     @Override
-    public void setNonNullParameter(PreparedStatement ps, int i, GenericEnum parameter, JdbcType jdbcType)
+    public void setNonNullParameter(PreparedStatement ps, int i, NameEnum parameter, JdbcType jdbcType)
             throws SQLException {
         ps.setString(i, parameter.getName());
     }
 
     @Override
-    public GenericEnum getNullableResult(ResultSet rs, String columnName) throws SQLException {
+    public NameEnum getNullableResult(ResultSet rs, String columnName) throws SQLException {
         // 根据数据库存储类型决定获取类型，本例子中数据库中存放字符类型
         String i = rs.getString(columnName);
         if (rs.wasNull()) {
@@ -57,7 +57,7 @@ public class NameEnumCodeHandler extends BaseTypeHandler<GenericEnum> {
     }
 
     @Override
-    public GenericEnum getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
+    public NameEnum getNullableResult(ResultSet rs, int columnIndex) throws SQLException {
         // 根据数据库存储类型决定获取类型，本例子中数据库中存放字符类型
         String i = rs.getString(columnIndex);
         if (rs.wasNull()) {
@@ -69,7 +69,7 @@ public class NameEnumCodeHandler extends BaseTypeHandler<GenericEnum> {
     }
 
     @Override
-    public GenericEnum getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
+    public NameEnum getNullableResult(CallableStatement cs, int columnIndex) throws SQLException {
         // 根据数据库存储类型决定获取类型，本例子中数据库中存放字符类型
         String i = cs.getString(columnIndex);
         if (cs.wasNull()) {
@@ -83,12 +83,11 @@ public class NameEnumCodeHandler extends BaseTypeHandler<GenericEnum> {
     /**
      * 枚举类型转换，由于构造函数获取了枚举的子类enums，让遍历更加高效快捷
      *
-     * @param code
-     *            数据库中存储的自定义code属性
+     * @param code 数据库中存储的自定义code属性
      * @return code对应的枚举类
      */
-    private GenericEnum locateEnumStatus(String name) {
-        for (GenericEnum status : enums) {
+    private NameEnum locateEnumStatus(String name) {
+        for (NameEnum status : enums) {
             if (status.getName().equals(name)) {
                 return status;
             }

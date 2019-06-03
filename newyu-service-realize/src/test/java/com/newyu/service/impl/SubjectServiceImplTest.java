@@ -109,7 +109,22 @@ public class SubjectServiceImplTest {
     }
 
     @Test
-    public void getSubject() throws Exception{
+    public void updateSubjectWL() throws Exception {
+        Subject subject = Subject.builder()
+                .examId(1L)
+                .id(2L)
+                .name("语文2")
+                .wl(WLType.Like)
+                .displayOrder(1)
+                .fullScore(100)
+                .kgFullScore(50)
+                .zgFullScore(50)
+                .build();
+        subjectService.updateSubjectWL(subject);
+    }
+
+    @Test
+    public void getSubject() throws Exception {
         Subject subject = subjectService.getSubject(4);
         System.out.println();
     }

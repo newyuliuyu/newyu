@@ -61,4 +61,9 @@ public class SubjectServiceImpl implements SubjectService {
     public Subject getSubject(long subjectId) {
         return subjectDao.getSubject(subjectId);
     }
+
+    @Override
+    public int updateSubjectWL(Subject subject) {
+        return subjectDao.updateSubjectWL(subject);
+    }
 }

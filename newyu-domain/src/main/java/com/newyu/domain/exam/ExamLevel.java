@@ -1,6 +1,6 @@
 package com.newyu.domain.exam;
 
-import com.newyu.utils.mybatis.GenericEnum;
+import com.newyu.utils.mybatis.CodeEnum;
 
 /**
  * ClassName: ExamType <br/>
@@ -12,7 +12,7 @@ import com.newyu.utils.mybatis.GenericEnum;
  * @version v1.0
  * @since JDK 1.7+
  */
-public enum ExamLevel implements GenericEnum {
+public enum ExamLevel implements CodeEnum {
     /**
      *
      */
@@ -48,7 +48,7 @@ public enum ExamLevel implements GenericEnum {
         return code;
     }
 
-    @Override
+
     public String getName() {
         return name;
     }
