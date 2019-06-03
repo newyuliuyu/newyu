@@ -22,7 +22,7 @@ import java.util.List;
  */
 @Service
 @Slf4j
-public class ExamOrgImpl implements ExamOrgService {
+public class ExamOrgServiceImpl implements ExamOrgService {
     @Autowired
     private ExamOrgDao examOrgDao;
 

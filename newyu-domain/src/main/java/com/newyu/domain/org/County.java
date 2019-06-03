@@ -19,7 +19,7 @@ import lombok.*;
 @ToString(callSuper = true)
 public class County extends Org {
     @Builder
-    private County(String name, String code) {
-        super(name, code);
+    private County(String code,String name) {
+        super(code,name);
     }
 }

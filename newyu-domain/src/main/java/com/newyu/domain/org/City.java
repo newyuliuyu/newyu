@@ -19,8 +19,8 @@ import lombok.*;
 @ToString(callSuper = true)
 public class City extends Org {
     @Builder
-    private City(String name, String code) {
-        super(name, code);
+    private City(String code,String name) {
+        super(code,name);
     }
 }
 
