@@ -70,22 +70,28 @@ public class ProcessDataServiceImpl implements ProcessDataService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public List<Subject> importExamDataOnlyZf(int scoreBeginColumn, ExamDatasource examDatasource) {
+    public List<Subject> importExamDataOnlyZf(ExamDatasource examDatasource) {
         ExamDatasourceConvertExam examDatasourceConvertExam = new ExamDatasourceConvertExam(examService, idGenerator);
         Exam exam = examDatasourceConvertExam.convert(examDatasource);
         updateBmk(exam, examDatasource.getBmks());
-        ProcessOnlyZFCj processOnlyZFCj = new ProcessOnlyZFCj(idGenerator, exam, scoreBeginColumn, examDatasource.getBmks().get(0), getSaveFileDir());
+
+        List<Subject> subjects = saveSubjects(exam, examDatasource.getSubjectDatasources());
+        ProcessOnlyZFCj processOnlyZFCj = new ProcessOnlyZFCj(exam, subjects, examDatasource.getBmks().get(0), getSaveFileDir());
         processOnlyZFCj.proces();
-        List<Subject> subjects = processOnlyZFCj.getSubjects();
-        saveSubjects(subjects);
         return subjects;
     }
 
-    private void saveSubjects(List<Subject> subjects) {
-        for (Subject subject : subjects) {
+    private List<Subject> saveSubjects(Exam exam, List<SubjectDatasource> subjectDatasources) {
+        List<Subject> subjects = Lists.newArrayList();
+        for (SubjectDatasource subjectDatasource : subjectDatasources) {
+            Subject subject =subjectDatasource.toSubject();
+            subjects.add(subject);
+            subject.setExamId(exam.getId());
+            subject.setId(idGenerator.nextId());
             subjectService.createSubject(subject);
             udpateSubjectDataVerion(subject);
         }
+        return subjects;
     }
 
     @Override
@@ -144,6 +150,7 @@ public class ProcessDataServiceImpl implements ProcessDataService {
             updateSubjectCj(exam, subjectDatasource);
         }
     }
+
     @Transactional(rollbackFor = Exception.class)
     public void updateSubjectCj(Exam exam, SubjectDatasource subjectDatasource) {
         SubjectDatasourceConvertSubject convertSubject = new SubjectDatasourceConvertSubject(examXSubjectXItemService, subjectService, idGenerator);

@@ -70,9 +70,8 @@ public class ProcessDataController {
         return ModelAndViewFactory.instance("").build();
     }
 
-    @RequestMapping("/exam/onlyZf/{scoreBeginColumnIdx}")
-    public ModelAndView examOnlyZf(@PathVariable() int scoreBeginColumnIdx,
-                                   @RequestBody ExamDatasource examDatasource,
+    @RequestMapping("/exam/onlyZf")
+    public ModelAndView examOnlyZf(@RequestBody ExamDatasource examDatasource,
                                    HttpServletRequest request,
                                    HttpServletResponse response) throws Exception {
         log.debug("处理一次考试数据....");

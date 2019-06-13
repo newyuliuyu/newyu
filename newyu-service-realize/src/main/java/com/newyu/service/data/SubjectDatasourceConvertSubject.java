@@ -30,13 +30,12 @@ public class SubjectDatasourceConvertSubject {
     }
 
     public Subject convert(long examId, SubjectDatasource subjectDatasource) {
-        Subject subject = examXSubjectXItemService.getSubject(examId, subjectDatasource.getSubjectName());
+        Subject oldSubject= subjectDatasource.toSubject();
+        Subject subject = examXSubjectXItemService.getSubject(examId, oldSubject.getName());
         if (subject == null) {
-            subject = new Subject();
+            subject = oldSubject;
             subject.setExamId(examId);
             subject.setId(idGenerator.nextId());
-            subject.setName(subjectDatasource.getSubjectName());
-            subject.setFullScore(subjectDatasource.getFullScore());
             subjectService.createSubject(subject);
         }
         return subject;

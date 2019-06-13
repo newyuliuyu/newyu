@@ -22,7 +22,7 @@ public interface ProcessDataService {
 
     void importExamData(ExamDatasource examDatasource);
 
-    List<Subject> importExamDataOnlyZf(int scoreBeginColumn, ExamDatasource examDatasource);
+    List<Subject> importExamDataOnlyZf(ExamDatasource examDatasource);
 
     void updateBmk(Exam exam, List<UploadFile> bmks);
 

@@ -1,6 +1,7 @@
 package com.newyu.domain.dto;
 
 import com.newyu.domain.commons.UploadFile;
+import com.newyu.domain.exam.Subject;
 import lombok.*;
 
 /**
@@ -31,4 +32,11 @@ public class SubjectDatasource {
      * 切割方案
      */
     private UploadFile cuttingPlan;
+
+    public Subject toSubject(){
+        return Subject.builder()
+                .name(subjectName)
+                .fullScore(fullScore)
+                .build();
+    }
 }

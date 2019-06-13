@@ -4,7 +4,6 @@ import com.google.common.collect.Lists;
 import com.newyu.domain.commons.UploadFile;
 import com.newyu.domain.exam.Exam;
 import com.newyu.domain.exam.Subject;
-import com.newyu.utils.id.IdGenerator;
 import com.newyu.utils.io.file.FileProcess;
 import com.newyu.utils.io.file.FileProcessUtil;
 import com.newyu.utils.io.file.Rowdata;
@@ -37,9 +36,7 @@ public class ProcessOnlyZFCj {
     private Exam exam;
     private UploadFile cjFile;
     private Path saveDirPath;
-    private int scoreBeginColumn;
-    private IdGenerator idGenerator;
-    private List<Subject> subjects = Lists.newArrayList();
+    private List<Subject> subjects;
     private static final String LINE_SEPARATOR;
 
     static {
@@ -51,11 +48,10 @@ public class ProcessOnlyZFCj {
         out.close();
     }
 
-    public ProcessOnlyZFCj(IdGenerator idGenerator, Exam exam, int scoreBeginColumn, UploadFile cjFile, String saveDir) {
+    public ProcessOnlyZFCj( Exam exam, List<Subject> subjects, UploadFile cjFile, String saveDir) {
         this.exam = exam;
-        this.idGenerator = idGenerator;
         this.cjFile = cjFile;
-        this.scoreBeginColumn = scoreBeginColumn;
+        this.subjects = subjects;
         saveDirPath = Paths.get(saveDir, exam.getId() + "");
     }
 
@@ -66,7 +62,6 @@ public class ProcessOnlyZFCj {
     public boolean proces() {
         FileProcess fileProcess = FileProcessUtil.getFileProcess(cjFile.getNewFile());
         try {
-            createSubjects(fileProcess.getHeaderMetadata().getHeaderNames());
             List<Rowdata> dataset = readerData(fileProcess);
             for (Subject subject : subjects) {
                 saveSubjectCj(subject, dataset);
@@ -92,15 +87,6 @@ public class ProcessOnlyZFCj {
         FileUtil.save(byteArrayInputStream, savePath);
     }
 
-    private void createSubjects(List<String> header) {
-        for (int i = scoreBeginColumn - 1; i < header.size(); i++) {
-            Subject subject = new Subject();
-            subject.setExamId(exam.getId());
-            subject.setId(idGenerator.nextId());
-            subject.setName(header.get(i));
-            subjects.add(subject);
-        }
-    }
 
     private List<Rowdata> readerData(FileProcess fileProcess) {
         List<Rowdata> result = Lists.newArrayList();
