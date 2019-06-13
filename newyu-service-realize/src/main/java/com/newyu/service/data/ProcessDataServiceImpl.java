@@ -84,7 +84,7 @@ public class ProcessDataServiceImpl implements ProcessDataService {
     private List<Subject> saveSubjects(Exam exam, List<SubjectDatasource> subjectDatasources) {
         List<Subject> subjects = Lists.newArrayList();
         for (SubjectDatasource subjectDatasource : subjectDatasources) {
-            Subject subject =subjectDatasource.toSubject();
+            Subject subject = subjectDatasource.toSubject();
             subjects.add(subject);
             subject.setExamId(exam.getId());
             subject.setId(idGenerator.nextId());
@@ -161,6 +161,7 @@ public class ProcessDataServiceImpl implements ProcessDataService {
 
     private void updateSubjectXmb(Exam exam, Subject subject, SubjectDatasource subjectDatasource) {
         if (subjectDatasource.getXmb() == null) {
+            log.info("[{}]没有細目表", subject);
             return;
         }
         ProcessItem processItem = new ProcessItem(idGenerator, exam, subject, processUploadFile(subjectDatasource.getXmb()), getSaveFileDir());
