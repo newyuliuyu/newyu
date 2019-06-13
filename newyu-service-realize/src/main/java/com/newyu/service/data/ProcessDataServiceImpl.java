@@ -144,14 +144,24 @@ public class ProcessDataServiceImpl implements ProcessDataService {
             updateSubjectCj(exam, subjectDatasource);
         }
     }
-
+    @Transactional(rollbackFor = Exception.class)
     public void updateSubjectCj(Exam exam, SubjectDatasource subjectDatasource) {
         SubjectDatasourceConvertSubject convertSubject = new SubjectDatasourceConvertSubject(examXSubjectXItemService, subjectService, idGenerator);
         Subject subject = convertSubject.convert(exam.getId(), subjectDatasource);
+        updateSubjectXmb(exam, subject, subjectDatasource);
+        updateSubjectCj(exam, subject, subjectDatasource);
+    }
+
+    private void updateSubjectXmb(Exam exam, Subject subject, SubjectDatasource subjectDatasource) {
+        if (subjectDatasource.getXmb() == null) {
+            return;
+        }
         ProcessItem processItem = new ProcessItem(idGenerator, exam, subject, processUploadFile(subjectDatasource.getXmb()), getSaveFileDir());
         processItem.process();
         updateSubjectCj(subject);
+    }
 
+    private void updateSubjectCj(Exam exam, Subject subject, SubjectDatasource subjectDatasource) {
         ProcessCj processCj = new ProcessCj(exam, subject, processUploadFile(subjectDatasource.getCj()), getSaveFileDir());
         processCj.proces();
         udpateSubjectDataVerion(subject);

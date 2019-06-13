@@ -73,7 +73,6 @@ public class ProcessCj {
 
     private void processCjFile() {
         FileProcess fileProcess = FileProcessUtil.getFileProcess(cjFile.getNewFile());
-        List<Item> items = Lists.newArrayList();
         try {
             ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
             byte[] data = (String.join(",", getHeaderLine()) + LINE_SEPARATOR).getBytes("UTF-8");
@@ -119,9 +118,9 @@ public class ProcessCj {
     }
 
     private void checkTeachClazz(Rowdata rowdata) {
-        String code = rowdata.getData("教学班代码");
-        String name = rowdata.getData("教学班名称");
-        String group = rowdata.getData("教学班分组");
+        String code = rowdata.getData("teachClazzCode", "教学班代码");
+        String name = rowdata.getData("teachClazzName", "教学班名称");
+        String group = rowdata.getData("teachClazzGroup", "教学班分组");
         if (StringUtils.isNotBlank(code) && StringUtils.isNotBlank(name)) {
             ImportFiled importFiled = ImportFiled.builder()
                     .subject(subject)
@@ -146,23 +145,23 @@ public class ProcessCj {
         checkTeachClazz(rowdata);
 
 
-        String zkzh = rowdata.getData("准考证号");
+        String zkzh = rowdata.getData("zkzh", "准考证号");
         if (StringUtils.isBlank(zkzh)) {
             String msg = MessageFormat.format("[{0}]学生没有准考证号", subject);
             throw new RuntimeException(msg);
         }
-        String qk = rowdata.getData("缺考");
+        String qk = rowdata.getData("qk", "缺考");
         qk = StringUtils.isBlank(qk) ? "0" : qk;
 
         List<String> result = Lists.newArrayList();
         result.add(zkzh);
-        result.add(rowdata.getData("教学班代码"));
-        result.add(rowdata.getData("教学班名称"));
-        result.add(rowdata.getData("教学班分组"));
+        result.add(rowdata.getData("teachClazzCode", "教学班代码"));
+        result.add(rowdata.getData("teachClazzName", "教学班名称"));
+        result.add(rowdata.getData("teachClazzGroup", "教学班分组"));
         result.add(qk);
 
-        String value = rowdata.getData("总分");
-        if (NumberHelper.isNumeric(value)) {
+        String value = rowdata.getData("zf", "总分");
+        if (!NumberHelper.isNumeric(value)) {
             String msg = MessageFormat.format("[{0}],学生:{1}的总分成绩不是数字[{2}]", subject, zkzh, value);
             throw new RuntimeException(msg);
         }
@@ -171,14 +170,14 @@ public class ProcessCj {
         List<Item> items = subject.getItems();
         if (!items.isEmpty()) {
 
-            value = rowdata.getData("客观题总分");
-            if (NumberHelper.isNumeric(value)) {
+            value = rowdata.getData("kgScore", "kgzf", "客观题总分");
+            if (!NumberHelper.isNumeric(value)) {
                 String msg = MessageFormat.format("[{0}],学生:{1}的客观题总分成绩不是数字[{2}]", subject, zkzh, value);
                 throw new RuntimeException(msg);
             }
             result.add(value);
-            value = rowdata.getData("主观题总分");
-            if (NumberHelper.isNumeric(value)) {
+            value = rowdata.getData("zgScore", "zgzf", "主观题总分");
+            if (!NumberHelper.isNumeric(value)) {
                 String msg = MessageFormat.format("[{0}],学生:{1}的主观题总分成绩不是数字[{2}]", subject, zkzh, value);
                 throw new RuntimeException(msg);
             }
@@ -190,7 +189,7 @@ public class ProcessCj {
                     filed = item.getName();
                 }
                 value = rowdata.getData(filed);
-                if (NumberHelper.isNumeric(value)) {
+                if (!NumberHelper.isNumeric(value)) {
                     String msg = MessageFormat.format("[{0},{1}],学生:{2}的主观题总分成绩不是数字[{3}]", subject, item, zkzh, value);
                     throw new RuntimeException(msg);
                 }

@@ -21,7 +21,9 @@ public class SubjectDatasourceConvertSubject {
     private IdGenerator idGenerator;
     private ExamXSubjectXItemService examXSubjectXItemService;
 
-    public SubjectDatasourceConvertSubject(ExamXSubjectXItemService examXSubjectXItemService, SubjectService subjectService, IdGenerator idGenerator) {
+    public SubjectDatasourceConvertSubject(ExamXSubjectXItemService examXSubjectXItemService,
+                                           SubjectService subjectService,
+                                           IdGenerator idGenerator) {
         this.subjectService = subjectService;
         this.idGenerator = idGenerator;
         this.examXSubjectXItemService = examXSubjectXItemService;

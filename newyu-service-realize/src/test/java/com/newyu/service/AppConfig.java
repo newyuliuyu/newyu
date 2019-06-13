@@ -18,6 +18,8 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
 import java.util.Properties;
@@ -34,6 +36,7 @@ import java.util.Properties;
  */
 @Configurable
 @ComponentScan({"com.newyu.service.**"})
+@EnableTransactionManagement
 //@PropertySource("classpath:ds.properties")
 //@MapperScan(basePackages = {"com.newyu.**.dao"}, sqlSessionFactoryRef = "sqlSessionFactoryBean")
 public class AppConfig {
@@ -77,6 +80,13 @@ public class AppConfig {
     @Bean(name = "ds")
     public DataSource dataSource(DatasourceProperties datasourceProperties) {
         return InitDataSource.init(datasourceProperties);
+    }
+
+    @Bean
+    public DataSourceTransactionManager dataSourceTransactionManager(DataSource ds) {
+        DataSourceTransactionManager manager = new DataSourceTransactionManager();
+        manager.setDataSource(ds);
+        return manager;
     }
 
     @Bean(name = "sqlSessionFactoryBean")

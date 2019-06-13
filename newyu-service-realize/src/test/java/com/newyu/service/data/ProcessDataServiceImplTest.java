@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import com.newyu.domain.commons.SysConfig;
 import com.newyu.domain.commons.UploadFile;
 import com.newyu.domain.dto.ExamDatasource;
+import com.newyu.domain.dto.SubjectDatasource;
 import com.newyu.domain.exam.Exam;
 import com.newyu.service.AppConfig;
 import com.newyu.service.ExamService;
@@ -35,7 +36,7 @@ import java.util.List;
 public class ProcessDataServiceImplTest {
 
     @Autowired
-    private ProcessDataServiceImpl processDataService;
+    private ProcessDataService processDataService;
     @Autowired
     ExamService examService;
     @Autowired
@@ -76,6 +77,20 @@ public class ProcessDataServiceImplTest {
                 .newFile("没有其他数据.xlsx")
                 .build());
         processDataService.updateBmk(exam, bmks);
+    }
+
+    @Test
+    public void importCj() throws Exception {
+        Exam exam = getExam();
+        List<SubjectDatasource> subjectDatasources = Lists.newArrayList();
+        subjectDatasources.add(SubjectDatasource.builder()
+                .subjectName("语文")
+                .fullScore(0)
+                .xmb(UploadFile.builder().newFile("语文系目表.xlsx").build())
+                .cj(UploadFile.builder().newFile("语文成绩.xls").build())
+                .build());
+        processDataService.updateSubjectCj(exam, subjectDatasources);
+
     }
 
 

@@ -45,6 +45,7 @@ public class ProcessItem {
         this.xmb = xmb;
         this.saveDirPath = Paths.get(saveDir, exam.getId() + "");
         this.subject = subject;
+        this.idGenerator = idGenerator;
     }
 
     public boolean process() {
