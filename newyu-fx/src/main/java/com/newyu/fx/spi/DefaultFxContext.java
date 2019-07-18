@@ -11,6 +11,7 @@ import com.newyu.service.ExamService;
 import com.newyu.service.ExamXSubjectXItemService;
 import com.newyu.service.FxParamService;
 import com.newyu.service.SubjectService;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
 import java.util.function.Predicate;
@@ -25,6 +26,7 @@ import java.util.function.Predicate;
  * @version v1.0
  * @since JDK 1.7+
  */
+@Slf4j
 public class DefaultFxContext implements FxContext {
 
     private ExamService examService;
@@ -76,6 +78,7 @@ public class DefaultFxContext implements FxContext {
     }
 
     private void prepareCheck() {
+        log.debug("数据准备验证。。。");
         Preconditions.checkNotNull(examService, "考试服务类不能为null");
         Preconditions.checkNotNull(examXSubjectXItemService, "考试科目题目服务类不能为null");
         Preconditions.checkNotNull(fxParamService, "分析参数务类不能为null");
@@ -89,16 +92,19 @@ public class DefaultFxContext implements FxContext {
     }
 
     private void setExam() {
+        log.debug("加载考试信息");
         examBaseInfoMgr.setExam(examService.getExam(examId));
     }
 
     private void setSubjects() {
+        log.debug("加载考试科目信息");
         List<Subject> subjects = examXSubjectXItemService.querySubjectOfExam(examId);
         SubjectService.setChildSubject(subjects);
         examBaseInfoMgr.setSubjects(subjects);
     }
 
     private void setSubjectDataVersions() {
+        log.debug("加载科目数据版本信息");
         List<SubjectDataVersion> subjectDataVersions = examXSubjectXItemService.querySubjectDataVersion(examId);
         examBaseInfoMgr.setSubjectDataVersions(subjectDataVersions);
     }

@@ -14,6 +14,7 @@ import com.newyu.utils.io.file.Rowdata;
 import com.newyu.utils.tool.FileUtil;
 import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
+import org.apache.poi.xssf.eventusermodel.XSSFReader.SheetIterator;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,7 +24,6 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import java.io.InputStream;
 import java.nio.file.Path;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -39,6 +39,9 @@ import java.util.List;
 public class Excel2007Reader implements FileProcess {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
     private Path filepath;
+    private OPCPackage pkg;
+    private XSSFReader reader;
+    private List<String> sheetNames = Lists.newArrayList();
 
     private List<Excel2007Cell[]> dataset = Lists.newArrayList();
     private HeaderMetadata headerMetadata = new HeaderMetadata();
@@ -51,31 +54,59 @@ public class Excel2007Reader implements FileProcess {
 
     private void open() {
         try {
-            readData();
-            int rowNum = dataset.size();
-            headerMetadata.setTotalRow(rowNum);
-
-            Excel2007Cell[] row = dataset.get(curRowIdx);
-            for (Excel2007Cell value : row) {
-                String v = value.getValue() == null ? "" : value.getValue();
-                headerMetadata.addHeaderName(v, value.getColIdx());
-            }
-            curRowIdx += 1;
+            pkg = OPCPackage.open(FileUtil.read(filepath.toString()));
+            reader = new XSSFReader(pkg);
+            createSheetNames();
+            changeSheet(sheetNames.get(0));
         } catch (Exception e) {
             throw new RuntimeException(String.format("打开xls文件%s出错", filepath), e);
         }
     }
 
-    private void readData() throws Exception {
+    private void createSheetNames() throws Exception {
+        SheetIterator sheets = (SheetIterator) reader.getSheetsData();
+        while (sheets.hasNext()) {
+            sheets.next();
+            sheetNames.add(sheets.getSheetName());
+        }
+    }
 
-        OPCPackage pkg = OPCPackage.open(FileUtil.read(filepath.toString()));
-        XSSFReader reader = new XSSFReader(pkg);
+    public List<String> getSheetNames() {
+        return sheetNames;
+    }
+
+    public void changeSheet(String sheetName) {
+        try {
+            readData(sheetName);
+        } catch (Exception e) {
+            throw new RuntimeException("切换工作簿出错", e);
+        }
+
+    }
+
+    private void readData(String sheetName) throws Exception {
+        dataset = Lists.newArrayList();
+        headerMetadata = new HeaderMetadata();
+        curRowIdx = 0;
+
+
         SharedStringsTable sst = reader.getSharedStringsTable();
+        SheetIterator sheets = (SheetIterator) reader.getSheetsData();
+        InputStream in = null;
+        boolean isFindSheetName = false;
+        while (sheets.hasNext()) {
+            in = sheets.next();
+            if (sheets.getSheetName().equals(sheetName)) {
+                isFindSheetName = true;
+                break;
+            }
+        }
 
-        Iterator<InputStream> ins = reader.getSheetsData();
-        InputStream in = ins.next();
+        if (!isFindSheetName) {
+            throw new RuntimeException("没有找到工作" + sheetName);
+        }
+
         InputSource sheetSource = new InputSource(in);
-
         XMLReader parser = XMLReaderFactory.createXMLReader("org.apache.xerces.parsers.SAXParser");
         SheetDataHandler handler = new SheetDataHandler(sst, new SetSheetData() {
             @Override
@@ -86,11 +117,21 @@ public class Excel2007Reader implements FileProcess {
         parser.setContentHandler(handler);
         try {
             parser.parse(sheetSource);
+
+            int rowNum = dataset.size();
+            headerMetadata.setTotalRow(rowNum);
+
+            Excel2007Cell[] row = dataset.get(curRowIdx);
+            for (Excel2007Cell value : row) {
+                String v = value.getValue() == null ? "" : value.getValue();
+                headerMetadata.addHeaderName(v, value.getColIdx());
+            }
+            curRowIdx += 1;
+
         } catch (Exception e) {
             throw e;
         } finally {
             in.close();
-            pkg.close();
         }
     }
 
@@ -101,6 +142,11 @@ public class Excel2007Reader implements FileProcess {
 
     @Override
     public boolean close() {
+        try {
+            pkg.close();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         return true;
     }
 

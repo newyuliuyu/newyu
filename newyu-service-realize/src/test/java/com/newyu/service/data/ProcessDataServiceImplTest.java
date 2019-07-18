@@ -58,6 +58,61 @@ public class ProcessDataServiceImplTest {
         SysConfigMgr.newInstance().addConfig(sysConfig);
     }
 
+    @Test
+    public void testImportExamData() throws Exception {
+
+        List<UploadFile> bmks = Lists.newArrayList();
+        bmks.add(UploadFile.builder()
+                .newFile("bmk.xls")
+                .build());
+
+        List<SubjectDatasource> subjectDatasources = Lists.newArrayList();
+        subjectDatasources.add(SubjectDatasource.builder()
+                .subjectName("语文")
+                .fullScore(0)
+                .xmb(UploadFile.builder().newFile("语文系目表.xlsx").build())
+                .cj(UploadFile.builder().newFile("语文成绩.xls").build())
+                .build());
+        subjectDatasources.add(SubjectDatasource.builder()
+                .subjectName("数学")
+                .fullScore(0)
+                .xmb(UploadFile.builder().newFile("数学系目表.xlsx").build())
+                .cj(UploadFile.builder().newFile("数学成绩.xls").build())
+                .build());
+        subjectDatasources.add(SubjectDatasource.builder()
+                .subjectName("英语")
+                .fullScore(0)
+                .xmb(UploadFile.builder().newFile("英语系目表.xlsx").build())
+                .cj(UploadFile.builder().newFile("英语成绩.xls").build())
+                .build());
+        subjectDatasources.add(SubjectDatasource.builder()
+                .subjectName("社会")
+                .fullScore(0)
+                .xmb(UploadFile.builder().newFile("社会系目表.xlsx").build())
+                .cj(UploadFile.builder().newFile("社会成绩.xls").build())
+                .build());
+        subjectDatasources.add(SubjectDatasource.builder()
+                .subjectName("科学")
+                .fullScore(0)
+                .xmb(UploadFile.builder().newFile("科学系目表.xlsx").build())
+                .cj(UploadFile.builder().newFile("科学成绩.xls").build())
+                .build());
+
+        ExamDatasource examDatasource = ExamDatasource.builder()
+                .examName("测试考试")
+                .examType("其他")
+                .gradeName("高一")
+                .beginDate(new Date())
+                .endDate(new Date())
+                .sourceId("test2")
+                .bmks(bmks)
+                .subjectDatasources(subjectDatasources)
+                .build();
+
+        processDataService.importExamData(examDatasource);
+
+    }
+
 
     @Test
     public void importBmk() throws Exception {
@@ -96,12 +151,12 @@ public class ProcessDataServiceImplTest {
 
     public Exam getExam() {
         ExamDatasource examDatasource = ExamDatasource.builder()
-                .examName("考试名字123")
+                .examName("测试考试")
                 .examType("其他")
                 .gradeName("高一")
                 .beginDate(new Date())
                 .endDate(new Date())
-                .sourceId("test1")
+                .sourceId("test2")
                 .build();
         ExamDatasourceConvertExam examDatasourceConvertExam = new ExamDatasourceConvertExam(examService, idGenerator);
         Exam exam = examDatasourceConvertExam.convert(examDatasource);

@@ -15,6 +15,9 @@
 
     <url></url>
 
+    <properties>
+        <spring.version>5.1.6.RELEASE</spring.version>
+    </properties>
 
     <dependencies>
         <dependency>
@@ -29,8 +32,20 @@
         </dependency>
         <dependency>
             <groupId>newyu</groupId>
+            <artifactId>newyu-service-api</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>newyu</groupId>
             <artifactId>newyu-service-realize</artifactId>
             <version>1.0-SNAPSHOT</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <version>${spring.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

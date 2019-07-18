@@ -7,6 +7,7 @@
  */
 package com.newyu.utils.io.file.spi;
 
+import com.google.common.collect.Lists;
 import com.newyu.utils.io.file.FileProcess;
 import com.newyu.utils.io.file.HeaderMetadata;
 import com.newyu.utils.io.file.Rowdata;
@@ -19,6 +20,8 @@ import java.nio.file.Path;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 /**
  * ClassName: XlsReader <br/>
@@ -39,32 +42,55 @@ public class ExcelReader implements FileProcess {
     private Sheet sheet;
     private HeaderMetadata headerMetadata = new HeaderMetadata();
     private int curRowIdx = 1;
+    private List<String> sheetNames = Lists.newArrayList();
 
     public ExcelReader(Path filepath) {
         this.filepath = filepath;
         open();
     }
 
+
     private void open() {
         try {
-
-//            wb = WorkbookFactory.create(filepath.toFile());
             wb = WorkbookFactory.create(FileUtil.read(filepath.toString()));
-            sheet = wb.getSheetAt(0);
-            int rowNum = sheet.getPhysicalNumberOfRows();
-            headerMetadata.setTotalRow(rowNum);
-
-            int firstRow = curRowIdx = sheet.getFirstRowNum();
-            Row row = sheet.getRow(firstRow);
-            int idx = 0;
-            for (Cell cell : row) {
-                String value = parse(cell);
-                headerMetadata.addHeaderName(value, idx++);
-            }
-            curRowIdx += 1;
+            createSheetNames();
+            changeSheet(sheetNames.get(0));
         } catch (Exception e) {
             throw new RuntimeException(String.format("打开xls文件%s出错", filepath), e);
         }
+    }
+
+    private void createSheetNames() {
+        Iterator<Sheet> iterator = wb.sheetIterator();
+        while (iterator.hasNext()) {
+            sheetNames.add(iterator.next().getSheetName());
+        }
+    }
+
+    public List<String> getSheetNames() {
+        return sheetNames;
+    }
+
+    public void changeSheet(String sheetName) {
+        sheet = wb.getSheet(sheetName);
+        openSheet();
+    }
+
+    private void openSheet() {
+        curRowIdx = 1;
+        headerMetadata = new HeaderMetadata();
+
+        int rowNum = sheet.getPhysicalNumberOfRows();
+        headerMetadata.setTotalRow(rowNum);
+
+        int firstRow = curRowIdx = sheet.getFirstRowNum();
+        Row row = sheet.getRow(firstRow);
+        int idx = 0;
+        for (Cell cell : row) {
+            String value = parse(cell);
+            headerMetadata.addHeaderName(value, idx++);
+        }
+        curRowIdx += 1;
     }
 
     @Override
@@ -169,7 +195,7 @@ public class ExcelReader implements FileProcess {
                 result = "";
                 break;
         }
-        return result.trim();
+        return result.trim().replaceAll("\\u00A0", "");
     }
 
 }

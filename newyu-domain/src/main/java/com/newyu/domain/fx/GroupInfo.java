@@ -4,6 +4,7 @@ import com.google.common.collect.Lists;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode(of = {"name", "groupFileds", "saveTo"})
+@ToString(of={"name","groupFileds","saveTo"})
 public class GroupInfo {
     private String name;
     private List<String> groupFileds = Lists.newArrayList();

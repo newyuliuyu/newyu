@@ -193,6 +193,17 @@ public class DatasetImpl implements Dataset<StudentCj> {
         return groupValue;
     }
 
+    private String getStudentPropertyFiled(String sourceFiled){
+//        Subject[语文].kkk
+
+
+        return "";
+    }
+
+    private String getFiled(String sourceFiled){
+        return "";
+    }
+
     private List<GroupDataset<StudentCj>> createGroupDataset(Multimap<GroupValue, StudentCj> groupStudentCjsMap) {
 
         Dataset<StudentCj> root = getRootDataset();

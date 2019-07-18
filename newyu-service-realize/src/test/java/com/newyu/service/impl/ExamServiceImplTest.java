@@ -2,6 +2,7 @@ package com.newyu.service.impl;
 
 import com.newyu.domain.exam.*;
 import com.newyu.service.AppConfig;
+import com.newyu.service.ExamService;
 import com.newyu.utils.id.IdGenerator;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,7 @@ import java.util.Date;
 public class ExamServiceImplTest {
 
     @Autowired
-    private ExamServiceImpl examService;
+    private ExamService examService;
 
     @Autowired
     private IdGenerator idGenerator;
@@ -38,7 +39,7 @@ public class ExamServiceImplTest {
 //    private ExamDao examDao;
 
     @Test
-    public void test() throws Exception{
+    public void test() throws Exception {
         Date date = new Date(1559284191000L);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         System.out.println(formatter.format(date));
@@ -67,7 +68,7 @@ public class ExamServiceImplTest {
     }
 
     @Test
-    public void udpateExamStatus()throws Exception{
+    public void udpateExamStatus() throws Exception {
         Exam exam = Exam.builder()
                 .id(1L)
                 .state(ExamState.analyzeWait)
@@ -78,13 +79,21 @@ public class ExamServiceImplTest {
         examService.updateExamLevel(exam);
         examService.updateExamWLAndLevel(exam);
     }
+
     @Test
     public void getExam() throws Exception {
 
         Exam exam = examService.getExam(1L);
 
-        Exam exam1=examService.getExamFromSourceId("123");
+        Exam exam1 = examService.getExamFromSourceId("123");
 
+        System.out.println();
+    }
+
+    @Test
+    public void getExam2() throws Exception {
+
+        Exam exam = examService.getExam(1135447716571254784L);
         System.out.println();
     }
 }

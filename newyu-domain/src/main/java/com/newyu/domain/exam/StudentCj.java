@@ -24,6 +24,7 @@ import java.util.Map;
 @Builder
 public class StudentCj {
     private Student student;
+    @Builder.Default
     private Map<String, SubjectCj> subjectCjs = Maps.newHashMap();
 
     public void addSubjectCj(SubjectCj subjectCj) {

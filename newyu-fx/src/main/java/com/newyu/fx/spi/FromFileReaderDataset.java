@@ -65,8 +65,8 @@ public class FromFileReaderDataset implements ReaderDataset {
     }
 
     private void readBmk() {
+        log.debug("加载报名库数据从[{}/bmk.csv]", fileDirPath);
         OrgMgr orgMgr = new OrgMgr();
-
         FileProcess fileProcess = FileProcessUtil.getFileProcess(fileDirPath.resolve("bmk.csv"));
         try {
             while (fileProcess.next()) {
@@ -98,6 +98,7 @@ public class FromFileReaderDataset implements ReaderDataset {
     }
 
     private void loadSubjectCj(Subject subject) {
+        log.debug("加载科目成绩从[{}/{}cj.csv]", fileDirPath, subject.getName());
         FileProcess fileProcess = FileProcessUtil.getFileProcess(fileDirPath.resolve(subject.getName() + "cj.csv"));
         Map<String, TeachClazz> teachClazzMap = Maps.newHashMap();
         try {
@@ -122,7 +123,7 @@ public class FromFileReaderDataset implements ReaderDataset {
                         setItemCjChoiced(subject, subjectCj);
                     } catch (Exception e) {
                         String msg = MessageFormat.format("学生[{0}]获取小题成绩出错", studentCj.get());
-                        throw new RuntimeException("", e);
+                        throw new RuntimeException(msg, e);
                     }
                 }
             }
@@ -148,7 +149,7 @@ public class FromFileReaderDataset implements ReaderDataset {
         List<ItemCj> itemCjs = Lists.newArrayList();
         List<Item> items = subject.getItems();
         for (Item item : items) {
-            String strScore = rowdata.getData(item.getName() + "得分");
+            String strScore = rowdata.getData(item.getName());
             double score = 0;
             try {
                 score = Double.parseDouble(strScore);

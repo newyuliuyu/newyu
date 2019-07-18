@@ -125,7 +125,7 @@ public class SubjectServiceImplTest {
 
     @Test
     public void getSubject() throws Exception {
-        Subject subject = subjectService.getSubject(4);
+        Subject subject = subjectService.getSubject(1138741963286290432L);
         System.out.println();
     }
 
