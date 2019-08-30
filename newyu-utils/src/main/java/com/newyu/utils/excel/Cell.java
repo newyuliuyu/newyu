@@ -17,6 +17,10 @@ public class Cell {
     private int mergeRow;
     private int mergeCol;
 
+    public Cell(){
+
+    }
+
     public Cell(Object vlaue) {
         this(vlaue, 0, 0);
     }

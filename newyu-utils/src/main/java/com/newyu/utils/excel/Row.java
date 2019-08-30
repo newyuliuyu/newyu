@@ -15,8 +15,13 @@ import java.util.List;
  * @since JDK 1.7+
  */
 public class Row {
+    private Table table;
     private List<Cell> cells;
     private float height = 0;
+
+    public void setTable(Table table) {
+        this.table = table;
+    }
 
     public float getHeight() {
         return height;
@@ -83,13 +88,23 @@ public class Row {
         Object[] result = new Object[cells.size()];
         int idx = 0;
         for (Cell cell : cells) {
-            Object value = "";
-            if (cell != null && cell.getValue() != null) {
-                value = cell.getValue();
-            }
+            Object value = getCellValue(cell, idx);
             result[idx++] = value;
         }
         return result;
+    }
+
+    public Object getCellValue(Cell cell, int idx) {
+        if ((cell instanceof Rank) && !((Rank) cell).isCalcluate()) {
+            Rank.calculate(table, (Rank) cell, idx);
+        } else if (cell instanceof Subtraction) {
+            Subtraction.calculate(table, this, (Subtraction) cell);
+        }
+        Object value = "";
+        if (cell != null && cell.getValue() != null) {
+            value = cell.getValue();
+        }
+        return value;
     }
 
     public List<CellMergeInfo> mergeInfo(int rowIdx) {

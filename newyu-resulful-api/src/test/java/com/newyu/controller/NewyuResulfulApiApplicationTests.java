@@ -1,8 +1,11 @@
 package com.newyu.controller;
 
+import com.newyu.utils.spring.SpringContextUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 @RunWith(SpringRunner.class)
@@ -11,6 +14,11 @@ public class NewyuResulfulApiApplicationTests {
 
     @Test
     public void contextLoads() {
+        ApplicationContext applicationContext = SpringContextUtil.getApplicationContext();
+
+        BeanFactory beanFactory = applicationContext.getParentBeanFactory();
+        System.out.println();
+//        applicationContext
     }
 
 }

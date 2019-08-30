@@ -35,6 +35,38 @@
             <artifactId>newyu-utils</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+
+        <!--es rest client low-->
+        <!--<dependency>-->
+            <!--<groupId>org.elasticsearch.client</groupId>-->
+            <!--<artifactId>elasticsearch-rest-client</artifactId>-->
+            <!--<version>7.2.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.elasticsearch.client</groupId>-->
+            <!--<artifactId>elasticsearch-rest-high-level-client</artifactId>-->
+            <!--<version>7.2.0</version>-->
+        <!--</dependency>-->
+        <!--<dependency>-->
+            <!--<groupId>org.elasticsearch.client</groupId>-->
+            <!--<artifactId>transport</artifactId>-->
+            <!--<version>7.2.0</version>-->
+        <!--</dependency>-->
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-client</artifactId>
+            <version>6.6.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.elasticsearch.client</groupId>
+            <artifactId>elasticsearch-rest-high-level-client</artifactId>
+            <version>6.6.1</version>
+        </dependency>
+        <!--<dependency>-->
+            <!--<groupId>org.elasticsearch.client</groupId>-->
+            <!--<artifactId>transport</artifactId>-->
+            <!--<version>6.6.1</version>-->
+        <!--</dependency>-->
     </dependencies>
     <dependencyManagement>
         <dependencies>
@@ -49,7 +81,7 @@
     </dependencyManagement>
 
     <build>
-        <finalName>ib</finalName>
+        <finalName>newyu-es</finalName>
         <filters>
             <filter>envconfig/${env}.properties</filter>
         </filters>

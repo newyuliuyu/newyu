@@ -34,7 +34,8 @@ import java.util.stream.Collectors;
  * @since JDK 1.7+
  */
 @Slf4j
-public class FromFileReaderDataset implements ReaderDataset {
+public class
+FromFileReaderDataset implements ReaderDataset {
 
     private DatasetImpl dataset = new DatasetImpl();
 

@@ -1,4 +1,4 @@
-package com.newyu.utils;
+package com.newyu.utils.io.file.spi;
 
 import lombok.Builder;
 import lombok.Data;
@@ -19,6 +19,20 @@ public class StudentCj {
     private String zkzh;
     private String name;
     private String gender;
+
+    private TeacherInfo yuwen;
+    private TeacherInfo yingyu;
+    private TeacherInfo shuxue;
+    private TeacherInfo wuli;
+    private TeacherInfo huaxue;
+    private TeacherInfo shengwu;
+    private TeacherInfo zhengzhi;
+    private TeacherInfo lishi;
+    private TeacherInfo dili;
+
+    private String teachers;
+    private boolean changeTeacher;
+
     private int year;
     private int wl;
     private String schoolCode;

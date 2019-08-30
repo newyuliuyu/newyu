@@ -19,10 +19,26 @@ public class Table {
     private List<Row> header;
     private List<Row> body;
 
+
+    public int getHeaderIdx(String headerName) {
+        for (Row row : header) {
+            List<Cell> cells = row.getCells();
+            int idx = 0;
+            for (Cell cell : cells) {
+                if (cell.getValue().toString().equals(headerName)) {
+                    return idx;
+                }
+                idx++;
+            }
+        }
+        return -1;
+    }
+
     public Table addHeader(Row row) {
         if (header == null) {
             header = Lists.newArrayList();
         }
+        row.setTable(this);
         header.add(row);
         return this;
     }
@@ -31,15 +47,13 @@ public class Table {
         if (header == null) {
             header = Lists.newArrayList();
         }
+        row.setTable(this);
         header.add(idx, row);
         return this;
     }
 
     public Table addHeader(List<Row> rows) {
-        if (header == null) {
-            header = Lists.newArrayList();
-        }
-        header.addAll(rows);
+        rows.forEach(x -> addHeader(x));
         return this;
     }
 
@@ -47,15 +61,13 @@ public class Table {
         if (body == null) {
             body = Lists.newArrayList();
         }
+        row.setTable(this);
         body.add(row);
         return this;
     }
 
     public Table addBody(List<Row> rows) {
-        if (body == null) {
-            body = Lists.newArrayList();
-        }
-        body.addAll(rows);
+        rows.forEach(x -> addBody(x));
         return this;
     }
 
@@ -89,7 +101,8 @@ public class Table {
     }
 
     public void setHeader(List<Row> header) {
-        this.header = header;
+        this.header = Lists.newArrayList();
+        header.forEach(x -> addHeader(x));
     }
 
     public List<Row> getBody() {
@@ -100,6 +113,7 @@ public class Table {
     }
 
     public void setBody(List<Row> body) {
-        this.body = body;
+        this.body = Lists.newArrayList();
+        body.forEach(x -> addBody(x));
     }
 }
