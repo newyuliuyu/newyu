@@ -3,6 +3,7 @@ package com.newyu.controller.config;
 
 import com.newyu.utils.id.IdGenerator;
 import com.newyu.utils.spring.SpringContextUtil;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -19,6 +20,9 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 //@PropertySource("classpath:ezconfig.properties")
 public class CommonConfig {
+
+    @Value("${my.test}")
+    private String myTest;
 
     @Bean
     public SpringContextUtil springContextUtil() {
