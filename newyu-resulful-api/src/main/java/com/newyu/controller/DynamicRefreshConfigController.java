@@ -38,7 +38,7 @@ public class DynamicRefreshConfigController {
     public ModelAndView show(HttpServletRequest request,
                              HttpServletResponse responese) throws Exception {
         log.debug("show function ...");
-
+        //Thread.sleep(1000);
         return ModelAndViewFactory.instance().with("myuuid", myUuid).build();
     }
 

@@ -70,6 +70,7 @@ public class SpringMVCConfig extends WebMvcConfigurationSupport {
         supportedMediaTypes.add(MediaType.TEXT_MARKDOWN);
         supportedMediaTypes.add(MediaType.TEXT_PLAIN);
         supportedMediaTypes.add(MediaType.TEXT_XML);
+        supportedMediaTypes.add(MediaType.valueOf("application/vnd.spring-boot.actuator.v2+json"));
         c1.setSupportedMediaTypes(supportedMediaTypes);
         c1.setFastJsonConfig(fastJsonConfig);
         converters.add(c1);

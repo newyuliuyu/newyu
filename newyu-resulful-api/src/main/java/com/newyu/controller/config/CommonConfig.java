@@ -49,22 +49,29 @@ public class CommonConfig {
     public ConfigurableServletWebServerFactory webServerFactory() {
         TomcatServletWebServerFactory tomcatFactory = new TomcatServletWebServerFactory();
         tomcatFactory.addConnectorCustomizers(new MyTomcatConnectorCustomizer());
-        tomcatFactory.setPort(8005);
-        tomcatFactory.setContextPath("/api-g");
+//        tomcatFactory.setPort(9999);
+//        tomcatFactory.setContextPath("");
         return tomcatFactory;
     }
 
     class MyTomcatConnectorCustomizer implements TomcatConnectorCustomizer {
         @Override
         public void customize(Connector connector) {
-            Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
-            protocol.setAcceptCount(1000);
-            //设置最大连接数
-            protocol.setMaxConnections(20000);
-            //设置最大线程数
-            protocol.setMaxThreads(2000);
-            protocol.setConnectionTimeout(30000);
+//            connector.setAttribute("connectionTimeout", 1000);
+//            connector.setAttribute("acceptorThreadCount", 1);
+//            connector.setAttribute("minSpareThreads", 100);
+//            connector.setAttribute("maxSpareThreads", 300);
+//            connector.setAttribute("maxThreads", 500);
+//            connector.setAttribute("maxConnections", 1000);
 
+            Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
+            protocol.setAcceptCount(100);
+            //设置最大连接数
+            protocol.setMaxConnections(500);
+            protocol.setConnectionTimeout(60000);
+            //设置最大线程数
+            protocol.setMaxThreads(50);
+            protocol.setMinSpareThreads(20);
         }
     }
 
