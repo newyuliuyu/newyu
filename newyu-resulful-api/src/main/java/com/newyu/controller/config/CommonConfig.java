@@ -1,14 +1,14 @@
 package com.newyu.controller.config;
 
 
+import com.newyu.controller.servlet.MyServlet2;
 import com.newyu.utils.id.IdGenerator;
 import com.newyu.utils.spring.SpringContextUtil;
 import org.apache.catalina.connector.Connector;
 import org.apache.coyote.http11.Http11NioProtocol;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.embedded.tomcat.TomcatConnectorCustomizer;
-import org.springframework.boot.web.embedded.tomcat.TomcatServletWebServerFactory;
-import org.springframework.boot.web.servlet.server.ConfigurableServletWebServerFactory;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -45,25 +45,27 @@ public class CommonConfig {
 //        return new EzConfig();
 //    }
 
+//    @Bean
+//    public ConfigurableServletWebServerFactory webServerFactory() {
+//        TomcatServletWebServerFactory tomcatFactory = new TomcatServletWebServerFactory();
+//        tomcatFactory.addConnectorCustomizers(new MyTomcatConnectorCustomizer());
+////        tomcatFactory.setPort(9999);
+////        tomcatFactory.setContextPath("");
+//        return tomcatFactory;
+//    }
+
     @Bean
-    public ConfigurableServletWebServerFactory webServerFactory() {
-        TomcatServletWebServerFactory tomcatFactory = new TomcatServletWebServerFactory();
-        tomcatFactory.addConnectorCustomizers(new MyTomcatConnectorCustomizer());
-//        tomcatFactory.setPort(9999);
-//        tomcatFactory.setContextPath("");
-        return tomcatFactory;
+    public ServletRegistrationBean myServlet2() {
+        MyServlet2 myServlet2 = new MyServlet2();
+        ServletRegistrationBean registration = new ServletRegistrationBean(myServlet2);
+        registration.setEnabled(true);
+        registration.addUrlMappings("/my-servlet2");
+        return registration;
     }
 
     class MyTomcatConnectorCustomizer implements TomcatConnectorCustomizer {
         @Override
         public void customize(Connector connector) {
-//            connector.setAttribute("connectionTimeout", 1000);
-//            connector.setAttribute("acceptorThreadCount", 1);
-//            connector.setAttribute("minSpareThreads", 100);
-//            connector.setAttribute("maxSpareThreads", 300);
-//            connector.setAttribute("maxThreads", 500);
-//            connector.setAttribute("maxConnections", 1000);
-
             Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
             protocol.setAcceptCount(100);
             //设置最大连接数

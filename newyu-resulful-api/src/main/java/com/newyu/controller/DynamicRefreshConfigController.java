@@ -12,6 +12,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.concurrent.Callable;
 
 /**
  * ClassName: DynamicRefreshConfigController <br/>
@@ -38,16 +39,31 @@ public class DynamicRefreshConfigController {
     public ModelAndView show(HttpServletRequest request,
                              HttpServletResponse responese) throws Exception {
         log.debug("show function ...");
-        //Thread.sleep(1000);
+//        Thread.sleep(60000);
         return ModelAndViewFactory.instance().with("myuuid", myUuid).build();
+    }
+
+    @GetMapping(path = "/show-async1")
+    public Callable<ModelAndView> show1(HttpServletRequest request,
+                                        HttpServletResponse responese) throws Exception {
+        log.debug("show function ...");
+
+        Callable<ModelAndView> result = () -> {
+            log.debug("waitting process........");
+            Thread.sleep(3000);
+            log.debug("this process over");
+            return ModelAndViewFactory.instance().with("myuuid", myUuid).build();
+        };
+        //Thread.sleep(1000);
+        return result;
     }
 
     @GetMapping(path = "/refresh")
     public ModelAndView refresh(HttpServletRequest request,
                                 HttpServletResponse responese) throws Exception {
         log.debug("refrechs function ...");
-        new Thread(()->contextRefresher.refresh()).start();
-        return show(request,responese);
+        new Thread(() -> contextRefresher.refresh()).start();
+        return show(request, responese);
     }
 
 
