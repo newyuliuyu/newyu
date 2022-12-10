@@ -16,7 +16,7 @@
 
     <properties>
         <shiro.version>1.2.3</shiro.version>
-        <spring.version>5.1.6.RELEASE</spring.version>
+        <spring.version>6.0.0</spring.version>
     </properties>
     <dependencies>
         <dependency>
